@@ -1,0 +1,16 @@
+#项目基本配置
+spring:
+  application:
+    name: ibay-tea
+  datasource:
+    url: jdbc:mysql://localhost:3306/tea
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+server:
+  port: 8080
+  servlet:
+    context-path: /tea
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
