@@ -16,9 +16,10 @@ public class CategoryTest extends BaseTest {
     @Test
     public void testInsert(){
         Category category = new Category();
-        category.setCategoryName("单元测试");
+        category.setCategoryName("单元测试2");
         category.setStatus(1);
         category.setWeight(6);
+        category.setCreateTime("2018-05-17 18:22:55");
         categoryMapper.insert(category);
     }
 }
