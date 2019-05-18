@@ -8,86 +8,28 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+
   <sql id="Base_Column_List">
     id, image_url, carousel_type, create_time, update_time
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_carousel
-    where id = #{id,jdbcType=INTEGER}
+    select <include refid="Base_Column_List" /> from t_carousel where id = #{id,jdbcType=INTEGER}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from t_carousel
-    where id = #{id,jdbcType=INTEGER}
+    delete from t_carousel where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.ibay.tea.entity.Carousel">
-    insert into t_carousel (id, image_url, carousel_type, 
-      create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{imageUrl,jdbcType=VARCHAR}, #{carouselType,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    insert into t_carousel ( image_url, carousel_type)
+    values ( #{imageUrl,jdbcType=VARCHAR}, #{carouselType,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.ibay.tea.entity.Carousel">
-    insert into t_carousel
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="imageUrl != null">
-        image_url,
-      </if>
-      <if test="carouselType != null">
-        carousel_type,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="imageUrl != null">
-        #{imageUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="carouselType != null">
-        #{carouselType,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ibay.tea.entity.Carousel">
-    update t_carousel
-    <set>
-      <if test="imageUrl != null">
-        image_url = #{imageUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="carouselType != null">
-        carousel_type = #{carouselType,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.ibay.tea.entity.Carousel">
     update t_carousel
     set image_url = #{imageUrl,jdbcType=VARCHAR},
-      carousel_type = #{carouselType,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      carousel_type = #{carouselType,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

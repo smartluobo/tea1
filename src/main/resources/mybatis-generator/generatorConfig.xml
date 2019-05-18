@@ -41,15 +41,86 @@
 		</javaClientGenerator>
 
 		<!-- 指定数据库表，要生成哪些表，就写哪些表，要和数据库中对应，不能写错！ -->
-		<table tableName="t_category"
-			   domainObjectName="Category"
+		<table tableName="t_carousel"
+			   domainObjectName="Carousel"
 			   enableCountByExample="false"
 			   enableUpdateByExample="false"
 			   enableDeleteByExample="false"
 			   enableSelectByExample="false"
-			   selectByExampleQueryId="false"
-		>
+			   selectByExampleQueryId="false">
     		<property name="useActualColumnNames" value="false"/>
     	</table>
+		<table tableName="t_category_record"
+			   domainObjectName="CategoryRecord"
+			   enableCountByExample="false"
+			   enableUpdateByExample="false"
+			   enableDeleteByExample="false"
+			   enableSelectByExample="false"
+			   selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="false"/>
+		</table>
+		<table tableName="t_coupons_pool"
+			   domainObjectName="CouponsPool"
+			   enableCountByExample="false"
+			   enableUpdateByExample="false"
+			   enableDeleteByExample="false"
+			   enableSelectByExample="false"
+			   selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="false"/>
+		</table>
+		<table tableName="t_goods"
+			   domainObjectName="Goods"
+			   enableCountByExample="false"
+			   enableUpdateByExample="false"
+			   enableDeleteByExample="false"
+			   enableSelectByExample="false"
+			   selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="false"/>
+		</table>
+		<table tableName="t_goods_sku"
+			   domainObjectName="GoodsSku"
+			   enableCountByExample="false"
+			   enableUpdateByExample="false"
+			   enableDeleteByExample="false"
+			   enableSelectByExample="false"
+			   selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="false"/>
+		</table>
+		<table tableName="t_goods_sku_record"
+			   domainObjectName="GoodsSkuRecord"
+			   enableCountByExample="false"
+			   enableUpdateByExample="false"
+			   enableDeleteByExample="false"
+			   enableSelectByExample="false"
+			   selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="false"/>
+		</table>
+		<table tableName="t_goods_sku_type"
+			   domainObjectName="GoodsSkuType"
+			   enableCountByExample="false"
+			   enableUpdateByExample="false"
+			   enableDeleteByExample="false"
+			   enableSelectByExample="false"
+			   selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="false"/>
+		</table>
+		<table tableName="t_user"
+			   domainObjectName="User"
+			   enableCountByExample="false"
+			   enableUpdateByExample="false"
+			   enableDeleteByExample="false"
+			   enableSelectByExample="false"
+			   selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="false"/>
+		</table>
+		<table tableName="t_user_coupons"
+			   domainObjectName="UserCoupons"
+			   enableCountByExample="false"
+			   enableUpdateByExample="false"
+			   enableDeleteByExample="false"
+			   enableSelectByExample="false"
+			   selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="false"/>
+		</table>
 	</context>
 </generatorConfiguration>  
