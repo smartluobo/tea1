@@ -1,7 +1,9 @@
 package com.ibay.tea.dao;
 
 import com.ibay.tea.entity.CategoryRecord;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CategoryRecordMapper {
     int deleteByPrimaryKey(Integer id);
 
