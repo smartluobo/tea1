@@ -1,6 +1,6 @@
 package com.ibay.tea.controller.category;
 
-import com.ibay.tea.cache.SysCache;
+import com.ibay.tea.cache.CategoryCache;
 import com.ibay.tea.dao.CategoryMapper;
 import com.ibay.tea.entity.Category;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +18,7 @@ public class CategoryController {
     private CategoryMapper categoryMapper;
 
     @Resource
-    private SysCache sysCache;
+    private CategoryCache sysCache;
 
     @RequestMapping("/list")
     public List<Category> list(){

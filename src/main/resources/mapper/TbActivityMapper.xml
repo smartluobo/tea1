@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ibay.tea.dao.TbActivityMapper">
+  <resultMap id="BaseResultMap" type="com.ibay.tea.entity.TbActivity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="start_date" jdbcType="INTEGER" property="startDate" />
+    <result column="end_date" jdbcType="INTEGER" property="endDate" />
+    <result column="start_hour" jdbcType="INTEGER" property="startHour" />
+    <result column="end_hour" jdbcType="INTEGER" property="endHour" />
+    <result column="activity_type" jdbcType="INTEGER" property="activityType" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="activity_name" jdbcType="VARCHAR" property="activityName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, start_date, end_date, start_hour, end_hour, activity_type, create_time, update_time, 
+    activity_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_activity
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_activity
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ibay.tea.entity.TbActivity">
+    insert into tb_activity (id, start_date, end_date, 
+      start_hour, end_hour, activity_type, 
+      create_time, update_time, activity_name
+      )
+    values (#{id,jdbcType=INTEGER}, #{startDate,jdbcType=INTEGER}, #{endDate,jdbcType=INTEGER}, 
+      #{startHour,jdbcType=INTEGER}, #{endHour,jdbcType=INTEGER}, #{activityType,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{activityName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ibay.tea.entity.TbActivity">
+    insert into tb_activity
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="startDate != null">
+        start_date,
+      </if>
+      <if test="endDate != null">
+        end_date,
+      </if>
+      <if test="startHour != null">
+        start_hour,
+      </if>
+      <if test="endHour != null">
+        end_hour,
+      </if>
+      <if test="activityType != null">
+        activity_type,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="activityName != null">
+        activity_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=INTEGER},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=INTEGER},
+      </if>
+      <if test="startHour != null">
+        #{startHour,jdbcType=INTEGER},
+      </if>
+      <if test="endHour != null">
+        #{endHour,jdbcType=INTEGER},
+      </if>
+      <if test="activityType != null">
+        #{activityType,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityName != null">
+        #{activityName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ibay.tea.entity.TbActivity">
+    update tb_activity
+    <set>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=INTEGER},
+      </if>
+      <if test="endDate != null">
+        end_date = #{endDate,jdbcType=INTEGER},
+      </if>
+      <if test="startHour != null">
+        start_hour = #{startHour,jdbcType=INTEGER},
+      </if>
+      <if test="endHour != null">
+        end_hour = #{endHour,jdbcType=INTEGER},
+      </if>
+      <if test="activityType != null">
+        activity_type = #{activityType,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityName != null">
+        activity_name = #{activityName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ibay.tea.entity.TbActivity">
+    update tb_activity
+    set start_date = #{startDate,jdbcType=INTEGER},
+      end_date = #{endDate,jdbcType=INTEGER},
+      start_hour = #{startHour,jdbcType=INTEGER},
+      end_hour = #{endHour,jdbcType=INTEGER},
+      activity_type = #{activityType,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      activity_name = #{activityName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
