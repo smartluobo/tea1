@@ -21,6 +21,8 @@ public class TbActivity {
 
     private String activityName;
 
+    private int status;
+
     public Integer getId() {
         return id;
     }
@@ -91,5 +93,13 @@ public class TbActivity {
 
     public void setActivityName(String activityName) {
         this.activityName = activityName == null ? null : activityName.trim();
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

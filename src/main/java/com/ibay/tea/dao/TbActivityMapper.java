@@ -3,17 +3,14 @@ package com.ibay.tea.dao;
 import com.ibay.tea.entity.TbActivity;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface TbActivityMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(TbActivity record);
-
-    int insertSelective(TbActivity record);
-
     TbActivity selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(TbActivity record);
+    List<TbActivity> findAll();
 
-    int updateByPrimaryKey(TbActivity record);
 }

@@ -16,8 +16,11 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from t_carousel where id = #{id,jdbcType=INTEGER}
   </select>
+    <select id="findAll" resultType="com.ibay.tea.entity.Carousel">
+      select <include refid="Base_Column_List" /> from t_carousel
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_carousel where id = #{id,jdbcType=INTEGER}
   </delete>
 

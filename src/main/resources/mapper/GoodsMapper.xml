@@ -31,6 +31,14 @@
     select <include refid="Base_Column_List" /> from t_goods where id = #{id,jdbcType=INTEGER}
   </select>
 
+    <select id="findGoodsListByPage" resultMap="BaseResultMap" parameterType="int">
+        SELECT <include refid="Base_Column_List" /> from t_goods
+    </select>
+
+  <select id="countGoodsByCondition" resultType="java.lang.Long" parameterType="map">
+    SELECT count(1) FROM t_goods
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_goods where id = #{id,jdbcType=INTEGER}
   </delete>

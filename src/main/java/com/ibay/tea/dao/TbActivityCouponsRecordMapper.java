@@ -1,17 +1,16 @@
 package com.ibay.tea.dao;
 
 import com.ibay.tea.entity.TbActivityCouponsRecord;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface TbActivityCouponsRecordMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(TbActivityCouponsRecord record);
-
-    int insertSelective(TbActivityCouponsRecord record);
-
     TbActivityCouponsRecord selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(TbActivityCouponsRecord record);
+    List<TbActivityCouponsRecord> findAll();
 
-    int updateByPrimaryKey(TbActivityCouponsRecord record);
 }

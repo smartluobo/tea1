@@ -1,6 +1,8 @@
 package com.ibay.tea.api.service.activity;
 
+import com.ibay.tea.entity.TbActivity;
+
 public interface ApiActivityService {
 
-    Object getActivityInfo(String oppenId);
+    TbActivity getActivityInfo();
 }

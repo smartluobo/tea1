@@ -1,17 +1,17 @@
 package com.ibay.tea.dao;
 
 import com.ibay.tea.entity.TbCoupons;
+import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
+import java.util.List;
+
+@Repository
 public interface TbCouponsMapper {
+
     int deleteByPrimaryKey(Integer id);
-
-    int insert(TbCoupons record);
-
-    int insertSelective(TbCoupons record);
 
     TbCoupons selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(TbCoupons record);
-
-    int updateByPrimaryKey(TbCoupons record);
+    List<TbCoupons> findAll();
 }
