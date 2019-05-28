@@ -2,11 +2,11 @@ package com.ibay.tea.api.controller.activity;
 
 import com.ibay.tea.api.service.activity.ApiActivityService;
 import com.ibay.tea.api.service.coupons.ApiCouponsService;
+import com.ibay.tea.api.service.user.ApiUserService;
 import com.ibay.tea.common.constant.ApiConstant;
 import com.ibay.tea.common.utils.DateUtil;
-import com.ibay.tea.entity.TbActivity;
-import com.ibay.tea.entity.TbCoupons;
-import com.ibay.tea.entity.TbUserCoupons;
+import com.ibay.tea.entity.*;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +26,15 @@ public class ApiActivityController {
     @Resource
     private ApiCouponsService apiCouponsService;
 
+    @Resource
+    private ApiUserService apiUserService;
+
     //查询活动，如果当前时间没有活动在进行中查询最近的活动开始时间，点击查看活动奖品
     // 如果在开奖时间内且还有奖品提示用户参与抽奖，若奖品已经发放完毕且用户没有获奖提示用户明天继续参与
     // 若用户已经在当天参与抽奖并获得优惠券提示用户立即使用
 
-    @GetMapping("getActivityInfo")
-    public Object getActivityInfo(String oppenId){
+    @GetMapping("getActivityInfo/{oppenId}")
+    public Object getActivityInfo(@PathVariable("oppenId") String oppenId){
         try {
             Map<String,Object> resultInfo = new HashMap<>();
             resultInfo.put("code",200);
@@ -74,6 +77,25 @@ public class ApiActivityController {
         }catch (Exception e){
             return null;
         }
+    }
+
+    @RequestMapping("/extractPrize/{oppenId}")
+    public Object extractPrize(@PathVariable("oppenId") String oppenId){
+        //判断oppenId是否有效
+        TbApiUser tbApiUser = apiUserService.findApiUserByOppenId(oppenId);
+        if (tbApiUser == null){
+            return null;
+        }
+
+        //判断通过执行抽奖过程
+        TbActivityCouponsRecord record = apiActivityService.extractPrize(oppenId);
+        if (record != null){
+            //将用户的优惠券存入数据库
+            apiActivityService.saveUserCouponsToDb(oppenId,record);
+        }
+
+
+        return null;
     }
 
 }

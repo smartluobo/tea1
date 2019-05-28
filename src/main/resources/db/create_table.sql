@@ -120,4 +120,19 @@ CREATE TABLE `t_user_coupons` (
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+  CREATE TABLE `tb_api_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `nick_name` varchar(64) CHARACTER SET latin1 DEFAULT NULL COMMENT '微信昵称',
+  `wechat_num` varchar(64) CHARACTER SET latin1 DEFAULT NULL COMMENT '微信号',
+  `oppen_id` varchar(128) CHARACTER SET latin1 DEFAULT NULL COMMENT '微信唯一标识',
+  `wechat_phone_num` varchar(16) CHARACTER SET latin1 DEFAULT NULL COMMENT '微信关联电话号码',
+  `user_bind_phone_num` varchar(16) CHARACTER SET latin1 DEFAULT NULL COMMENT '用户绑定电话号码',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `user_head_image` varchar(128) CHARACTER SET latin1 DEFAULT NULL COMMENT '用户头像',
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 

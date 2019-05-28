@@ -16,10 +16,27 @@ public class ApiConstant {
     //活动已经结束
     public static final int ACTIVITY_STATUS_END = 2;
 
-    //public
+    //优惠券未使用
     public static final int USER_COUPONS_STATUS_NO_USE = 0;
+    //优惠券锁定中
     public static final int USER_COUPONS_STATUS_LOCK = 1;
+    //优惠券已使用
     public static final int USER_COUPONS_STATUS_USED = 2;
+
+    //折扣券
+    public static final int USER_COUPONS_TYPE_RATIO = 1;
+    //满减券
+    public static final int USER_COUPONS_TYPE_FULL_REDUCE = 2;
+    //团购券
+    public static final int USER_COUPONS_TYPE_GROUP = 3;
+    //免费券
+    public static final int USER_COUPONS_TYPE_FREE = 4;
+    //通用券
+    public static final int USER_COUPONS_TYPE_GENERAL = 5;
+
+
+
+
 
 
 

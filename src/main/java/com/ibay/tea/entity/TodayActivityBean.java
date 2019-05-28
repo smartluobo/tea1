@@ -7,7 +7,7 @@ public class TodayActivityBean {
 
     private TbActivity tbActivity;
 
-    private Map<Long,TbCoupons> couponsMap;
+    private Map<Integer,TbCoupons> couponsMap;
 
     private List<TbActivityCouponsRecord> tbActivityCouponsRecordList;
 
@@ -19,11 +19,11 @@ public class TodayActivityBean {
         this.tbActivity = tbActivity;
     }
 
-    public Map<Long, TbCoupons> getCouponsMap() {
+    public Map<Integer, TbCoupons> getCouponsMap() {
         return couponsMap;
     }
 
-    public void setCouponsMap(Map<Long, TbCoupons> couponsMap) {
+    public void setCouponsMap(Map<Integer, TbCoupons> couponsMap) {
         this.couponsMap = couponsMap;
     }
 

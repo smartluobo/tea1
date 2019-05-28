@@ -27,7 +27,8 @@ public class CategoryController {
 
     @RequestMapping("/findById/{id}")
     public Category findById(@PathVariable("id") String id){
-        return sysCache.getCategoryFromSysCache(id);
+        //return sysCache.getCategoryFromSysCache(id);
+        return null;
     }
 
 }
