@@ -109,3 +109,15 @@ CREATE TABLE `t_user_coupons` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+  CREATE TABLE `tb_user_coupons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `oppen_id` varchar(128) DEFAULT NULL COMMENT '用户唯一表示',
+  `coupons_id` int(11) DEFAULT NULL COMMENT '优惠券id',
+  `coupons_name` varchar(32) DEFAULT NULL COMMENT '优惠券名称',
+  `receive_date` int(8) DEFAULT NULL COMMENT '领取日期',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `status` int(2) DEFAULT NULL COMMENT '状态 0未使用 1锁定中 2已经使用',
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
