@@ -1,5 +1,6 @@
 package com.ibay.tea.api.controller.goods;
 
+import com.ibay.tea.api.response.ResultInfo;
 import com.ibay.tea.api.service.goods.ApiGoodsService;
 import com.ibay.tea.entity.TbItem;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +19,26 @@ public class ApiGoodsController {
     private ApiGoodsService apiGoodsService;
 
     @GetMapping("/listByCategoryId/{categoryId}")
-    public List<TbItem> getGoodsListByCategoryId(@PathVariable("categoryId") long categoryId){
+    public ResultInfo getGoodsListByCategoryId(@PathVariable("categoryId") long categoryId){
         try {
-            return apiGoodsService.getGoodsListByCategoryId(categoryId);
+            ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            List<TbItem> goodsListByCategoryId = apiGoodsService.getGoodsListByCategoryId(categoryId);
+            resultInfo.setData(goodsListByCategoryId);
+            return resultInfo;
         }catch (Exception e){
-            return null;
+            return ResultInfo.newExceptionResultInfo();
         }
+    }
 
+    @RequestMapping("/getGoodsDetailById/{goodsId}")
+    public ResultInfo getGoodsDetailById(@PathVariable("goodsId") long goodsId){
+        try {
+            ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            TbItem goods = apiGoodsService.getGoodsDetailById(goodsId);
+            resultInfo.setData(goods);
+            return resultInfo;
+        }catch (Exception e){
+            return ResultInfo.newExceptionResultInfo();
+        }
     }
 }

@@ -3,10 +3,9 @@ package com.ibay.tea.cache;
 import com.ibay.tea.common.constant.ApiConstant;
 import com.ibay.tea.common.utils.PriceCalculateUtil;
 import com.ibay.tea.dao.TbItemMapper;
-import com.ibay.tea.entity.TbActivity;
-import com.ibay.tea.entity.TbActivityCouponsRecord;
-import com.ibay.tea.entity.TbCoupons;
-import com.ibay.tea.entity.TbItem;
+import com.ibay.tea.dao.TbSkuDetailMapper;
+import com.ibay.tea.dao.TbSkuTypeMapper;
+import com.ibay.tea.entity.*;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +21,25 @@ public class GoodsCache implements InitializingBean {
 
     private Map<Long,List<TbItem>> goodsCacheMap;
 
+    private List<TbSkuType> tbSkuTypeCache;
+
+    private List<TbSkuDetail> tbSkuDetailCache;
+
     @Resource
     private TbItemMapper tbItemMapper;
+
+    @Resource
+    private TbSkuTypeMapper tbSkuTypeMapper;
+
+    @Resource
+    private TbSkuDetailMapper tbSkuDetailMapper;
 
     @Resource
     private ActivityCache activityCache;
 
     private void initGoodsCacheMap(){
+        initSkuTypeCache();
+        initSkuDetailCache();
         List<TbItem> goodsList = tbItemMapper.findAll();
         TbActivity todayFullActivity = activityCache.getTodayFullActivity();
         if (todayFullActivity != null){
@@ -51,6 +62,11 @@ public class GoodsCache implements InitializingBean {
         goodsCacheMap = new HashMap<>();
         for (TbItem tbItem : goodsList) {
             List<TbItem> categoryTbItems = goodsCacheMap.get(tbItem.getCid());
+            String skuTypeIds = tbItem.getSkuTypeIds();
+
+            if (skuTypeIds != null && skuTypeIds.trim().length() > 0){
+                setGoodsSkuShowInfo(skuTypeIds,tbItem);
+            }
             if (categoryTbItems == null){
                 List<TbItem> categoryGoodsList = new ArrayList<>();
                 categoryGoodsList.add(tbItem);
@@ -61,8 +77,41 @@ public class GoodsCache implements InitializingBean {
         }
     }
 
+    private void initSkuTypeCache() {
+        tbSkuTypeCache = tbSkuTypeMapper.findAll();
+    }
+
+    private void initSkuDetailCache(){
+        tbSkuDetailCache =tbSkuDetailMapper.findAll();
+    }
+
+    private void setGoodsSkuShowInfo(String skuTypeIds, TbItem tbItem) {
+        List<TbSkuType> skuTypes = new ArrayList<>();
+        String[] skuTypeIdArr = skuTypeIds.split(",");
+        for (String skuTypeId : skuTypeIdArr) {
+            for (TbSkuType tbSkuType : tbSkuTypeCache) {
+                if (tbSkuType.getId() == Long.parseLong(skuTypeId)){
+                    skuTypes.add(tbSkuType);
+                    //设置skuType下的sku_detail
+                    List<TbSkuDetail> skuDetails = new ArrayList<>();
+                    for (TbSkuDetail tbSkuDetail : tbSkuDetailCache) {
+                        if (tbSkuDetail.getSkuTypeId() == tbSkuType.getId()){
+                            skuDetails.add(tbSkuDetail);
+                        }
+                    }
+                    tbSkuType.setSkuDetails(skuDetails);
+                }
+            }
+        }
+        tbItem.setSkuShowInfos(skuTypes);
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
         initGoodsCacheMap();
+    }
+
+    public List<TbItem> getGoodsListByCategoryId(long categoryId) {
+        return goodsCacheMap.get(categoryId);
     }
 }

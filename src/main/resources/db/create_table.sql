@@ -109,7 +109,7 @@ CREATE TABLE `t_user_coupons` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-  CREATE TABLE `tb_user_coupons` (
+CREATE TABLE `tb_user_coupons` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `oppen_id` varchar(128) DEFAULT NULL COMMENT '用户唯一表示',
   `coupons_id` int(11) DEFAULT NULL COMMENT '优惠券id',
@@ -120,7 +120,7 @@ CREATE TABLE `t_user_coupons` (
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-  CREATE TABLE `tb_api_user` (
+CREATE TABLE `tb_api_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `nick_name` varchar(64) CHARACTER SET latin1 DEFAULT NULL COMMENT '微信昵称',
   `wechat_num` varchar(64) CHARACTER SET latin1 DEFAULT NULL COMMENT '微信号',
@@ -132,6 +132,24 @@ PRIMARY KEY (`id`)
   `user_head_image` varchar(128) CHARACTER SET latin1 DEFAULT NULL COMMENT '用户头像',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tb_sku_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sku_type_name` varchar(16) DEFAULT NULL COMMENT 'sku类型名称如 规格 温度 糖度',
+  `create_time` datetime DEFAULT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tb_sku_detail` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `sku_type_id` int(11) DEFAULT NULL COMMENT 'sku明细所属sku_type的id',
+  `sku_detail_name` varchar(16) DEFAULT NULL COMMENT '明细显示名称 如 大 中 小 常温 加冰等',
+  `sku_detail_price` int(4) DEFAULT '0' COMMENT 'sku_detail的价格',
+  `create_time` datetime DEFAULT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 
 
 

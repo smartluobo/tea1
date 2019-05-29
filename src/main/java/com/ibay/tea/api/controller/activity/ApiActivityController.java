@@ -19,6 +19,9 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 进入小程序
+ */
 @RestController
 @RequestMapping("api/activity")
 public class ApiActivityController {

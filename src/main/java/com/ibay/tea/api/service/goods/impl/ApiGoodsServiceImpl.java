@@ -1,6 +1,7 @@
 package com.ibay.tea.api.service.goods.impl;
 
 import com.ibay.tea.api.service.goods.ApiGoodsService;
+import com.ibay.tea.cache.GoodsCache;
 import com.ibay.tea.dao.GoodsMapper;
 import com.ibay.tea.dao.TbItemMapper;
 import com.ibay.tea.entity.TbItem;
@@ -15,8 +16,20 @@ public class ApiGoodsServiceImpl implements ApiGoodsService {
     @Resource
     private TbItemMapper tbItemMapper;
 
+    @Resource
+    private GoodsCache goodsCache;
+
     @Override
     public List<TbItem> getGoodsListByCategoryId(long categoryId) {
-        return tbItemMapper.getGoodsListByCategoryId(categoryId);
+        return goodsCache.getGoodsListByCategoryId(categoryId);
     }
+
+    @Override
+    public TbItem getGoodsDetailById(long goodsId) {
+        TbItem goods = tbItemMapper.selectByPrimaryKey(goodsId);
+        //组装sku相关信息
+        return goods;
+    }
+
+
 }

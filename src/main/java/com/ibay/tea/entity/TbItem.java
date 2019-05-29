@@ -2,6 +2,7 @@ package com.ibay.tea.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class TbItem {
     private Long id;
@@ -31,6 +32,12 @@ public class TbItem {
     private Date created;
 
     private Date updated;
+
+    private String simpleDesc;
+
+    private String skuTypeIds;
+
+    private List<TbSkuType> skuShowInfos;
 
     public Long getId() {
         return id;
@@ -134,5 +141,29 @@ public class TbItem {
 
     public void setShowActivityPrice(int showActivityPrice) {
         this.showActivityPrice = showActivityPrice;
+    }
+
+    public String getSimpleDesc() {
+        return simpleDesc;
+    }
+
+    public void setSimpleDesc(String simpleDesc) {
+        this.simpleDesc = simpleDesc;
+    }
+
+    public String getSkuTypeIds() {
+        return skuTypeIds;
+    }
+
+    public void setSkuTypeIds(String skuTypeIds) {
+        this.skuTypeIds = skuTypeIds;
+    }
+
+    public List<TbSkuType> getSkuShowInfos() {
+        return skuShowInfos;
+    }
+
+    public void setSkuShowInfos(List<TbSkuType> skuShowInfos) {
+        this.skuShowInfos = skuShowInfos;
     }
 }

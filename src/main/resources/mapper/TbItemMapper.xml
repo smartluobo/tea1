@@ -4,6 +4,8 @@
   <resultMap id="BaseResultMap" type="com.ibay.tea.entity.TbItem">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="simple_desc" jdbcType="VARCHAR" property="simpleDesc" />
+    <result column="sku_type_ids" jdbcType="VARCHAR" property="skuTypeIds" />
     <result column="sell_point" jdbcType="VARCHAR" property="sellPoint" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="num" jdbcType="INTEGER" property="num" />
@@ -16,7 +18,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, title, sell_point, price, num, limit_num, image, cid, status, created, updated
+    id, title, sku_type_ids, simple_desc,sell_point, price, num, limit_num, image, cid, `status`, created, updated
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
