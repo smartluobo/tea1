@@ -2,6 +2,7 @@ package com.ibay.tea.api.service.activity.impl;
 
 import com.ibay.tea.api.service.activity.ApiActivityService;
 import com.ibay.tea.cache.ActivityCache;
+import com.ibay.tea.common.constant.ApiConstant;
 import com.ibay.tea.common.utils.DateUtil;
 import com.ibay.tea.dao.TbActivityMapper;
 import com.ibay.tea.dao.TbUserCouponsMapper;
@@ -27,8 +28,8 @@ public class ApiActivityServiceImpl implements ApiActivityService {
     private TbUserCouponsMapper tbUserCouponsMapper;
 
     @Override
-    public TbActivity getActivityInfo() {
-        TbActivity activity = activityCache.getActivityInfo();
+    public TbActivity getTodayActivity() {
+        TbActivity activity = activityCache.getTodayActivity();
         return activity;
     }
 
@@ -60,7 +61,12 @@ public class ApiActivityServiceImpl implements ApiActivityService {
     }
 
     @Override
-    public void saveUserCouponsToDb(String oppenId, TbActivityCouponsRecord record) {
+    public void saveUserCouponsToDb(TbUserCoupons tbUserCoupons) {
+        tbUserCouponsMapper.insert(tbUserCoupons);
+    }
+
+    @Override
+    public TbUserCoupons buildUserCoupons(String oppenId, TbActivityCouponsRecord record) {
         TbUserCoupons tbUserCoupons = new TbUserCoupons();
         tbUserCoupons.setOppenId(oppenId);
         tbUserCoupons.setCouponsId(record.getCouponsId());
@@ -68,7 +74,7 @@ public class ApiActivityServiceImpl implements ApiActivityService {
         tbUserCoupons.setCreateTime(new Date());
         tbUserCoupons.setReceiveDate(Integer.valueOf(DateUtil.getDateYyyyMMdd()));
         tbUserCoupons.setStatus(0);
-        tbUserCouponsMapper.insert(tbUserCoupons);
+        return tbUserCoupons;
     }
 
     private TbActivityCouponsRecord buildRecord(TbActivity tbActivity, TbCoupons generalCoupons) {
@@ -79,5 +85,20 @@ public class ApiActivityServiceImpl implements ApiActivityService {
         record.setCouponsId(generalCoupons.getId());
         record.setCouponsName(generalCoupons.getCouponsName());
         return record;
+    }
+
+    @Override
+    public int checkActivityStatus(TbActivity tbActivity) {
+        int hour = DateUtil.getHour();
+        if (tbActivity.getStartHour() > hour){
+            //活动未开始
+            return ApiConstant.ACTIVITY_STATUS_NOT_START;
+        }
+        if (tbActivity.getStartHour() < hour && tbActivity.getEndHour() > hour){
+            //活动正在进行中
+            return ApiConstant.ACTIVITY_STATUS_STARTING;
+        }
+
+        return ApiConstant.ACTIVITY_STATUS_END;
     }
 }

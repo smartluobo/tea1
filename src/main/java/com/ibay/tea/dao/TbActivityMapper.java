@@ -13,4 +13,9 @@ public interface TbActivityMapper {
 
     List<TbActivity> findAll();
 
+    TbActivity findHolidayActivity(String dateYyyyMMdd);
+
+    TbActivity findRegularActivity(String dateYyyyMMdd);
+
+    TbActivity findFullActivity(String dateYyyyMMdd);
 }

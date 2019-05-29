@@ -26,6 +26,21 @@
       SELECT * from tb_activity
   </select>
 
+  <select id="findHolidayActivity" resultMap="BaseResultMap" parameterType="string">
+        SELECT * FROM tb_activity
+          <![CDATA[ WHERE  start_date <= #{currentDate} AND end_date >= #{currentDate} AND activity_type = 2]]>
+  </select>
+
+  <select id="findRegularActivity" resultMap="BaseResultMap">
+    SELECT * FROM tb_activity
+          <![CDATA[ WHERE  start_date <= #{currentDate} AND end_date >= #{currentDate} AND activity_type = 1]]>
+  </select>
+
+  <select id="findFullActivity" resultMap="BaseResultMap">
+    SELECT * FROM tb_activity
+          <![CDATA[ WHERE  start_date <= #{currentDate} AND end_date >= #{currentDate} AND activity_type = 3]]>
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_activity where id = #{id,jdbcType=INTEGER}
   </delete>

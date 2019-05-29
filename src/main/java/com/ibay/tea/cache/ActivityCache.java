@@ -30,12 +30,18 @@ public class ActivityCache implements InitializingBean{
     @Resource
     private TbActivityCouponsRecordMapper tbActivityCouponsRecordMapper;
 
-    private List<TbActivity> activityListCache;
+    //当日活动
+    private TbActivity todayActivity;
 
+    private TbActivity todayFullActivity;
+
+
+    //今日活动对象 包含了活动关联的优惠券信息
     private TodayActivityBean todayActivityBean;
 
     private List<TbCoupons> couponsListCache;
-    //通用券
+
+    //通用券，当用户参与活动为抢到优惠券时返回通用优惠券
     private TbCoupons generalCoupons;
 
     private List<TbActivityCouponsRecord> tbActivityCouponsRecordsCache;
@@ -43,10 +49,31 @@ public class ActivityCache implements InitializingBean{
 
 
     private void initActivityCache(){
-        activityListCache = tbActivityMapper.findAll();
+        //如果有及节日活动优先选择当天活动为节假日活动
+        todayActivity = tbActivityMapper.findHolidayActivity(DateUtil.getDateYyyyMMdd());
+        if(todayActivity == null){
+            //没有节假日活动查询常规活动
+            todayActivity = tbActivityMapper.findRegularActivity(DateUtil.getDateYyyyMMdd());
+        }
+        if (todayActivity != null){
+            buildTodayActivityInfoBean();
+        }
         couponsListCache = tbCouponsMapper.findAll();
         tbActivityCouponsRecordsCache = tbActivityCouponsRecordMapper.findAll();
         initGeneralCoupons();
+        initTodayFullActivity();
+    }
+
+    private void initTodayFullActivity(){
+        todayFullActivity = tbActivityMapper.findFullActivity(DateUtil.getDateYyyyMMdd());
+    }
+
+    /**
+     * 从缓存中获取今日的全场活动，初始化商品缓存的说好需要使用。因此初始化商品缓存需要在改任务之后执行
+     * @return 返回全场折扣活动
+     */
+    public TbActivity getTodayFullActivity() {
+        return todayFullActivity;
     }
 
     private void initGeneralCoupons() {
@@ -63,47 +90,16 @@ public class ActivityCache implements InitializingBean{
         initActivityCache();
     }
 
-    public TbActivity getActivityInfo() {
-        TbActivity tbActivity = null;
-        String dateYyyyMMdd = DateUtil.getDateYyyyMMdd();
-        for (TbActivity activity : activityListCache) {
-            if (activity.getStartDate() >= Integer.valueOf(dateYyyyMMdd) && activity.getEndDate() <= Integer.valueOf(dateYyyyMMdd)){
-                if (activity.getActivityType() == ApiConstant.ACTIVITY_TYPE_HOLIDAY){
-                    //如果存在节假日活动优先返回节假日活动
-                    tbActivity = activity;
-                    break;
-                }
-                if (activity.getActivityType() == ApiConstant.ACTIVITY_TYPE_NORMAL){
-                    tbActivity = activity;
-                }
-
-            }
-        }
-        if (tbActivity != null){
-            //如果有活动判断活动是否开始
-            int hour = DateUtil.getHour();
-            if (tbActivity.getStartHour() < hour){
-                //活动未开始
-                tbActivity.setStatus(ApiConstant.ACTIVITY_STATUS_NOT_START);
-            }
-            if (tbActivity.getStartHour() < hour && tbActivity.getEndHour() > hour){
-                //活动正在进行中
-                tbActivity.setStatus(ApiConstant.ACTIVITY_STATUS_STARTING);
-            }
-            if (tbActivity.getEndHour() < hour){
-                tbActivity.setStatus(ApiConstant.ACTIVITY_STATUS_END);
-            }
-        }
-        return tbActivity;
+    public TbActivity getTodayActivity() {
+        return todayActivity;
     }
 
     public void buildTodayActivityInfoBean(){
 
-        TbActivity activityInfo = getActivityInfo();
-        if (activityInfo != null){
+        if (todayActivity != null){
             todayActivityBean = new TodayActivityBean();
-            todayActivityBean.setTbActivity(activityInfo);
-            setTodayActivityCouponsRecordList(todayActivityBean,activityInfo);
+            todayActivityBean.setTbActivity(todayActivity);
+            setTodayActivityCouponsRecordList(todayActivityBean,todayActivity);
             setTodayActivityCouponsMap(todayActivityBean);
 
         }
@@ -127,13 +123,8 @@ public class ActivityCache implements InitializingBean{
      * @param activityInfo 活动描述
      */
     private void setTodayActivityCouponsRecordList(TodayActivityBean todayActivityBean, TbActivity activityInfo) {
-        List<TbActivityCouponsRecord> tbActivityCouponsRecordList = new ArrayList<>();
-        for (TbActivityCouponsRecord tbActivityCouponsRecord : tbActivityCouponsRecordsCache) {
-            if (tbActivityCouponsRecord.getActivityId() == activityInfo.getId()){
-                tbActivityCouponsRecordList.add(tbActivityCouponsRecord);
-            }
-        }
-        todayActivityBean.setTbActivityCouponsRecordList(tbActivityCouponsRecordList);
+        List<TbActivityCouponsRecord> currentActivityCouponsRecords = getActivityCouponsRecordsByActivityId(activityInfo.getId());
+        todayActivityBean.setTbActivityCouponsRecordList(currentActivityCouponsRecords);
     }
 
     /**
@@ -146,5 +137,29 @@ public class ActivityCache implements InitializingBean{
 
     public TbCoupons getGeneralCoupons() {
         return generalCoupons;
+    }
+
+    /**
+     * 通过活动id 查询该活动下绑定的所有优惠券
+     * @param activityId 活动id
+     * @return 返回活动绑定的优惠券
+     */
+    public List<TbActivityCouponsRecord> getActivityCouponsRecordsByActivityId(long activityId){
+        List<TbActivityCouponsRecord> result = new ArrayList<>();
+        for (TbActivityCouponsRecord tbActivityCouponsRecord : tbActivityCouponsRecordsCache) {
+            if (tbActivityCouponsRecord.getActivityId() == activityId){
+                result.add(tbActivityCouponsRecord);
+            }
+        }
+        return result;
+    }
+
+    public TbCoupons getTbCouponsById(long couponsId){
+        for (TbCoupons tbCoupons : couponsListCache) {
+            if (tbCoupons.getId() == couponsId){
+                return tbCoupons;
+            }
+        }
+        return null;
     }
 }

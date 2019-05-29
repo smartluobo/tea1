@@ -12,6 +12,12 @@ public class TbItem {
 
     private BigDecimal price;
 
+    //活动价
+    private BigDecimal activityPrice;
+
+    //是否显示活动价 0-不现实 1-显示
+    private int showActivityPrice;
+
     private Integer num;
 
     private Integer limitNum;
@@ -112,5 +118,21 @@ public class TbItem {
 
     public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+    public BigDecimal getActivityPrice() {
+        return activityPrice;
+    }
+
+    public void setActivityPrice(BigDecimal activityPrice) {
+        this.activityPrice = activityPrice;
+    }
+
+    public int getShowActivityPrice() {
+        return showActivityPrice;
+    }
+
+    public void setShowActivityPrice(int showActivityPrice) {
+        this.showActivityPrice = showActivityPrice;
     }
 }

@@ -12,4 +12,7 @@ public interface TbItemMapper {
     TbItem selectByPrimaryKey(Long id);
 
     List<TbItem> getGoodsListByCategoryId(long categoryId);
+
+    List<TbItem> findAll();
+
 }
