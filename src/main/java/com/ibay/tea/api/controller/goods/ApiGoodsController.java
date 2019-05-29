@@ -17,7 +17,7 @@ public class ApiGoodsController {
     @Resource
     private ApiGoodsService apiGoodsService;
 
-    @GetMapping("/listByCategoryId")
+    @GetMapping("/listByCategoryId/{categoryId}")
     public List<TbItem> getGoodsListByCategoryId(@PathVariable("categoryId") long categoryId){
         try {
             return apiGoodsService.getGoodsListByCategoryId(categoryId);
