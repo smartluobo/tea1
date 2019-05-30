@@ -1,10 +1,12 @@
 package com.ibay.tea.entity;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public class TbItem {
+public class TbItem{
     private Long id;
 
     private String title;
@@ -19,15 +21,15 @@ public class TbItem {
     //是否显示活动价 0-不现实 1-显示
     private int showActivityPrice;
 
-    private Integer num;
+    private int num;
 
-    private Integer limitNum;
+    private int limitNum;
 
     private String image;
 
     private Long cid;
 
-    private Integer status;
+    private int status;
 
     private Date created;
 
@@ -38,6 +40,8 @@ public class TbItem {
     private String skuTypeIds;
 
     private List<TbSkuType> skuShowInfos;
+
+    private double cartPrice;
 
     public Long getId() {
         return id;
@@ -166,4 +170,18 @@ public class TbItem {
     public void setSkuShowInfos(List<TbSkuType> skuShowInfos) {
         this.skuShowInfos = skuShowInfos;
     }
+
+    public double getCartPrice() {
+        return cartPrice;
+    }
+
+    public void setCartPrice(double cartPrice) {
+        this.cartPrice = cartPrice;
+    }
+
+    public TbItem copy() {
+        String thisStr = JSONObject.toJSONString(this);
+       return JSONObject.parseObject(thisStr, TbItem.class);
+    }
+
 }

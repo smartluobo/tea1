@@ -1,17 +1,20 @@
 package com.ibay.tea.dao;
 
 import com.ibay.tea.entity.TbCart;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface TbCartMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(TbCart record);
 
-    int insertSelective(TbCart record);
-
     TbCart selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(TbCart record);
+    List<TbCart> findCartGoodsListByOppenId(String oppenId);
 
-    int updateByPrimaryKey(TbCart record);
+    List<TbCart> findCartItemByIds(List<String> strings);
+
 }

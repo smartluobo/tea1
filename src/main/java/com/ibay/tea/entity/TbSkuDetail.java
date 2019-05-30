@@ -9,7 +9,7 @@ public class TbSkuDetail {
 
     private String skuDetailName;
 
-    private Integer skuDetailPrice;
+    private int skuDetailPrice;
 
     private Date createTime;
 
@@ -40,7 +40,7 @@ public class TbSkuDetail {
         this.skuDetailName = skuDetailName == null ? null : skuDetailName.trim();
     }
 
-    public Integer getSkuDetailPrice() {
+    public int getSkuDetailPrice() {
         return skuDetailPrice;
     }
 

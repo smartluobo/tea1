@@ -19,7 +19,9 @@ import java.util.Map;
 @Service
 public class GoodsCache implements InitializingBean {
 
-    private Map<Long,List<TbItem>> goodsCacheMap;
+    private Map<Long,List<TbItem>> categoryGoodsCacheMap;
+
+    private Map<Long,TbItem> goodsIdCacheMap;
 
     private List<TbSkuType> tbSkuTypeCache;
 
@@ -59,9 +61,9 @@ public class GoodsCache implements InitializingBean {
                 }
             }
         }
-        goodsCacheMap = new HashMap<>();
+        categoryGoodsCacheMap = new HashMap<>();
         for (TbItem tbItem : goodsList) {
-            List<TbItem> categoryTbItems = goodsCacheMap.get(tbItem.getCid());
+            List<TbItem> categoryTbItems = categoryGoodsCacheMap.get(tbItem.getCid());
             String skuTypeIds = tbItem.getSkuTypeIds();
 
             if (skuTypeIds != null && skuTypeIds.trim().length() > 0){
@@ -70,10 +72,11 @@ public class GoodsCache implements InitializingBean {
             if (categoryTbItems == null){
                 List<TbItem> categoryGoodsList = new ArrayList<>();
                 categoryGoodsList.add(tbItem);
-                goodsCacheMap.put(tbItem.getCid(),categoryGoodsList);
+                categoryGoodsCacheMap.put(tbItem.getCid(),categoryGoodsList);
             }else {
                 categoryTbItems.add(tbItem);
             }
+            goodsIdCacheMap.put(tbItem.getId(),tbItem);
         }
     }
 
@@ -112,6 +115,10 @@ public class GoodsCache implements InitializingBean {
     }
 
     public List<TbItem> getGoodsListByCategoryId(long categoryId) {
-        return goodsCacheMap.get(categoryId);
+        return categoryGoodsCacheMap.get(categoryId);
+    }
+
+    public TbItem findGoodsById(long goodsId) {
+        return goodsIdCacheMap.get(goodsId);
     }
 }

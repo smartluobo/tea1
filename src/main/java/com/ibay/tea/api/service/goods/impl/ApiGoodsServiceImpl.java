@@ -26,7 +26,7 @@ public class ApiGoodsServiceImpl implements ApiGoodsService {
 
     @Override
     public TbItem getGoodsDetailById(long goodsId) {
-        TbItem goods = tbItemMapper.selectByPrimaryKey(goodsId);
+        TbItem goods = goodsCache.findGoodsById(goodsId);
         //组装sku相关信息
         return goods;
     }

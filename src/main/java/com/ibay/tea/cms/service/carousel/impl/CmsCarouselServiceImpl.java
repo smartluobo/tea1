@@ -1,6 +1,5 @@
 package com.ibay.tea.cms.service.carousel.impl;
 
-import com.ibay.tea.api.service.carousel.ApiCarouselService;
 import com.ibay.tea.cms.service.carousel.CmsCarouselService;
 import org.springframework.stereotype.Service;
 

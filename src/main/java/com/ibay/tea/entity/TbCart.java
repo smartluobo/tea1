@@ -11,7 +11,7 @@ public class TbCart {
 
     private Double showPrice;
 
-    private String skuDetailId;
+    private String skuDetailIds;
 
     private Date createTime;
 
@@ -47,12 +47,12 @@ public class TbCart {
         this.showPrice = showPrice;
     }
 
-    public String getSkuDetailId() {
-        return skuDetailId;
+    public String getSkuDetailIds() {
+        return skuDetailIds;
     }
 
-    public void setSkuDetailId(String skuDetailId) {
-        this.skuDetailId = skuDetailId == null ? null : skuDetailId.trim();
+    public void setSkuDetailIds(String skuDetailIds) {
+        this.skuDetailIds = skuDetailIds == null ? null : skuDetailIds.trim();
     }
 
     public Date getCreateTime() {

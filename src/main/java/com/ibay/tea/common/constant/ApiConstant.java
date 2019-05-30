@@ -34,6 +34,15 @@ public class ApiConstant {
     //通用券
     public static final int USER_COUPONS_TYPE_GENERAL = 5;
 
+    //订单提取方式 自取
+    public static final int ORDER_TAKE_WAY_SELF_GET = 0;
+
+    //订单提取方式 派送
+    public static final int ORDER_TAKE_WAY_SEND = 1;
+
+    //订单外送价格
+    public static final int ORDER_SEND_PRICE = 2;
+
 
 
 
