@@ -47,3 +47,14 @@ CREATE TABLE `tb_cart` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+  CREATE TABLE `tb_api_user_address` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `oppen_id` varchar(128) DEFAULT NULL COMMENT '用户唯一标识',
+  `address_name` varchar(128) DEFAULT NULL COMMENT '地址名称',
+  `longitude` varchar(16) DEFAULT NULL COMMENT '地址经度',
+  `latitude` varchar(16) DEFAULT NULL COMMENT '地址纬度',
+  `phone_num` varchar(16) DEFAULT NULL COMMENT '地址联系电话',
+  `bind_num` varchar(16) DEFAULT NULL COMMENT '用户绑定的电话号码',
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
