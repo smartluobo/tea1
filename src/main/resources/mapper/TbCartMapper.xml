@@ -5,13 +5,14 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="oppen_id" jdbcType="VARCHAR" property="oppenId" />
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="item_count" jdbcType="INTEGER" property="itemCount" />
     <result column="show_price" jdbcType="DOUBLE" property="showPrice" />
     <result column="sku_detail_ids" jdbcType="VARCHAR" property="skuDetailIds" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, oppen_id, goods_id, show_price, sku_detail_ids, create_time
+    id, oppen_id, goods_id, show_price, sku_detail_ids, create_time,item_count
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -36,10 +37,10 @@
 
   <insert id="insert" parameterType="com.ibay.tea.entity.TbCart">
     insert into tb_cart (oppen_id, goods_id,
-      show_price, sku_detail_ids, create_time
+      show_price, sku_detail_ids, create_time,item_count
       )
     values (#{oppenId,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER},
-      #{showPrice,jdbcType=DOUBLE}, #{skuDetailIds,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      #{showPrice,jdbcType=DOUBLE}, #{skuDetailIds,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},#{itemCount}
       )
   </insert>
 

@@ -15,6 +15,8 @@ public class TbCart {
 
     private Date createTime;
 
+    private int itemCount;
+
     public Integer getId() {
         return id;
     }
@@ -61,5 +63,13 @@ public class TbCart {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public int getItemCount() {
+        return itemCount;
+    }
+
+    public void setItemCount(int itemCount) {
+        this.itemCount = itemCount;
     }
 }

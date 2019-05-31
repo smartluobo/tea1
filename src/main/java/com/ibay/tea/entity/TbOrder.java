@@ -48,6 +48,8 @@ public class TbOrder {
 
     private String posterUrl;
 
+    private int goodsTotalCount = 1;
+
     public String getOrderId() {
         return orderId;
     }
@@ -222,5 +224,13 @@ public class TbOrder {
 
     public void setPosterUrl(String posterUrl) {
         this.posterUrl = posterUrl == null ? null : posterUrl.trim();
+    }
+
+    public int getGoodsTotalCount() {
+        return goodsTotalCount;
+    }
+
+    public void setGoodsTotalCount(int goodsTotalCount) {
+        this.goodsTotalCount = goodsTotalCount;
     }
 }

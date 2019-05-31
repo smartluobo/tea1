@@ -24,11 +24,12 @@
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="phone_num" jdbcType="VARCHAR" property="phoneNum" />
     <result column="poster_url" jdbcType="VARCHAR" property="posterUrl" />
+    <result column="goods_total_count" jdbcType="INTEGER" property="goodsTotalCount" />
   </resultMap>
   <sql id="Base_Column_List">
-    order_id, payment, payment_type, post_fee, status, create_time, update_time, payment_time, 
+    order_id, payment, payment_type, post_fee, `status`, create_time, update_time, payment_time,
     consign_time, end_time, close_time, shipping_name, shipping_code, user_id, buyer_message, 
-    buyer_nick, buyer_comment, oppen_id, self_get, address, phone_num, poster_url
+    buyer_nick, buyer_comment, oppen_id, self_get, address, phone_num, poster_url,goods_total_count
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -48,7 +49,7 @@
       shipping_code, user_id, buyer_message, 
       buyer_nick, buyer_comment, oppen_id, 
       self_get, address, phone_num, 
-      poster_url)
+      poster_url,goods_total_count)
     values (#{orderId,jdbcType=VARCHAR}, #{payment,jdbcType=DECIMAL}, #{paymentType,jdbcType=INTEGER}, 
       #{postFee,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{paymentTime,jdbcType=TIMESTAMP}, #{consignTime,jdbcType=TIMESTAMP}, 
@@ -56,7 +57,7 @@
       #{shippingCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{buyerMessage,jdbcType=VARCHAR}, 
       #{buyerNick,jdbcType=VARCHAR}, #{buyerComment,jdbcType=BIT}, #{oppenId,jdbcType=VARCHAR}, 
       #{selfGet,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR}, 
-      #{posterUrl,jdbcType=VARCHAR})
+      #{posterUrl,jdbcType=VARCHAR},#{goodsTotalCount,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ibay.tea.entity.TbOrder">
     insert into tb_order

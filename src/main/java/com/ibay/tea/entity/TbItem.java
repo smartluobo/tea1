@@ -43,6 +43,8 @@ public class TbItem{
 
     private double cartPrice;
 
+    private int cartItemCount = 1;
+
     public Long getId() {
         return id;
     }
@@ -177,6 +179,14 @@ public class TbItem{
 
     public void setCartPrice(double cartPrice) {
         this.cartPrice = cartPrice;
+    }
+
+    public int getCartItemCount() {
+        return cartItemCount;
+    }
+
+    public void setCartItemCount(int cartItemCount) {
+        this.cartItemCount = cartItemCount;
     }
 
     public TbItem copy() {

@@ -50,4 +50,11 @@ public class ResultInfo {
         resultInfo.setMsg("result is null");
         return resultInfo;
     }
+
+    public static ResultInfo newParameterErrorResultInfo(){
+        ResultInfo resultInfo = new ResultInfo();
+        resultInfo.setCode(400);
+        resultInfo.setMsg("result is null");
+        return resultInfo;
+    }
 }

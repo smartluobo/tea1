@@ -19,10 +19,14 @@ public class ApiOrderController {
     public ResultInfo createOrderByCart(@PathVariable("oppenId") String oppenId,
                                         @PathVariable("cartItemIds") String cartItemIds,
                                         @PathVariable("couponsId") Long couponsId,
-                                        @PathVariable("addressId") Long addressId,
+                                        @PathVariable("addressId") int addressId,
                                         @PathVariable("selfGet") int selfGet){
         try {
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            boolean flag = apiOrderService.checkCartOrderParameter(oppenId,cartItemIds,couponsId,addressId,selfGet);
+            if (!flag){
+                return ResultInfo.newParameterErrorResultInfo();
+            }
             apiOrderService.createOrderByCart(oppenId,cartItemIds,couponsId,addressId,selfGet);
             return resultInfo;
         }catch (Exception e){
@@ -35,10 +39,15 @@ public class ApiOrderController {
                                            @PathVariable("goodsId") long goodsId,
                                            @PathVariable("skuDetailIds") String skuDetailIds,
                                            @PathVariable("couponsId") Long couponsId,
-                                           @PathVariable("addressId") Long addressId,
+                                           @PathVariable("addressId") int addressId,
                                            @PathVariable("selfGet") int selfGet){
         try {
+            boolean flag = apiOrderService.checkGoodsOrderParameter(oppenId,goodsId,skuDetailIds,couponsId,addressId,selfGet);
+            if (!flag){
+                return ResultInfo.newParameterErrorResultInfo();
+            }
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+
             apiOrderService.createOrderByGoodsId(oppenId,goodsId,skuDetailIds,couponsId,addressId,selfGet);
             return resultInfo;
         }catch (Exception e){

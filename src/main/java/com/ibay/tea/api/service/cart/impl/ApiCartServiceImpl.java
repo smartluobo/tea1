@@ -79,6 +79,11 @@ public class ApiCartServiceImpl implements ApiCartService {
             }catch (Exception e){
 
             }
+            //如果购物车中改商品的数量大于1，cartPrice显示了多个商品价格的总额
+            if (tbCart.getItemCount() > 1){
+                goodsById.setCartPrice(goodsById.getCartPrice()*tbCart.getItemCount());
+                goodsById.setCartPrice(tbCart.getItemCount());
+            }
             //设置从购物车点击进去后高亮显示的sku
             String skuDetailIds = tbCart.getSkuDetailIds();
             if (skuDetailIds != null && skuDetailIds.trim().length() > 0){
