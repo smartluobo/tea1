@@ -8,6 +8,8 @@ public class DateUtil {
 
     private static final SimpleDateFormat yyyyMMddSdf = new SimpleDateFormat("yyyyMMdd");
 
+    private static final SimpleDateFormat yyyyMMddHHmmss = new SimpleDateFormat("yyyyMMddHHmmss");
+
     public static String getDateYyyyMMdd(){
         return yyyyMMddSdf.format(new Date());
     }
@@ -26,6 +28,14 @@ public class DateUtil {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public static String getDateYyyyMMddHHmmss(){
+        return yyyyMMddHHmmss.format(new Date());
+    }
+
+    public static String getDateYyyyMMddHHmmss(Date date){
+        return yyyyMMddHHmmss.format(date);
     }
 
 }

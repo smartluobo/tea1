@@ -14,7 +14,11 @@
     id, oppen_id, coupons_id, coupons_name, receive_date, create_time, status
   </sql>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <update id="updateStatusById" parameterType="int">
+      UPDATE tb_user_coupons SET `status` = #{status} where id=#{id}
+  </update>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from tb_user_coupons where id = #{id,jdbcType=INTEGER}
   </select>
 

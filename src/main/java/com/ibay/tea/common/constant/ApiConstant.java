@@ -43,6 +43,15 @@ public class ApiConstant {
     //订单外送价格
     public static final int ORDER_SEND_PRICE = 2;
 
+    //订单状态 未支付
+    public static final int ORDER_STATUS_NO_PAY = 0;
+    //已支付
+    public static final int ORDER_STATUS_PAYED = 1;
+    //已完成
+    public static final int ORDER_STATUS_COMPLETE = 2;
+    //已关闭
+    public static final int ORDER_STATUS_CLOSED = 3;
+
 
 
 

@@ -50,6 +50,12 @@ public class TbOrder {
 
     private int goodsTotalCount = 1;
 
+    private double orderPayment;
+
+    private long userCouponsId;
+
+    private double couponsReduceAmount;
+
     public String getOrderId() {
         return orderId;
     }
@@ -232,5 +238,29 @@ public class TbOrder {
 
     public void setGoodsTotalCount(int goodsTotalCount) {
         this.goodsTotalCount = goodsTotalCount;
+    }
+
+    public double getOrderPayment() {
+        return orderPayment;
+    }
+
+    public void setOrderPayment(double orderPayment) {
+        this.orderPayment = orderPayment;
+    }
+
+    public long getUserCouponsId() {
+        return userCouponsId;
+    }
+
+    public void setUserCouponsId(long userCouponsId) {
+        this.userCouponsId = userCouponsId;
+    }
+
+    public double getCouponsReduceAmount() {
+        return couponsReduceAmount;
+    }
+
+    public void setCouponsReduceAmount(double couponsReduceAmount) {
+        this.couponsReduceAmount = couponsReduceAmount;
     }
 }

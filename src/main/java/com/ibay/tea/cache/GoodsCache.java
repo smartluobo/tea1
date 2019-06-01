@@ -52,7 +52,7 @@ public class GoodsCache implements InitializingBean {
                     if (tbCoupons != null && tbCoupons.getCouponsType() == ApiConstant.USER_COUPONS_TYPE_RATIO){
                         String couponsRatio = tbCoupons.getCouponsRatio();
                         for (TbItem tbItem : goodsList) {
-                            BigDecimal activityPrice = PriceCalculateUtil.activiryPriceCalculate(tbItem.getPrice(),new BigDecimal(couponsRatio));
+                            BigDecimal activityPrice = PriceCalculateUtil.activityPriceCalculate(tbItem.getPrice(),new BigDecimal(couponsRatio));
                             tbItem.setActivityPrice(activityPrice);
                             tbItem.setShowActivityPrice(1);
                         }
@@ -120,5 +120,18 @@ public class GoodsCache implements InitializingBean {
 
     public TbItem findGoodsById(long goodsId) {
         return goodsIdCacheMap.get(goodsId);
+    }
+
+    public int calculateSkuPrice(String skuDetailIds) {
+        int skuPrice = 0;
+        String[] skuDetailIdArr = skuDetailIds.split(",");
+        for (String s : skuDetailIdArr) {
+            for (TbSkuDetail tbSkuDetail : tbSkuDetailCache) {
+                if (tbSkuDetail.getId().intValue() == Integer.valueOf(s)){
+                    skuPrice += tbSkuDetail.getSkuDetailPrice();
+                }
+            }
+        }
+        return skuPrice;
     }
 }

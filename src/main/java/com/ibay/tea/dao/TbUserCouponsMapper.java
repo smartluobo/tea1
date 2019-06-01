@@ -2,6 +2,7 @@ package com.ibay.tea.dao;
 
 import com.ibay.tea.entity.TbCoupons;
 import com.ibay.tea.entity.TbUserCoupons;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
@@ -18,4 +19,6 @@ public interface TbUserCouponsMapper {
     TbUserCoupons findCouponsByCondition(Map<String, Object> condition);
 
     TbUserCoupons findOneCouponsByOppenId(String oppenId);
+
+    void updateStatusById(@Param("id") int id, @Param("status") int status);
 }

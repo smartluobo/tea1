@@ -1,17 +1,17 @@
 package com.ibay.tea.dao;
 
 import com.ibay.tea.entity.TbOrderItem;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface TbOrderItemMapper {
     int deleteByPrimaryKey(String id);
 
     int insert(TbOrderItem record);
 
-    int insertSelective(TbOrderItem record);
-
     TbOrderItem selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(TbOrderItem record);
-
-    int updateByPrimaryKey(TbOrderItem record);
+    void insertBatch(List<TbOrderItem> tbOrderItems);
 }
