@@ -18,16 +18,16 @@ public class ApiOrderController {
     @RequestMapping("createOrderByCart/{oppenId}/{cartItemIds}/{couponsId}/{addressId}/{selfGet}")
     public ResultInfo createOrderByCart(@PathVariable("oppenId") String oppenId,
                                         @PathVariable("cartItemIds") String cartItemIds,
-                                        @PathVariable("couponsId") Long couponsId,
+                                        @PathVariable("userCouponsId") int userCouponsId,
                                         @PathVariable("addressId") int addressId,
                                         @PathVariable("selfGet") int selfGet){
         try {
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
-            boolean flag = apiOrderService.checkCartOrderParameter(oppenId,cartItemIds,couponsId,addressId,selfGet);
+            boolean flag = apiOrderService.checkCartOrderParameter(oppenId,cartItemIds,userCouponsId,addressId,selfGet);
             if (!flag){
                 return ResultInfo.newParameterErrorResultInfo();
             }
-            apiOrderService.createOrderByCart(oppenId,cartItemIds,couponsId,addressId,selfGet);
+            apiOrderService.createOrderByCart(oppenId,cartItemIds,userCouponsId,addressId,selfGet);
             return resultInfo;
         }catch (Exception e){
             return ResultInfo.newExceptionResultInfo();
@@ -38,17 +38,18 @@ public class ApiOrderController {
     public ResultInfo createOrderByGoodsId(@PathVariable("oppenId") String oppenId,
                                            @PathVariable("goodsId") long goodsId,
                                            @PathVariable("skuDetailIds") String skuDetailIds,
-                                           @PathVariable("couponsId") Long couponsId,
+                                           @PathVariable("userCouponsId") int userCouponsId,
                                            @PathVariable("addressId") int addressId,
-                                           @PathVariable("selfGet") int selfGet){
+                                           @PathVariable("selfGet") int selfGet,
+                                           @PathVariable("goodsCount") int goodsCount){
         try {
-            boolean flag = apiOrderService.checkGoodsOrderParameter(oppenId,goodsId,skuDetailIds,couponsId,addressId,selfGet);
+            boolean flag = apiOrderService.checkGoodsOrderParameter(oppenId,goodsId,skuDetailIds,userCouponsId,addressId,selfGet);
             if (!flag){
                 return ResultInfo.newParameterErrorResultInfo();
             }
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
 
-            apiOrderService.createOrderByGoodsId(oppenId,goodsId,skuDetailIds,couponsId,addressId,selfGet);
+            apiOrderService.createOrderByGoodsId(oppenId,goodsId,skuDetailIds,userCouponsId,addressId,selfGet,goodsCount);
             return resultInfo;
         }catch (Exception e){
             return ResultInfo.newExceptionResultInfo();

@@ -13,3 +13,11 @@ server:
     context-path: /tea
 mybatis:
   mapper-locations: classpath*:mapper/**/*.xml
+wechat:
+  pay:
+    createOrderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
+    appId: wx21545454dsss
+    mchId: 13530852671
+    signType: MD5
+
+

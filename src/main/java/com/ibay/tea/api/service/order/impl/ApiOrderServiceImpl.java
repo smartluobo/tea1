@@ -3,6 +3,7 @@ package com.ibay.tea.api.service.order.impl;
 import com.ibay.tea.api.service.address.ApiAddressService;
 import com.ibay.tea.api.service.cart.ApiCartService;
 import com.ibay.tea.api.service.order.ApiOrderService;
+import com.ibay.tea.api.service.pay.ApiPayService;
 import com.ibay.tea.cache.ActivityCache;
 import com.ibay.tea.cache.GoodsCache;
 import com.ibay.tea.common.constant.ApiConstant;
@@ -48,6 +49,9 @@ public class ApiOrderServiceImpl implements ApiOrderService {
 
     @Resource
     private GoodsCache goodsCache;
+
+    @Resource
+    private ApiPayService apiPayService;
 
     @Override
     public void createOrderByCart(String oppenId, String cartItemIds, int userCouponsId, int addressId, int selfGet) {
@@ -141,6 +145,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
 
             //调用支付接口
             //TODO
+            apiPayService.createPayOrderToWechat(tbOrder);
 
         }
     }
@@ -293,7 +298,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
     }
 
     @Override
-    public boolean checkGoodsOrderParameter(String oppenId, long goodsId, String skuDetailIds, Long couponsId, int addressId, int selfGet) {
+    public boolean checkGoodsOrderParameter(String oppenId, long goodsId, String skuDetailIds, int userCouponsId, int addressId, int selfGet) {
         if (selfGet == ApiConstant.ORDER_TAKE_WAY_SEND && addressId == 0){
             return false;
         }
@@ -304,7 +309,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
     }
 
     @Override
-    public boolean checkCartOrderParameter(String oppenId, String cartItemIds, Long couponsId, int addressId, int selfGet) {
+    public boolean checkCartOrderParameter(String oppenId, String cartItemIds, int userCouponsId, int addressId, int selfGet) {
         if (cartItemIds == null || cartItemIds.trim().length() == 0){
             return false;
         }
