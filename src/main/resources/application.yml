@@ -2,7 +2,7 @@ spring:
   application:
     name: ibay-tea
   datasource:
-    url: jdbc:mysql://localhost:3306/tea
+    url: jdbc:mysql://localhost:3306/novel_tea
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
@@ -19,5 +19,7 @@ wechat:
     appId: wx21545454dsss
     mchId: 13530852671
     signType: MD5
+    loginUrl: https://api.weixin.qq.com/sns/jscode2session?grant_type=authorization_code&
+    secret: bccefcbfb1e525d28de3be1a6461ac5b
 
 

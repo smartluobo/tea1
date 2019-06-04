@@ -62,6 +62,7 @@ public class GoodsCache implements InitializingBean {
             }
         }
         categoryGoodsCacheMap = new HashMap<>();
+        goodsIdCacheMap = new HashMap<>();
         for (TbItem tbItem : goodsList) {
             List<TbItem> categoryTbItems = categoryGoodsCacheMap.get(tbItem.getCid());
             String skuTypeIds = tbItem.getSkuTypeIds();

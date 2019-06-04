@@ -52,6 +52,9 @@ public class ApiConstant {
     //已关闭
     public static final int ORDER_STATUS_CLOSED = 3;
 
+    public static final String WECHAT_LOGIN_TYPE_SK = "SK";
+    public static final String WECHAT_LOGIN_TYPE_DT = "DT";
+
 
 
 

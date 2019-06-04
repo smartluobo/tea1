@@ -1,7 +1,10 @@
 package com.ibay.tea.api.controller.carousel;
 
+import com.ibay.tea.api.response.ResultInfo;
 import com.ibay.tea.api.service.carousel.ApiCarouselService;
 import com.ibay.tea.entity.Carousel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,11 +15,25 @@ import java.util.List;
 @RequestMapping("api/carousel")
 public class ApiCarouselController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiCarouselController.class);
+
     @Resource
     private ApiCarouselService apiCarouselService;
 
     @RequestMapping("/findAll")
-    public List<Carousel> findAll(){
-        return apiCarouselService.findAll();
+    public ResultInfo findAll(){
+        try{
+            ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            List<Carousel> carousels = apiCarouselService.findAll();
+            if (carousels == null || carousels.size() == 0){
+                return resultInfo.newEmptyResultInfo();
+            }
+            resultInfo.setData(carousels);
+            return resultInfo;
+        }catch (Exception e){
+            LOGGER.error("carousel findAll happen exception",e);
+            return ResultInfo.newExceptionResultInfo();
+        }
+
     }
 }

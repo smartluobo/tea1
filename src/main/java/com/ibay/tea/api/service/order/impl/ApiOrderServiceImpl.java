@@ -54,7 +54,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
     private ApiPayService apiPayService;
 
     @Override
-    public void createOrderByCart(String oppenId, String cartItemIds, int userCouponsId, int addressId, int selfGet) {
+    public void createOrderByCart(String oppenId, String cartItemIds, int userCouponsId, int addressId, int selfGet) throws Exception{
         TbUserCoupons tbUserCoupons = null;
         int sendPrice = 0;
         if (selfGet == ApiConstant.ORDER_TAKE_WAY_SEND){
