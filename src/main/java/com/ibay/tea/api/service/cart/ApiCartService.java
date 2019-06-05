@@ -14,4 +14,6 @@ public interface ApiCartService {
     void addCartItem(TbCart tbCart);
 
     TbItem buildCartGoodsInfo(TbCart tbCart);
+
+    void cartGoodsDelete(String oppenId, int cartItemId);
 }

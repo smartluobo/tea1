@@ -1,6 +1,7 @@
 package com.ibay.tea.dao;
 
 import com.ibay.tea.entity.TbCart;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,5 +17,7 @@ public interface TbCartMapper {
     List<TbCart> findCartGoodsListByOppenId(String oppenId);
 
     List<TbCart> findCartItemByIds(List<String> strings);
+
+    void cartGoodsDelete(@Param("oppenId") String oppenId, @Param("id") int cartItemId);
 
 }

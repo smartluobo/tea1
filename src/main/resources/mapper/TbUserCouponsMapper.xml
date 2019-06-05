@@ -42,9 +42,9 @@
     delete from tb_user_coupons  where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.ibay.tea.entity.TbUserCoupons">
-    insert into tb_user_coupons (oppenId, coupons_id, coupons_name, receive_date, create_time, `status`)
-    values (#{oppenid,jdbcType=VARCHAR}, #{couponsId,jdbcType=INTEGER},
+  <insert id="insert" parameterType="com.ibay.tea.entity.TbUserCoupons" keyProperty="id" useGeneratedKeys="true">
+    insert into tb_user_coupons (oppen_id, coupons_id, coupons_name, receive_date, create_time, `status`)
+    values (#{oppenId,jdbcType=VARCHAR}, #{couponsId,jdbcType=INTEGER},
       #{couponsName,jdbcType=VARCHAR}, #{receiveDate,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=INTEGER})
   </insert>

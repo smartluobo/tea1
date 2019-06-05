@@ -14,8 +14,11 @@
   <sql id="Base_Column_List">
     id, oppen_id, goods_id, show_price, sku_detail_ids, create_time,item_count
   </sql>
+    <delete id="cartGoodsDelete">
+      DELETE FROM tb_cart WHERE oppen_id = #{oppenId} and id = #{id}
+    </delete>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
       select <include refid="Base_Column_List" /> from tb_cart where id = #{id,jdbcType=INTEGER}
   </select>
 

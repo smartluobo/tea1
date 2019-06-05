@@ -55,11 +55,12 @@ public class ActivityCache implements InitializingBean{
             //没有节假日活动查询常规活动
             todayActivity = tbActivityMapper.findRegularActivity(DateUtil.getDateYyyyMMdd());
         }
+        couponsListCache = tbCouponsMapper.findAll();
+        tbActivityCouponsRecordsCache = tbActivityCouponsRecordMapper.findAll();
         if (todayActivity != null){
             buildTodayActivityInfoBean();
         }
-        couponsListCache = tbCouponsMapper.findAll();
-        tbActivityCouponsRecordsCache = tbActivityCouponsRecordMapper.findAll();
+
         initGeneralCoupons();
         initTodayFullActivity();
     }

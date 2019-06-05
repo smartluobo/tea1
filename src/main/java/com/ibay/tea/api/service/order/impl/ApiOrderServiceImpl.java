@@ -145,7 +145,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
 
             //调用支付接口
             //TODO
-            apiPayService.createPayOrderToWechat(tbOrder);
+            //apiPayService.createPayOrderToWechat(tbOrder);
 
         }
     }

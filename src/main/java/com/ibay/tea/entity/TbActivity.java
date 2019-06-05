@@ -1,5 +1,7 @@
 package com.ibay.tea.entity;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.Date;
 
 public class TbActivity {
@@ -101,5 +103,10 @@ public class TbActivity {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public TbActivity copy(){
+        String thisStr = JSONObject.toJSONString(this);
+        return JSONObject.parseObject(thisStr, TbActivity.class);
     }
 }

@@ -36,6 +36,7 @@ public class ApiCartServiceImpl implements ApiCartService {
             for (TbCart tbCart : cartGoodsList) {
                 TbItem goods = buildCartGoodsInfo(tbCart);
                 if (goods != null){
+                    goods.setCartItemId(tbCart.getId());
                     result.add(goods);
                 }
             }
@@ -79,19 +80,26 @@ public class ApiCartServiceImpl implements ApiCartService {
             }catch (Exception e){
 
             }
-            //如果购物车中改商品的数量大于1，cartPrice显示了多个商品价格的总额
-            if (tbCart.getItemCount() >= 1){
-                goodsById.setCartTotalPrice(goodsById.getCartPrice()*tbCart.getItemCount());
-                goodsById.setCartPrice(tbCart.getItemCount());
-            }
+
             //设置从购物车点击进去后高亮显示的sku
             String skuDetailIds = tbCart.getSkuDetailIds();
             if (skuDetailIds != null && skuDetailIds.trim().length() > 0){
                 setSelectedSkuDetail(goodsById,tbCart.getSkuDetailIds());
             }
+
+            //如果购物车中改商品的数量大于1，cartPrice显示了多个商品价格的总额
+            if (tbCart.getItemCount() >= 1){
+                goodsById.setCartTotalPrice(goodsById.getCartPrice()*tbCart.getItemCount());
+                goodsById.setCartItemCount(tbCart.getItemCount());
+            }
            return goodsById;
         }
         return null;
+    }
+
+    @Override
+    public void cartGoodsDelete(String oppenId, int cartItemId) {
+        tbCartMapper.cartGoodsDelete(oppenId,cartItemId);
     }
 
     private void setSelectedSkuDetail(TbItem goods,String skuDetailIds) {

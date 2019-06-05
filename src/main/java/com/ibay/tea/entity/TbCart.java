@@ -72,4 +72,17 @@ public class TbCart {
     public void setItemCount(int itemCount) {
         this.itemCount = itemCount;
     }
+
+    @Override
+    public String toString() {
+        return "TbCart{" +
+                "id=" + id +
+                ", oppenId='" + oppenId + '\'' +
+                ", goodsId=" + goodsId +
+                ", showPrice=" + showPrice +
+                ", skuDetailIds='" + skuDetailIds + '\'' +
+                ", createTime=" + createTime +
+                ", itemCount=" + itemCount +
+                '}';
+    }
 }

@@ -47,6 +47,8 @@ public class TbItem{
 
     private int cartItemCount = 1;
 
+    private int cartItemId;
+
     public Long getId() {
         return id;
     }
@@ -199,9 +201,17 @@ public class TbItem{
         this.cartTotalPrice = cartTotalPrice;
     }
 
+    public int getCartItemId() {
+        return cartItemId;
+    }
+
+    public void setCartItemId(int cartItemId) {
+        this.cartItemId = cartItemId;
+    }
+
     public TbItem copy() {
         String thisStr = JSONObject.toJSONString(this);
-       return JSONObject.parseObject(thisStr, TbItem.class);
+        return JSONObject.parseObject(thisStr, TbItem.class);
     }
 
 }

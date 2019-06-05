@@ -30,7 +30,10 @@ public class ApiActivityServiceImpl implements ApiActivityService {
     @Override
     public TbActivity getTodayActivity() {
         TbActivity activity = activityCache.getTodayActivity();
-        return activity;
+        if (activity != null){
+            return activity.copy();
+        }
+        return null;
     }
 
     @Override

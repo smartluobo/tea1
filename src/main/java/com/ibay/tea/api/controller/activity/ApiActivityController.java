@@ -10,6 +10,8 @@ import com.ibay.tea.entity.TbActivity;
 import com.ibay.tea.entity.TbActivityCouponsRecord;
 import com.ibay.tea.entity.TbApiUser;
 import com.ibay.tea.entity.TbUserCoupons;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/activity")
 public class ApiActivityController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiActivityController.class);
 
     @Resource
     private ApiActivityService apiActivityService;
@@ -50,8 +54,9 @@ public class ApiActivityController {
             }
             int activityStatus = apiActivityService.checkActivityStatus(activityInfo);
             if (activityStatus == ApiConstant.ACTIVITY_STATUS_NOT_START){
+                activityInfo.setStatus(activityStatus);
                 result.put("type",1);
-                result.put("data",activityInfo);
+                result.put("info",activityInfo);
                 resultInfo.setData(result);
                 return resultInfo;
             }
@@ -64,13 +69,14 @@ public class ApiActivityController {
                 TbUserCoupons tbUserCoupons = apiCouponsService.findCouponsByCondition(condition);
                 if (tbUserCoupons == null){
                     result.put("type",2);
-                    result.put("data",activityInfo);
+                    activityInfo.setStatus(activityStatus);
+                    result.put("info",activityInfo);
                     resultInfo.setData(result);
                     return resultInfo;
                 }
                 if (tbUserCoupons.getStatus() == ApiConstant.USER_COUPONS_STATUS_NO_USE){
                     result.put("type",3);
-                    result.put("data",tbUserCoupons);
+                    result.put("info",tbUserCoupons);
                     resultInfo.setData(result);
                     return resultInfo;
                 }else {
@@ -81,16 +87,20 @@ public class ApiActivityController {
             if (activityStatus == ApiConstant.ACTIVITY_STATUS_END){
                 //活动已经结束，如果有优惠券返回优惠券 没有提示用户明天继续参与抽奖
                 TbUserCoupons tbUserCoupons = apiCouponsService.findOneCouponsByOppenId(oppenId);
-                if (tbUserCoupons == null){
-                    result.put("type",4);
-                    result.put("data",tbUserCoupons);
+                if (tbUserCoupons != null){
+                    result.put("type",3);
+                    result.put("info",tbUserCoupons);
                     resultInfo.setData(result);
                     return resultInfo;
+                }else {
+                    result.put("type",4);
+                    resultInfo.setData(result);
                 }
             }
             return resultInfo;
         }catch (Exception e){
-            return resultInfo.newExceptionResultInfo();
+            LOGGER.error("getActivityInfo happen exception ",e);
+            return ResultInfo.newExceptionResultInfo();
         }
     }
 
@@ -114,6 +124,7 @@ public class ApiActivityController {
             }
             return ResultInfo.newEmptyResultInfo();
         }catch (Exception e){
+            LOGGER.error("extractPrize happen exception : {} ",oppenId,e);
             return ResultInfo.newExceptionResultInfo();
         }
     }
