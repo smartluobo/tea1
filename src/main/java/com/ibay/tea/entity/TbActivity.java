@@ -25,6 +25,8 @@ public class TbActivity {
 
     private int status;
 
+    private String tips;
+
     public Integer getId() {
         return id;
     }
@@ -103,6 +105,14 @@ public class TbActivity {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getTips() {
+        return tips;
+    }
+
+    public void setTips(String tips) {
+        this.tips = tips;
     }
 
     public TbActivity copy(){

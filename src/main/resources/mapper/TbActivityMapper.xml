@@ -11,11 +11,12 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="activity_name" jdbcType="VARCHAR" property="activityName" />
+    <result column="tips" jdbcType="VARCHAR" property="tips" />
   </resultMap>
 
   <sql id="Base_Column_List">
     id, start_date, end_date, start_hour, end_hour, activity_type, create_time, update_time, 
-    activity_name
+    activity_name,tips
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

@@ -100,9 +100,10 @@ public class ApiOrderServiceImpl implements ApiOrderService {
                 goodsList.add(tbItem);
                 //创建订单item
                 TbOrderItem tbOrderItem = buildOrderItem(tbItem,orderId);
-                tbOrderItem.setPrice(new BigDecimal(tbItem.getCartPrice()));
-                tbOrderItem.setTotalFee(new BigDecimal(tbItem.getCartTotalPrice()));
+                tbOrderItem.setPrice(tbItem.getCartPrice());
+                tbOrderItem.setTotalFee(tbItem.getCartTotalPrice());
                 tbOrderItem.setNum(cartItem.getItemCount());
+                tbOrderItem.setSkuDetailIds(cartItem.getSkuDetailIds());
                 tbOrderItems.add(tbOrderItem);
             }
             //商品信息组装完后创建订单，创建订单明细，生成支付记录
@@ -152,7 +153,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
 
     private TbOrderItem buildOrderItem(TbItem tbItem,String orderId) {
         TbOrderItem tbOrderItem = new TbOrderItem();
-        tbOrderItem.setItemId(String.valueOf(tbItem.getId()));
+        tbOrderItem.setItemId(tbItem.getId());
         tbOrderItem.setOrderId(orderId);
         tbOrderItem.setTitle(String.valueOf(tbItem.getTitle()));
         tbOrderItem.setPicPath(tbItem.getImage());
@@ -225,8 +226,8 @@ public class ApiOrderServiceImpl implements ApiOrderService {
 
         //构建订单明细
         TbOrderItem tbOrderItem = buildOrderItem(goods,orderId);
-        tbOrderItem.setPrice(new BigDecimal(goodsPrice));
-        tbOrderItem.setTotalFee(new BigDecimal(goodsPrice).multiply(new BigDecimal(goodsCount)));
+        tbOrderItem.setPrice(goodsPrice);
+        tbOrderItem.setTotalFee(new BigDecimal(goodsPrice).multiply(new BigDecimal(goodsCount)).doubleValue());
         tbOrderItem.setNum(goodsCount);
 
         TbOrder tbOrder = buildTbOrder(oppenId, selfGet, userAddress);

@@ -13,10 +13,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ActivityCache implements InitializingBean{
@@ -33,9 +30,6 @@ public class ActivityCache implements InitializingBean{
     //当日活动
     private TbActivity todayActivity;
 
-    private TbActivity todayFullActivity;
-
-
     //今日活动对象 包含了活动关联的优惠券信息
     private TodayActivityBean todayActivityBean;
 
@@ -50,7 +44,10 @@ public class ActivityCache implements InitializingBean{
 
     private void initActivityCache(){
         //如果有及节日活动优先选择当天活动为节假日活动
-        todayActivity = tbActivityMapper.findHolidayActivity(DateUtil.getDateYyyyMMdd());
+        todayActivity = tbActivityMapper.findFullActivity(DateUtil.getDateYyyyMMdd());
+        if (todayActivity == null){
+            todayActivity = tbActivityMapper.findHolidayActivity(DateUtil.getDateYyyyMMdd());
+        }
         if(todayActivity == null){
             //没有节假日活动查询常规活动
             todayActivity = tbActivityMapper.findRegularActivity(DateUtil.getDateYyyyMMdd());
@@ -62,20 +59,11 @@ public class ActivityCache implements InitializingBean{
         }
 
         initGeneralCoupons();
-        initTodayFullActivity();
     }
 
-    private void initTodayFullActivity(){
-        todayFullActivity = tbActivityMapper.findFullActivity(DateUtil.getDateYyyyMMdd());
-    }
 
-    /**
-     * 从缓存中获取今日的全场活动，初始化商品缓存的说好需要使用。因此初始化商品缓存需要在改任务之后执行
-     * @return 返回全场折扣活动
-     */
-    public TbActivity getTodayFullActivity() {
-        return todayFullActivity;
-    }
+
+
 
     private void initGeneralCoupons() {
         for (TbCoupons tbCoupons : couponsListCache) {

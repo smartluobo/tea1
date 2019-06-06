@@ -3,7 +3,7 @@
 <mapper namespace="com.ibay.tea.dao.TbOrderItemMapper">
   <resultMap id="BaseResultMap" type="com.ibay.tea.entity.TbOrderItem">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="item_id" jdbcType="VARCHAR" property="itemId" />
+    <result column="item_id" jdbcType="INTEGER" property="itemId" />
     <result column="order_id" jdbcType="VARCHAR" property="orderId" />
     <result column="num" jdbcType="INTEGER" property="num" />
     <result column="title" jdbcType="VARCHAR" property="title" />

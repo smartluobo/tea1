@@ -29,7 +29,7 @@
     SELECT * from tb_cart WHERE id IN
     <foreach item="item" index="index" collection="list"
              open="(" separator="," close=")">
-      #{id}
+      #{item}
     </foreach>
   </select>
 

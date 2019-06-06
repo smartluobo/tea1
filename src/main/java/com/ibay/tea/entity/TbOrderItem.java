@@ -1,21 +1,19 @@
 package com.ibay.tea.entity;
 
-import java.math.BigDecimal;
-
 public class TbOrderItem {
     private String id;
 
-    private String itemId;
+    private long itemId;
 
     private String orderId;
 
-    private Integer num;
+    private int num;
 
     private String title;
 
-    private BigDecimal price;
+    private double price;
 
-    private BigDecimal totalFee;
+    private double totalFee;
 
     private String picPath;
 
@@ -26,15 +24,15 @@ public class TbOrderItem {
     }
 
     public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+        this.id = id;
     }
 
-    public String getItemId() {
+    public long getItemId() {
         return itemId;
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId == null ? null : itemId.trim();
+    public void setItemId(long itemId) {
+        this.itemId = itemId;
     }
 
     public String getOrderId() {
@@ -42,14 +40,14 @@ public class TbOrderItem {
     }
 
     public void setOrderId(String orderId) {
-        this.orderId = orderId == null ? null : orderId.trim();
+        this.orderId = orderId;
     }
 
-    public Integer getNum() {
+    public int getNum() {
         return num;
     }
 
-    public void setNum(Integer num) {
+    public void setNum(int num) {
         this.num = num;
     }
 
@@ -58,22 +56,22 @@ public class TbOrderItem {
     }
 
     public void setTitle(String title) {
-        this.title = title == null ? null : title.trim();
+        this.title = title;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public BigDecimal getTotalFee() {
+    public double getTotalFee() {
         return totalFee;
     }
 
-    public void setTotalFee(BigDecimal totalFee) {
+    public void setTotalFee(double totalFee) {
         this.totalFee = totalFee;
     }
 
@@ -82,7 +80,7 @@ public class TbOrderItem {
     }
 
     public void setPicPath(String picPath) {
-        this.picPath = picPath == null ? null : picPath.trim();
+        this.picPath = picPath;
     }
 
     public String getSkuDetailIds() {
@@ -90,6 +88,6 @@ public class TbOrderItem {
     }
 
     public void setSkuDetailIds(String skuDetailIds) {
-        this.skuDetailIds = skuDetailIds == null ? null : skuDetailIds.trim();
+        this.skuDetailIds = skuDetailIds;
     }
 }

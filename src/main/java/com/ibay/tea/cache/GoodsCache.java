@@ -43,9 +43,9 @@ public class GoodsCache implements InitializingBean {
         initSkuTypeCache();
         initSkuDetailCache();
         List<TbItem> goodsList = tbItemMapper.findAll();
-        TbActivity todayFullActivity = activityCache.getTodayFullActivity();
-        if (todayFullActivity != null){
-            List<TbActivityCouponsRecord> records = activityCache.getActivityCouponsRecordsByActivityId(todayFullActivity.getId());
+        TbActivity todayActivity = activityCache.getTodayActivity();
+        if (todayActivity != null && todayActivity.getActivityType() == ApiConstant.ACTIVITY_TYPE_FULL){
+            List<TbActivityCouponsRecord> records = activityCache.getActivityCouponsRecordsByActivityId(todayActivity.getId());
             if (records != null && records.size() > 0){
                 for (TbActivityCouponsRecord record : records) {
                     TbCoupons tbCoupons = activityCache.getTbCouponsById(record.getCouponsId());
