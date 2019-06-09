@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ibay.tea.dao.TbUserPayRecordMapper">
   <resultMap id="BaseResultMap" type="com.ibay.tea.entity.TbUserPayRecord">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="oppen_id" jdbcType="VARCHAR" property="oppenId" />
     <result column="order_id" jdbcType="VARCHAR" property="orderId" />
     <result column="order_payment" jdbcType="DECIMAL" property="orderPayment" />
@@ -24,10 +24,10 @@
   </delete>
 
   <insert id="insert" parameterType="com.ibay.tea.entity.TbUserPayRecord">
-    insert into tb_user_pay_record (oppen_id, order_id,
+    insert into tb_user_pay_record (id,oppen_id, order_id,
       order_payment, payment, create_time, 
       update_time)
-    values (#{oppenId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR},
+    values (#{id},#{oppenId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR},
       #{orderPayment,jdbcType=DECIMAL}, #{payment,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>

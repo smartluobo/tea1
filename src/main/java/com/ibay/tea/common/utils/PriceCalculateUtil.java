@@ -13,6 +13,8 @@ public class PriceCalculateUtil {
 
     public static double ratioCouponsPriceCalculate(TbCoupons tbCoupons, double orderTotalPrice) {
 
-        return 0.0;
+        BigDecimal realAmount = new BigDecimal(tbCoupons.getCouponsRatio()).multiply(new BigDecimal(orderTotalPrice));
+        BigDecimal reduceAmount = new BigDecimal(orderTotalPrice).subtract(realAmount);
+        return reduceAmount.doubleValue();
     }
 }

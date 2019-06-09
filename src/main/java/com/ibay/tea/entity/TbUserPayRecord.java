@@ -3,7 +3,7 @@ package com.ibay.tea.entity;
 import java.util.Date;
 
 public class TbUserPayRecord {
-    private Integer id;
+    private String id;
 
     private String oppenId;
 
@@ -17,11 +17,11 @@ public class TbUserPayRecord {
 
     private Date updateTime;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

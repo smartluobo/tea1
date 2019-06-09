@@ -170,7 +170,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
         }
         if (tbCoupons.getCouponsType() == ApiConstant.USER_COUPONS_TYPE_RATIO){
             //打折优惠券,选择商品中单价最大的进行打折
-            couponsReduceAmount = PriceCalculateUtil.ratioCouponsPriceCalculate(tbCoupons,maxPriceValue);
+            couponsReduceAmount = PriceCalculateUtil.ratioCouponsPriceCalculate(tbCoupons, maxPriceValue);
         }
         if (tbCoupons.getCouponsType() == ApiConstant.USER_COUPONS_TYPE_FREE){
             //免费券 免费商品中单价最高的商品
@@ -277,6 +277,8 @@ public class ApiOrderServiceImpl implements ApiOrderService {
             tbOrder.setStatus(ApiConstant.ORDER_STATUS_NO_PAY);
             //生成付款记录
             TbUserPayRecord tbUserPayRecord = new TbUserPayRecord();
+            String payId = SerialGenerator.getOrderSerial();
+            tbUserPayRecord.setId(payId);
             tbUserPayRecord.setCreateTime(new Date());
             tbUserPayRecord.setOppenId(oppenId);
             tbUserPayRecord.setOrderId(orderId);

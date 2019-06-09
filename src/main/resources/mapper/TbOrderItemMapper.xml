@@ -42,9 +42,9 @@
       )
       VALUES
       <foreach collection="list" item="item" index="index" separator=",">
-        (#{itemId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR},
-        #{num,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
-        #{totalFee,jdbcType=DECIMAL}, #{picPath,jdbcType=VARCHAR}, #{skuDetailIds,jdbcType=VARCHAR}
+        (#{item.itemId,jdbcType=VARCHAR}, #{item.orderId,jdbcType=VARCHAR},
+        #{item.num,jdbcType=INTEGER}, #{item.title,jdbcType=VARCHAR}, #{item.price,jdbcType=DECIMAL},
+        #{item.totalFee,jdbcType=DECIMAL}, #{item.picPath,jdbcType=VARCHAR}, #{item.skuDetailIds,jdbcType=VARCHAR}
         )
       </foreach>
 

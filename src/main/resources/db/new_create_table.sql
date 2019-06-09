@@ -58,3 +58,15 @@ PRIMARY KEY (`id`)
   `bind_num` varchar(16) DEFAULT NULL COMMENT '用户绑定的电话号码',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+  CREATE TABLE `tb_user_pay_record` (
+  `id` varchar(64) NOT NULL,
+  `oppen_id` varchar(128) DEFAULT NULL,
+  `order_id` varchar(64) DEFAULT NULL,
+  `order_payment` decimal(10,2) DEFAULT NULL,
+  `payment` decimal(10,2) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
