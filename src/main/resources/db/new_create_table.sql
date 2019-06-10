@@ -59,7 +59,7 @@ PRIMARY KEY (`id`)
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-  CREATE TABLE `tb_user_pay_record` (
+CREATE TABLE `tb_user_pay_record` (
   `id` varchar(64) NOT NULL,
   `oppen_id` varchar(128) DEFAULT NULL,
   `order_id` varchar(64) DEFAULT NULL,

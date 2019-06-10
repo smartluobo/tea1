@@ -66,7 +66,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
             return;
         }
         if (userCouponsId != 0){
-            tbUserCoupons = tbUserCouponsMapper.selectByPrimaryKey(userCouponsId);
+            tbUserCoupons = tbUserCouponsMapper.selectValidUserCoupons(oppenId,userCouponsId);
         }
 
         if (cartItemIds != null && cartItemIds.trim().length() > 0){
@@ -189,7 +189,6 @@ public class ApiOrderServiceImpl implements ApiOrderService {
     public void createOrderByGoodsId(String oppenId, long goodsId, String skuDetailIds,
                                      int userCouponsId, int addressId, int selfGet,int goodsCount) {
         int sendPrice = 0;
-        double goodsPrice = 0.0;
         int skuPrice = 0;
 
         double couponsReduceAmount = 0.0;
@@ -206,12 +205,12 @@ public class ApiOrderServiceImpl implements ApiOrderService {
         }
 
         if (userCouponsId != 0){
-            tbUserCoupons = tbUserCouponsMapper.selectByPrimaryKey(userCouponsId);
+            tbUserCoupons = tbUserCouponsMapper.selectValidUserCoupons(oppenId,userCouponsId);
         }
 
         TbItem goods = goodsCache.findGoodsById(goodsId);
         goods = goods.copy();
-        goodsPrice = goods.getPrice().doubleValue();
+        double goodsPrice = goods.getPrice().doubleValue();
         if (goods.getShowActivityPrice() == 1){
             goodsPrice = goods.getActivityPrice().doubleValue();
         }
@@ -221,18 +220,19 @@ public class ApiOrderServiceImpl implements ApiOrderService {
         }
 
         goodsPrice = goodsPrice + skuPrice;
+        double orderPayment = new BigDecimal(goodsPrice).multiply(new BigDecimal(goodsCount)).doubleValue();
 
         String orderId = SerialGenerator.getOrderSerial();
 
         //构建订单明细
         TbOrderItem tbOrderItem = buildOrderItem(goods,orderId);
         tbOrderItem.setPrice(goodsPrice);
-        tbOrderItem.setTotalFee(new BigDecimal(goodsPrice).multiply(new BigDecimal(goodsCount)).doubleValue());
+        tbOrderItem.setTotalFee(orderPayment);
         tbOrderItem.setNum(goodsCount);
-
+        tbOrderItem.setSkuDetailIds(skuDetailIds);
         TbOrder tbOrder = buildTbOrder(oppenId, selfGet, userAddress);
         tbOrder.setPosterUrl(goods.getImage());
-        tbOrder.setGoodsTotalCount(1);
+        tbOrder.setGoodsTotalCount(goodsCount);
 
         if (tbUserCoupons != null){
             //如果有优惠券计算优惠券减少金额
@@ -245,13 +245,13 @@ public class ApiOrderServiceImpl implements ApiOrderService {
         }
 
         //订单实际金额
-        goodsPrice += sendPrice;
-        tbOrder.setOrderPayment(goodsPrice);
+        orderPayment += sendPrice;
+        tbOrder.setOrderPayment(orderPayment);
         //用户支付金额
-        tbOrder.setPayment(new BigDecimal(goodsPrice));
+        tbOrder.setPayment(new BigDecimal(orderPayment));
         tbOrder.setOrderId(orderId);
         if (couponsReduceAmount > 0){
-            double payment = goodsPrice - couponsReduceAmount;
+            double payment = orderPayment - couponsReduceAmount;
             tbOrder.setPayment(new BigDecimal(payment));
             tbOrder.setCouponsReduceAmount(couponsReduceAmount);
         }

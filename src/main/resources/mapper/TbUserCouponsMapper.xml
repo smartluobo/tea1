@@ -18,7 +18,7 @@
       UPDATE tb_user_coupons SET `status` = #{status} where id=#{id}
   </update>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from tb_user_coupons where id = #{id,jdbcType=INTEGER}
   </select>
 
@@ -37,6 +37,10 @@
 
   <select id="findOneCouponsByOppenId" parameterType="string" resultMap="BaseResultMap">
       SELECT * from tb_user_coupons WHERE oppen_id = #{oppenId} AND `status` = 0
+  </select>
+
+  <select id="selectValidUserCoupons" resultMap="BaseResultMap" parameterType="com.ibay.tea.entity.TbUserCoupons">
+    SELECT <include refid="Base_Column_List" /> from tb_user_coupons where id = #{id,jdbcType=INTEGER} and oppen_id = #{oppenId} and `status` = 0
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

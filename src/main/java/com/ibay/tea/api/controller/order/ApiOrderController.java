@@ -40,7 +40,7 @@ public class ApiOrderController {
         }
     }
 
-    @RequestMapping("createOrderByGoodsId/{oppenId}/{goodsId}/{skuDetailIds}/{couponsId}/{addressId}/{selfGet}")
+    @RequestMapping("createOrderByGoodsId/{oppenId}/{goodsId}/{skuDetailIds}/{userCouponsId}/{addressId}/{selfGet}/{goodsCount}")
     public ResultInfo createOrderByGoodsId(@PathVariable("oppenId") String oppenId,
                                            @PathVariable("goodsId") long goodsId,
                                            @PathVariable("skuDetailIds") String skuDetailIds,
@@ -58,6 +58,8 @@ public class ApiOrderController {
             apiOrderService.createOrderByGoodsId(oppenId,goodsId,skuDetailIds,userCouponsId,addressId,selfGet,goodsCount);
             return resultInfo;
         }catch (Exception e){
+            LOGGER.error("createOrderByGoodsId happen exception oppenId : {}, goodsId : {},skuDetailIds : {} userCouponsId: {} ,addressId :{} selfGet : {} goodsCount : {}",
+                    oppenId,goodsId,skuDetailIds,userCouponsId,addressId,selfGet,goodsCount,e);
             return ResultInfo.newExceptionResultInfo();
         }
     }

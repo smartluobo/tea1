@@ -21,4 +21,6 @@ public interface TbUserCouponsMapper {
     TbUserCoupons findOneCouponsByOppenId(String oppenId);
 
     void updateStatusById(@Param("id") int id, @Param("status") int status);
+
+    TbUserCoupons selectValidUserCoupons(@Param("oppenId") String oppenId,@Param("id") int id);
 }
