@@ -1,12 +1,9 @@
 package com.ibay.tea.cache;
 
 import com.ibay.tea.api.service.category.ApiCategoryService;
-import com.ibay.tea.dao.CategoryMapper;
-import com.ibay.tea.entity.Category;
 import com.ibay.tea.entity.TbItemCat;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
-import sun.plugin.javascript.navig.LinkArray;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;

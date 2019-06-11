@@ -19,6 +19,14 @@ public class TbApiUser {
 
     private Date updateTime;
 
+    public String getUserHeadImage() {
+        return userHeadImage;
+    }
+
+    public void setUserHeadImage(String userHeadImage) {
+        this.userHeadImage = userHeadImage;
+    }
+
     private String userHeadImage;
 
     public Integer getId() {
@@ -83,13 +91,5 @@ public class TbApiUser {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public String getUserHeadImage() {
-        return userHeadImage;
-    }
-
-    public void setUserHeadImage(String userHeadImage) {
-        this.userHeadImage = userHeadImage == null ? null : userHeadImage.trim();
     }
 }

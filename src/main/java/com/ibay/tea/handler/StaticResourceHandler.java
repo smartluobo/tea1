@@ -9,6 +9,7 @@ public class StaticResourceHandler implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/image/temp-image/**").addResourceLocations("file:D:/temp-image/");
+//       registry.addResourceHandler("/image/**").addResourceLocations("file:D:/tea_img/");
+//        registry.addResourceHandler("/tea/image/**").addResourceLocations("file:///data/eecup/image");
     }
 }

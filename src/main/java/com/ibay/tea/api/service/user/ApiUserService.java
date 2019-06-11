@@ -5,4 +5,6 @@ import com.ibay.tea.entity.TbApiUser;
 public interface ApiUserService {
 
     TbApiUser findApiUserByOppenId(String oppenId);
+
+    void saveApiUser(String oppenId);
 }

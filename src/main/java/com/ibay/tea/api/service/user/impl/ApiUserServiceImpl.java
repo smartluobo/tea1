@@ -7,6 +7,7 @@ import com.ibay.tea.entity.TbApiUser;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 @Service
 public class ApiUserServiceImpl implements ApiUserService{
@@ -17,5 +18,18 @@ public class ApiUserServiceImpl implements ApiUserService{
     @Override
     public TbApiUser findApiUserByOppenId(String oppenId) {
         return tbApiUserMapper.findApiUserByOppenId(oppenId);
+    }
+
+    @Override
+    public void saveApiUser(String oppenId) {
+        TbApiUser apiUserByOppenId = tbApiUserMapper.findApiUserByOppenId(oppenId);
+        if (apiUserByOppenId != null){
+            return;
+        }
+        TbApiUser tbApiUser = new TbApiUser();
+        tbApiUser.setOppenId(oppenId);
+        tbApiUser.setCreateTime(new Date());
+        tbApiUser.setUpdateTime(new Date());
+        tbApiUserMapper.insert(tbApiUser);
     }
 }

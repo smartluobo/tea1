@@ -7,6 +7,12 @@ spring:
     password: root
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
+  mvc:
+    static-path-pattern: /image/**
+  resources:
+#    static-locations: file:/data/eecup/image
+    static-locations: file:D:/tea_img/
+
 server:
   port: 8888
   servlet:
