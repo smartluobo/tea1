@@ -22,11 +22,11 @@ mybatis:
 wechat:
   info:
     createOrderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
-    appId: wx21545454dsss
+    appId: wx4123b4481a5e6e66
     mchId: 13530852671
     signType: MD5
     loginUrl: https://api.weixin.qq.com/sns/jscode2session?grant_type=authorization_code&
-    secret: bccefcbfb1e525d28de3be1a6461ac5b
+    secret: bf861f60fbc30bf11ad07a73b4fbcf98
     tokenUrl: https://api.weixin.qq.com/cgi-bin/token
     orderPayTemplateId: GdULC46QEOpKeMtSwtONLUSVvPu5js7ZbyDcXdCMF5U
     orderMakeCompleteTemplateId: jmcqiI2nIAtWzGqVLDNYixMV065v0BR4d-ZJ5mkfT2o

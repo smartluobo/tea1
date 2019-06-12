@@ -21,7 +21,7 @@ public class ApiAddressController {
     @Resource
     private ApiAddressService apiAddressService;
 
-    @RequestMapping("/findListByOppenId/{oppenId}")
+    @RequestMapping("/findListByOppenId")
     public ResultInfo findUserAddressByOppenId(@RequestBody Map<String,String> params){
 
         //判断oppenId是否有效
@@ -42,7 +42,7 @@ public class ApiAddressController {
         }
     }
 
-    @RequestMapping("/findById/{id}")
+    @RequestMapping("/findById")
     public ResultInfo findUserAddressById(@RequestBody Map<String ,Integer> params){
         if (CollectionUtils.isEmpty(params)){
             return ResultInfo.newEmptyParamsResultInfo();

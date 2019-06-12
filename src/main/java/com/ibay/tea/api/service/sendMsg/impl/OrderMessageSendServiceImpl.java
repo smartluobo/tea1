@@ -76,6 +76,12 @@ public class OrderMessageSendServiceImpl implements OrderMessageSendService {
                 }
             }
         }catch (Exception e){
+            if (sendType == ApiConstant.ORDER_CLOSE_MESSAGE_SEND){
+                tbOrderMapper.updateCloseMessageSendStatus(orderId,2);
+            }
+            if (sendType == ApiConstant.ORDER_MAKE_COMPLETE_MESSAGE_SEND){
+                tbOrderMapper.updateCompleteMessageSendStatus(orderId,2);
+            }
             LOGGER.error("orderMessageSend happen exception orderId : {} sendType : {}",orderId,sendType,e);
         }
     }

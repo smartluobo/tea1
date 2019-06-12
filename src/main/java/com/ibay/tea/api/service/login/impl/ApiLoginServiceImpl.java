@@ -30,13 +30,14 @@ public class ApiLoginServiceImpl implements ApiLoginService {
                 +"appid="+wechatPayProperties.getAppId()
                 +"&secret="+wechatPayProperties.getSecret()
                 +"&js_code="+code;
+        LOGGER.info("loginUrl : {}",loginUrl);
 
         String result = HttpUtil.get(loginUrl);
         LOGGER.info("result:{}", result);
 
         // 发送请求并解析
         JSONObject jsonObject = JSONObject.parseObject(result);
-        Object oppenId = jsonObject.get("oppenId");
+        Object oppenId = jsonObject.get("openid");
         if (oppenId != null){
             return oppenId.toString();
         }

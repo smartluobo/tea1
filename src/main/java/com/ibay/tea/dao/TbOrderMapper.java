@@ -3,6 +3,9 @@ package com.ibay.tea.dao;
 import com.ibay.tea.entity.TbOrder;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface TbOrderMapper {
     int deleteByPrimaryKey(String orderId);
@@ -15,4 +18,7 @@ public interface TbOrderMapper {
 
     void updateCloseMessageSendStatus(String orderId, int closeSendStatus);
 
+    List<TbOrder> findOrderListByCondition(Map<String, Object> condition);
+
+    void updateOrderStatusByCondition(Map<String, Object> condition);
 }

@@ -110,7 +110,7 @@ public class ApiActivityController {
         }
     }
 
-    @RequestMapping("/extractPrize/{oppenId}")
+    @RequestMapping("/extractPrize")
     public ResultInfo extractPrize(@RequestBody Map<String,String> params){
         //判断oppenId是否有效
         if (CollectionUtils.isEmpty(params)){

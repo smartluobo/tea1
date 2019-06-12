@@ -41,8 +41,10 @@ public class ApiLoginController {
             }
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
             String oppenId = apiLoginService.login(code);
+            LOGGER.info("oppenId : {}",oppenId);
             if (StringUtils.isNotEmpty(oppenId)){
                 apiUserService.saveApiUser(oppenId);
+
             }
             resultInfo.setData(oppenId);
             return resultInfo;
