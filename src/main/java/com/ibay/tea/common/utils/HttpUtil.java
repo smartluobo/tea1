@@ -123,7 +123,7 @@ public class HttpUtil {
             httpPost.setEntity(new UrlEncodedFormEntity(params,HTTP_CHARSET));
             response = httpClient.execute(httpPost);
             result = EntityUtils.toString(response.getEntity(),HTTP_CHARSET);
-            logger.debug("result:{}",result);
+            logger.info("result:{}",result);
         } catch (IOException e) {
             logger.error("do post error:{}",e);
         } finally {

@@ -48,12 +48,15 @@ public class ApiConstant {
     //已支付
     public static final int ORDER_STATUS_PAYED = 1;
     //已完成
-    public static final int ORDER_STATUS_COMPLETE = 2;
+    public static final int ORDER_STATUS_MAKE_COMPLETE = 2;
     //已关闭
     public static final int ORDER_STATUS_CLOSED = 3;
 
-    public static final String WECHAT_LOGIN_TYPE_SK = "SK";
-    public static final String WECHAT_LOGIN_TYPE_DT = "DT";
+    public static final String WECHAT_ACCESS_TOKEN_GUAVA_KEY = "wechat:access:token:guava:key";//access_token guava缓存key
+
+    public static final int ORDER_MAKE_COMPLETE_MESSAGE_SEND = 1;
+
+    public static final int ORDER_CLOSE_MESSAGE_SEND = 2;
 
 
 

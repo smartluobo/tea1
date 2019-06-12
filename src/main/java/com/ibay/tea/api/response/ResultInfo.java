@@ -51,6 +51,13 @@ public class ResultInfo {
         return resultInfo;
     }
 
+    public static ResultInfo newEmptyParamsResultInfo(){
+        ResultInfo resultInfo = new ResultInfo();
+        resultInfo.setCode(303);
+        resultInfo.setMsg("params is null");
+        return resultInfo;
+    }
+
     public static ResultInfo newParameterErrorResultInfo(){
         ResultInfo resultInfo = new ResultInfo();
         resultInfo.setCode(400);

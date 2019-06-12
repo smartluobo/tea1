@@ -40,8 +40,7 @@ public class ApiLoginController {
                 return ResultInfo.newEmptyResultInfo();
             }
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
-            //String oppenId = apiLoginService.login(code);
-            String oppenId = "oHqQ75MTsgqbF5jGY8DcqRJwsVH4";
+            String oppenId = apiLoginService.login(code);
             if (StringUtils.isNotEmpty(oppenId)){
                 apiUserService.saveApiUser(oppenId);
             }

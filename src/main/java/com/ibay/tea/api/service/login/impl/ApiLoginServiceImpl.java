@@ -1,9 +1,8 @@
 package com.ibay.tea.api.service.login.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ibay.tea.api.config.WechatPayProperties;
+import com.ibay.tea.api.config.WechatInfoProperties;
 import com.ibay.tea.api.service.login.ApiLoginService;
-import com.ibay.tea.common.constant.ApiConstant;
 import com.ibay.tea.common.utils.HttpUtil;
 import com.ibay.tea.dao.UserMapper;
 import org.slf4j.Logger;
@@ -21,7 +20,7 @@ public class ApiLoginServiceImpl implements ApiLoginService {
     private UserMapper userMapper;
 
     @Resource
-    private WechatPayProperties wechatPayProperties;
+    private WechatInfoProperties wechatPayProperties;
 
     @Override
     public String login(String code) {

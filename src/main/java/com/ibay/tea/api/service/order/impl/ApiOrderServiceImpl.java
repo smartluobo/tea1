@@ -54,7 +54,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
     private ApiPayService apiPayService;
 
     @Override
-    public void createOrderByCart(String oppenId, String cartItemIds, int userCouponsId, int addressId, int selfGet) throws Exception{
+    public void createOrderByCart(String oppenId, String cartItemIds, int userCouponsId, int addressId, int selfGet,TbStore tbStore) throws Exception{
         TbUserCoupons tbUserCoupons = null;
         int sendPrice = 0;
         if (selfGet == ApiConstant.ORDER_TAKE_WAY_SEND){
@@ -110,6 +110,9 @@ public class ApiOrderServiceImpl implements ApiOrderService {
 
             TbOrder tbOrder = buildTbOrder(oppenId, selfGet, userAddress);
             tbOrder.setPosterUrl(goodsList.get(0).getImage());
+            tbOrder.setStoreId(tbStore.getId());
+            tbOrder.setStoreName(tbStore.getStoreName());
+            tbOrder.setGoodsName(goodsList.get(0).getTitle());
             tbOrder.setGoodsTotalCount(totalGoodsCount);
 
             if (tbUserCoupons != null){
@@ -187,7 +190,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
 
     @Override
     public void createOrderByGoodsId(String oppenId, long goodsId, String skuDetailIds,
-                                     int userCouponsId, int addressId, int selfGet,int goodsCount) {
+                                     int userCouponsId, int addressId, int selfGet,int goodsCount,TbStore tbStore) {
         int sendPrice = 0;
         int skuPrice = 0;
 
@@ -232,6 +235,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
         tbOrderItem.setSkuDetailIds(skuDetailIds);
         TbOrder tbOrder = buildTbOrder(oppenId, selfGet, userAddress);
         tbOrder.setPosterUrl(goods.getImage());
+        tbOrder.setGoodsName(goods.getTitle());
         tbOrder.setGoodsTotalCount(goodsCount);
 
         if (tbUserCoupons != null){
@@ -262,6 +266,8 @@ public class ApiOrderServiceImpl implements ApiOrderService {
         insertPayRecordAndUpdateCoupons(oppenId, userCouponsId, orderId, tbOrder);
 
         //保存订单
+        tbOrder.setStoreId(tbStore.getId());
+        tbOrder.setStoreName(tbStore.getStoreName());
         tbOrderMapper.insert(tbOrder);
 
         //调用支付接口

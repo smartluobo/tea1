@@ -12,10 +12,9 @@ import com.ibay.tea.entity.TbApiUser;
 import com.ibay.tea.entity.TbUserCoupons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -43,10 +42,17 @@ public class ApiActivityController {
     // 如果在开奖时间内且还有奖品提示用户参与抽奖，若奖品已经发放完毕且用户没有获奖提示用户明天继续参与
     // 若用户已经在当天参与抽奖并获得优惠券提示用户立即使用
 
-    @GetMapping("getActivityInfo/{oppenId}")
-    public ResultInfo getActivityInfo(@PathVariable("oppenId") String oppenId){
+    @GetMapping("getActivityInfo")
+    public ResultInfo getActivityInfo(@RequestBody Map<String,String> params){
+        if (CollectionUtils.isEmpty(params)){
+            return ResultInfo.newEmptyParamsResultInfo();
+        }
         ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
         try {
+            String oppenId = params.get("oppenId");
+            if (StringUtils.isEmpty(oppenId)){
+                return ResultInfo.newEmptyParamsResultInfo();
+            }
             Map<String,Object> result = new HashMap<>();
             TbActivity activityInfo = apiActivityService.getTodayActivity();
             if (activityInfo == null){
@@ -105,8 +111,15 @@ public class ApiActivityController {
     }
 
     @RequestMapping("/extractPrize/{oppenId}")
-    public ResultInfo extractPrize(@PathVariable("oppenId") String oppenId){
+    public ResultInfo extractPrize(@RequestBody Map<String,String> params){
         //判断oppenId是否有效
+        if (CollectionUtils.isEmpty(params)){
+            return ResultInfo.newEmptyParamsResultInfo();
+        }
+        String oppenId = params.get("params");
+        if (StringUtils.isEmpty(oppenId)){
+            return ResultInfo.newEmptyParamsResultInfo();
+        }
         ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
         try {
             TbApiUser tbApiUser = apiUserService.findApiUserByOppenId(oppenId);

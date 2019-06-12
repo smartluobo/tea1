@@ -4,8 +4,10 @@ import com.ibay.tea.api.response.ResultInfo;
 import com.ibay.tea.api.service.cart.ApiCartService;
 import com.ibay.tea.entity.TbCart;
 import com.ibay.tea.entity.TbItem;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/cart")
@@ -23,8 +26,15 @@ public class ApiCartController {
     @Resource
     private ApiCartService apiCartService;
 
-    @RequestMapping("cartGoodsList/{oppenId}")
-    public ResultInfo getCartList(@PathVariable("oppenId") String oppenId){
+    @RequestMapping("cartGoodsList")
+    public ResultInfo getCartList(@RequestBody Map<String,String> params){
+        if (CollectionUtils.isEmpty(params)){
+            return ResultInfo.newEmptyParamsResultInfo();
+        }
+        String oppenId = params.get("oppenId");
+        if (StringUtils.isEmpty(oppenId)){
+            return  ResultInfo.newEmptyParamsResultInfo();
+        }
         try {
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
             List<TbItem> cartGoodsList = apiCartService.findCartGoodsListByOppenId(oppenId);
@@ -36,8 +46,15 @@ public class ApiCartController {
         }
     }
 
-    @RequestMapping("cartGoodsDetail/{id}")
-    public ResultInfo getCartGoodsDetailById(@PathVariable("id") int id){
+    @RequestMapping("cartGoodsDetail")
+    public ResultInfo getCartGoodsDetailById(@RequestBody Map<String,Integer> params){
+        if (CollectionUtils.isEmpty(params)){
+            return  ResultInfo.newEmptyParamsResultInfo();
+        }
+        Integer id = params.get("id");
+        if (id == null || id == 0){
+            return ResultInfo.newEmptyParamsResultInfo();
+        }
         try {
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
             TbItem cartGoodsInfo = apiCartService.findCartGoodsById(id);
@@ -52,6 +69,9 @@ public class ApiCartController {
     @RequestMapping("/addCartItem")
     public ResultInfo addCartItem(@RequestBody TbCart tbCart){
         try {
+            if (tbCart == null){
+                return ResultInfo.newEmptyParamsResultInfo();
+            }
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
             apiCartService.addCartItem(tbCart);
             return resultInfo;
@@ -61,8 +81,16 @@ public class ApiCartController {
         }
     }
 
-    @RequestMapping("cartGoodsDelete/{oppenId}/{cartItemId}")
-    public ResultInfo cartGoodsDelete(@PathVariable("oppenId") String oppenId ,@PathVariable("cartItemId") int cartItemId){
+    @RequestMapping(value = "cartGoodsDelete")
+    public ResultInfo cartGoodsDelete(@RequestBody Map<String,String> params){
+        if (CollectionUtils.isEmpty(params)){
+            return  ResultInfo.newEmptyParamsResultInfo();
+        }
+        String oppenId = params.get("oppenId");
+        Integer cartItemId = Integer.valueOf(params.get("cartItemId"));
+        if (StringUtils.isEmpty(oppenId) || cartItemId == 0){
+            return ResultInfo.newEmptyParamsResultInfo();
+        }
         try {
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
             apiCartService.cartGoodsDelete(oppenId,cartItemId);

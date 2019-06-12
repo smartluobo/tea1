@@ -26,12 +26,26 @@
     <result column="poster_url" jdbcType="VARCHAR" property="posterUrl" />
     <result column="goods_total_count" jdbcType="INTEGER" property="goodsTotalCount" />
     <result column="order_payment" jdbcType="DECIMAL" property="orderPayment" />
+    <result column="coupons_reduce_amount" jdbcType="DECIMAL" property="couponsReduceAmount" />
+    <result column="make_complete_send_status" jdbcType="INTEGER" property="makeCompleteSendStatus" />
+    <result column="close_send_status" jdbcType="INTEGER" property="closeSendStatus" />
+    <result column="store_id" jdbcType="INTEGER" property="storeId" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
   </resultMap>
   <sql id="Base_Column_List">
     order_id, payment, payment_type, post_fee, `status`, create_time, update_time, payment_time,
     consign_time, end_time, close_time, shipping_name, shipping_code, user_id, buyer_message, 
-    buyer_nick, buyer_comment, oppen_id, self_get, address, phone_num, poster_url,goods_total_count,order_payment
+    buyer_nick, buyer_comment, oppen_id, self_get, address, phone_num, poster_url,goods_total_count,order_payment,
+    coupons_reduce_amount,make_complete_send_status,close_send_status,store_id,store_name,goods_name
   </sql>
+  <update id="updateCompleteMessageSendStatus" parameterType="com.ibay.tea.entity.TbOrder">
+    UPDATE tb_order SET make_complete_send_status = #{makeCompleteSendStatus} where order_id=#{orderId}
+  </update>
+
+  <update id="updateCloseMessageSendStatus" parameterType="com.ibay.tea.entity.TbOrder">
+    UPDATE tb_order SET close_send_status = #{closeSendStatus} where order_id=#{orderId}
+  </update>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from tb_order where order_id = #{orderId,jdbcType=VARCHAR}
@@ -49,7 +63,8 @@
       shipping_code, user_id, buyer_message, 
       buyer_nick, buyer_comment, oppen_id, 
       self_get, address, phone_num, 
-      poster_url,goods_total_count,order_payment)
+      poster_url,goods_total_count,order_payment,
+      coupons_reduce_amount,store_id,store_name,goods_name)
     values (#{orderId,jdbcType=VARCHAR}, #{payment,jdbcType=DECIMAL}, #{paymentType,jdbcType=INTEGER}, 
       #{postFee,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{paymentTime,jdbcType=TIMESTAMP}, #{consignTime,jdbcType=TIMESTAMP}, 
@@ -57,7 +72,8 @@
       #{shippingCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{buyerMessage,jdbcType=VARCHAR}, 
       #{buyerNick,jdbcType=VARCHAR}, #{buyerComment,jdbcType=BIT}, #{oppenId,jdbcType=VARCHAR}, 
       #{selfGet,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR}, 
-      #{posterUrl,jdbcType=VARCHAR},#{goodsTotalCount,jdbcType=INTEGER}, #{orderPayment,jdbcType=DECIMAL})
+      #{posterUrl,jdbcType=VARCHAR},#{goodsTotalCount,jdbcType=INTEGER}, #{orderPayment,jdbcType=DECIMAL},
+      #{couponsReduceAmount,jdbcType=DECIMAL},#{storeId},#{storeName},#{goodsName})
   </insert>
 
 </mapper>

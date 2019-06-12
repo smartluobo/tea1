@@ -48,13 +48,31 @@ public class TbOrder {
 
     private String posterUrl;
 
+    //订单商品数量
     private int goodsTotalCount = 1;
 
+    //订单支付金额
     private double orderPayment;
 
+    //使用的优惠券id
     private long userCouponsId;
 
+    //优惠券减少金额
     private double couponsReduceAmount;
+
+    //制作完成消息发送状态 0 未发送 1发送成功 2 发送失败
+    private int makeCompleteSendStatus;
+
+    //订单关闭消息发送状态 0未发送 1发送成功 2发送失败
+    private int closeSendStatus;
+
+    //订单店铺id
+    private int storeId;
+
+    //订单商铺名称
+    private String storeName;
+
+    private String goodsName;
 
     public String getOrderId() {
         return orderId;
@@ -262,5 +280,45 @@ public class TbOrder {
 
     public void setCouponsReduceAmount(double couponsReduceAmount) {
         this.couponsReduceAmount = couponsReduceAmount;
+    }
+
+    public int getMakeCompleteSendStatus() {
+        return makeCompleteSendStatus;
+    }
+
+    public void setMakeCompleteSendStatus(int makeCompleteSendStatus) {
+        this.makeCompleteSendStatus = makeCompleteSendStatus;
+    }
+
+    public int getCloseSendStatus() {
+        return closeSendStatus;
+    }
+
+    public void setCloseSendStatus(int closeSendStatus) {
+        this.closeSendStatus = closeSendStatus;
+    }
+
+    public int getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
     }
 }
