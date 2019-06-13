@@ -20,6 +20,21 @@
   <sql id="Base_Column_List">
     id, title, sku_type_ids, simple_desc,sell_point, price, num, limit_num, image, cid, `status`, created, updated
   </sql>
+  <insert id="addGoods" parameterType="com.ibay.tea.entity.TbItem">
+    INSERT INTO tb_item (title, sell_point, price, num, limit_num, image, cid, `status`,
+                         created, sku_type_ids, simple_desc)
+    VALUES (#{title},#{sellPoint},#{price},#{num},#{limitNum},#{image},#{cid},#{status},
+      #{created},#{skuTypeIds},#{simpleDesc}
+    )
+  </insert>
+
+  <insert id="saveUpdateGoods" parameterType="com.ibay.tea.entity.TbItem">
+    INSERT INTO tb_item (id,title, sell_point, price, num, limit_num, image, cid, `status`,
+                         created, sku_type_ids, simple_desc)
+    VALUES (#{id},#{title},#{sellPoint},#{price},#{num},#{limitNum},#{image},#{cid},#{status},
+                     #{created},#{skuTypeIds},#{simpleDesc}
+    )
+  </insert>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select  <include refid="Base_Column_List" /> from tb_item where id = #{id,jdbcType=BIGINT}
@@ -32,8 +47,14 @@
   <select id="findAll" resultMap="BaseResultMap">
     SELECT <include refid="Base_Column_List" /> from tb_item
   </select>
+  <select id="findGoodsListByPage" resultMap="BaseResultMap" parameterType="int">
+      SELECT <include refid="Base_Column_List" /> FROM tb_item LIMIT #{startIndex} , #{pageSize}
+  </select>
+  <select id="countGoodsByCondition" resultType="java.lang.Long" parameterType="map">
+    SELECT count(1) FROM tb_item
+  </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <delete id="deleteGoods" parameterType="java.lang.Long">
     delete from tb_item where id = #{id,jdbcType=BIGINT}
   </delete>
 

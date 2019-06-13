@@ -38,7 +38,7 @@ public class ApiUserServiceImpl implements ApiUserService{
             return;
         }
         //根据oppenId调用获取用户信息接口获取用户信息
-        Map<String,String> apiUserInfoMap = getApiUserInfoByOppenId(oppenId);
+       // Map<String,String> apiUserInfoMap = getApiUserInfoByOppenId(oppenId);
         TbApiUser tbApiUser = new TbApiUser();
         tbApiUser.setOppenId(oppenId);
         tbApiUser.setCreateTime(new Date());

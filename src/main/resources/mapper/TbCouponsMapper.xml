@@ -17,6 +17,23 @@
     id, coupons_type, coupons_name, coupons_ratio, consume_amount, reduce_amount, consume_count, 
     give_count, create_time, update_time
   </sql>
+
+  <insert id="addCoupons" parameterType="com.ibay.tea.entity.TbCoupons">
+      INSERT INTO tb_coupons (coupons_type, coupons_name, coupons_ratio, consume_amount, reduce_amount,
+                              consume_count, give_count, create_time, update_time)
+      VALUES (#{couponsType},#{couponsName},#{couponsRatio},#{consumeAmount},#{reduceAmount},
+          #{consumeCount},#{giveCount},#{createTime},#{updateTime}
+      )
+  </insert>
+
+  <insert id="saveUpdateCoupons" parameterType="com.ibay.tea.entity.TbCoupons">
+    INSERT INTO tb_coupons (id,coupons_type, coupons_name, coupons_ratio, consume_amount, reduce_amount,
+    consume_count, give_count, create_time, update_time)
+    VALUES (#{id},#{couponsType},#{couponsName},#{couponsRatio},#{consumeAmount},#{reduceAmount},
+    #{consumeCount},#{giveCount},#{createTime},#{updateTime}
+    )
+  </insert>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from tb_coupons where id = #{id,jdbcType=INTEGER}
   </select>
@@ -25,7 +42,7 @@
       SELECT * FROM tb_coupons
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from tb_coupons where id = #{id,jdbcType=INTEGER}
+  <delete id="deleteCoupons" parameterType="java.lang.Integer">
+    delete from tb_coupons where id = #{id}
   </delete>
 </mapper>

@@ -7,13 +7,19 @@
     <result column="store_address" jdbcType="VARCHAR" property="storeAddress" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="extra_price" jdbcType="VARCHAR" property="extraPrice" />
+
   </resultMap>
   <sql id="Base_Column_List">
-    id, store_name, store_address, create_time, update_time
+    id, store_name, store_address, create_time, update_time,extra_price
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from tb_store where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from tb_store
   </select>
 
 </mapper>

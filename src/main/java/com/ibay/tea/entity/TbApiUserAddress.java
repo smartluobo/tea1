@@ -15,6 +15,8 @@ public class TbApiUserAddress {
 
     private String bindNum;
 
+    private String userName;
+
     public Integer getId() {
         return id;
     }
@@ -69,5 +71,13 @@ public class TbApiUserAddress {
 
     public void setBindNum(String bindNum) {
         this.bindNum = bindNum == null ? null : bindNum.trim();
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

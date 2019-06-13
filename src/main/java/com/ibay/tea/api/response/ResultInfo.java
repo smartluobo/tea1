@@ -1,9 +1,12 @@
 package com.ibay.tea.api.response;
 
+import com.alibaba.fastjson.JSONObject;
+
 public class ResultInfo {
     private int code;
     private String msg;
     private Object data;
+    private long total;
 
     public int getCode() {
         return code;
@@ -29,6 +32,13 @@ public class ResultInfo {
         this.data = data;
     }
 
+    public long getTotal() {
+        return total;
+    }
+
+    public void setTotal(long total) {
+        this.total = total;
+    }
 
     public static ResultInfo newExceptionResultInfo(){
         ResultInfo resultInfo = new ResultInfo();
@@ -64,4 +74,12 @@ public class ResultInfo {
         resultInfo.setMsg("result is null");
         return resultInfo;
     }
+
+    public static String newNoLoginResultInfo() {
+        ResultInfo resultInfo = new ResultInfo();
+        resultInfo.setCode(601);
+        resultInfo.setMsg("no login");
+        return JSONObject.toJSONString(resultInfo);
+    }
+
 }

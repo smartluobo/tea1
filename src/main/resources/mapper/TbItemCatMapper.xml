@@ -15,8 +15,18 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, parent_id, name, status, sort_order, is_parent, icon, remark, created, updated
+    id, parent_id, `name`, `status`, sort_order, is_parent, icon, remark, created, updated
   </sql>
+
+  <insert id="addCategory" parameterType="com.ibay.tea.entity.TbItemCat">
+    INSERT INTO tb_item_cat(parent_id, name, status, sort_order, is_parent, created)
+    VALUES (#{parentId},#{name},#{status},#{sortOrder},#{isParent},#{created})
+  </insert>
+  <insert id="saveUpdateCategory">
+    INSERT INTO tb_item_cat(id,parent_id, name, status, sort_order, is_parent, created)
+    VALUES (#{id},#{parentId},#{name},#{status},#{sortOrder},#{isParent},#{created})
+  </insert>
+
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select  <include refid="Base_Column_List" /> from tb_item_cat where id = #{id,jdbcType=BIGINT}
@@ -26,8 +36,8 @@
       SELECT * from tb_item_cat
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from tb_item_cat where id = #{id,jdbcType=BIGINT}
+  <delete id="deleteCategoryById" parameterType="int">
+    DELETE FROM tb_item_cat WHERE id = #{id}
   </delete>
 
 

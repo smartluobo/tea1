@@ -17,7 +17,7 @@ public class ApiGoodsController {
     @Resource
     private ApiGoodsService apiGoodsService;
 
-    @GetMapping("/listByCategoryId")
+    @RequestMapping("/listByCategoryId")
     public ResultInfo getGoodsListByCategoryId(@RequestBody Map<String,Long> params){
         if (CollectionUtils.isEmpty(params)){
             return ResultInfo.newEmptyParamsResultInfo();

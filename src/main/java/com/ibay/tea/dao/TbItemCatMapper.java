@@ -7,9 +7,14 @@ import java.util.List;
 
 @Repository
 public interface TbItemCatMapper {
-    int deleteByPrimaryKey(Long id);
 
     TbItemCat selectByPrimaryKey(Long id);
 
     List<TbItemCat> findAll();
+
+    void addCategory(TbItemCat tbItemCat);
+
+    void deleteCategoryById(long id);
+
+    void saveUpdateCategory(TbItemCat tbItemCat);
 }

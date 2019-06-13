@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ibay.tea.dao.TbCarouselMapper">
+  <resultMap id="BaseResultMap" type="com.ibay.tea.entity.TbCarousel">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="goto_url" jdbcType="VARCHAR" property="gotoUrl" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, image_url, goto_url, create_time
+  </sql>
+
+  <insert id="saveCarousel" parameterType="com.ibay.tea.entity.TbCarousel">
+    INSERT INTO tb_carousel(image_url, goto_url, create_time)  VALUES (#{imageUrl},#{gotoUrl},#{createTime})
+  </insert>
+
+  <insert id="saveUpdateCarousel" parameterType="com.ibay.tea.entity.TbCarousel">
+    INSERT INTO tb_carousel(id,image_url, goto_url, create_time)  VALUES (#{id},#{imageUrl},#{gotoUrl},#{createTime})
+  </insert>
+
+  <delete id="deleteCarousel" parameterType="int">
+      DELETE FROM tb_carousel WHERE id = #{id}
+  </delete>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> FROM tb_carousel
+  </select>
+
+</mapper>

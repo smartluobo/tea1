@@ -1,8 +1,8 @@
 package com.ibay.tea.api.service.carousel.impl;
 
 import com.ibay.tea.api.service.carousel.ApiCarouselService;
-import com.ibay.tea.dao.CarouselMapper;
-import com.ibay.tea.entity.Carousel;
+import com.ibay.tea.dao.TbCarouselMapper;
+import com.ibay.tea.entity.TbCarousel;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -12,10 +12,10 @@ import java.util.List;
 public class ApiCarouselServiceImpl implements ApiCarouselService {
 
     @Resource
-    private CarouselMapper carouselMapper;
+    private TbCarouselMapper tbCarouselMapper;
 
     @Override
-    public List<Carousel> findAll() {
-        return carouselMapper.findAll();
+    public List<TbCarousel> findAll() {
+        return tbCarouselMapper.findAll();
     }
 }

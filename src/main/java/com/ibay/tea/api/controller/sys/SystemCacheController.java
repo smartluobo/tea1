@@ -14,7 +14,7 @@ public class SystemCacheController {
     @Resource
     private CategoryCache categoryCache;
 
-    @GetMapping("/refresh")
+    @RequestMapping("/refresh")
     public Object refreshCategoryCache(){
         categoryCache.refreshCategoryCache();
         return "success";

@@ -9,9 +9,10 @@
     <result column="latitude" jdbcType="VARCHAR" property="latitude" />
     <result column="phone_num" jdbcType="VARCHAR" property="phoneNum" />
     <result column="bind_num" jdbcType="VARCHAR" property="bindNum" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, oppen_id, address_name, longitude, latitude, phone_num, bind_num
+    id, oppen_id, address_name, longitude, latitude, phone_num, bind_num,user_name
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
@@ -29,10 +30,10 @@
   <insert id="insert" parameterType="com.ibay.tea.entity.TbApiUserAddress">
     insert into tb_api_user_address (oppen_id, address_name,
       longitude, latitude, phone_num, 
-      bind_num)
+      bind_num,user_name)
     values (#{oppenId,jdbcType=VARCHAR}, #{addressName,jdbcType=VARCHAR},
       #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR}, 
-      #{bindNum,jdbcType=VARCHAR})
+      #{bindNum,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR})
   </insert>
 
 </mapper>

@@ -9,9 +9,13 @@ import java.util.List;
 @Repository
 public interface TbCouponsMapper {
 
-    int deleteByPrimaryKey(Integer id);
-
     TbCoupons selectByPrimaryKey(Integer id);
 
     List<TbCoupons> findAll();
+
+    void addCoupons(TbCoupons tbCoupons);
+
+    void saveUpdateCoupons(TbCoupons tbCoupons);
+
+    void deleteCoupons(int id);
 }

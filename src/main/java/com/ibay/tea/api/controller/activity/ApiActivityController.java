@@ -42,7 +42,7 @@ public class ApiActivityController {
     // 如果在开奖时间内且还有奖品提示用户参与抽奖，若奖品已经发放完毕且用户没有获奖提示用户明天继续参与
     // 若用户已经在当天参与抽奖并获得优惠券提示用户立即使用
 
-    @GetMapping("getActivityInfo")
+    @PostMapping("getActivityInfo")
     public ResultInfo getActivityInfo(@RequestBody Map<String,String> params){
         if (CollectionUtils.isEmpty(params)){
             return ResultInfo.newEmptyParamsResultInfo();
@@ -110,13 +110,13 @@ public class ApiActivityController {
         }
     }
 
-    @RequestMapping("/extractPrize")
+    @PostMapping("/extractPrize")
     public ResultInfo extractPrize(@RequestBody Map<String,String> params){
         //判断oppenId是否有效
         if (CollectionUtils.isEmpty(params)){
             return ResultInfo.newEmptyParamsResultInfo();
         }
-        String oppenId = params.get("params");
+        String oppenId = params.get("oppenId");
         if (StringUtils.isEmpty(oppenId)){
             return ResultInfo.newEmptyParamsResultInfo();
         }

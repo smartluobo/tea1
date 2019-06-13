@@ -1,9 +1,11 @@
 package com.ibay.tea.api.service.carousel;
 
-import com.ibay.tea.entity.Carousel;
+import com.ibay.tea.entity.TbCarousel;
 
 import java.util.List;
 
 public interface ApiCarouselService {
-    List<Carousel> findAll();
+
+    List<TbCarousel> findAll();
+
 }

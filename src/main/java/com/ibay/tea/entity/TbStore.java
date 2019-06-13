@@ -13,6 +13,8 @@ public class TbStore {
 
     private Date updateTime;
 
+    private int extraPrice;
+
     public Integer getId() {
         return id;
     }
@@ -51,5 +53,13 @@ public class TbStore {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public int getExtraPrice() {
+        return extraPrice;
+    }
+
+    public void setExtraPrice(int extraPrice) {
+        this.extraPrice = extraPrice;
     }
 }
