@@ -30,14 +30,21 @@ public class CmsOrderController {
     @Resource
     private OrderMessageSendService orderMessageSendService;
 
-    @RequestMapping("/orderList/{storeId}/{orderStatus}")
-    public ResultInfo orderList(@PathVariable("storeId") int storeId,@PathVariable("orderStatus") int orderStatus){
+    @RequestMapping("/orderList/{storeId}/{orderStatus}/{pageSize}/{pageNum}")
+    public ResultInfo orderList(@PathVariable("storeId") int storeId,
+                                @PathVariable("orderStatus") int orderStatus,
+                                @PathVariable("pageSize") int pageSize,
+                                @PathVariable("pageNum") int pageNum){
         try {
             Map<String,Object> condition = new HashMap<>();
             condition.put("storeId",storeId);
             condition.put("orderStatus",orderStatus);
+            condition.put("pageSize",pageSize);
+            condition.put("startIndex",(pageNum-1)*pageSize);
+            long total = tbOrderMapper.countByCondition(condition);
             List<TbOrder> orderList = tbOrderMapper.findOrderListByCondition(condition);
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            resultInfo.setTotal(total);
             resultInfo.setData(orderList);
             return resultInfo;
         }catch (Exception e){

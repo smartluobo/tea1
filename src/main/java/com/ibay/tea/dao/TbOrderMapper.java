@@ -21,4 +21,7 @@ public interface TbOrderMapper {
     List<TbOrder> findOrderListByCondition(Map<String, Object> condition);
 
     void updateOrderStatusByCondition(Map<String, Object> condition);
+
+    long countByCondition(Map<String, Object> condition);
+
 }

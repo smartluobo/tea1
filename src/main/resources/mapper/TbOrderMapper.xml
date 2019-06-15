@@ -60,9 +60,16 @@
     <if test="orderStatus != -1">
       AND orderStatus = #{orderStatus}
     </if>
+    limit #{startIndex},#{pageSize}
   </select>
+    <select id="countByCondition" resultType="java.lang.Long">
+      SELECT count(1) from tb_order where store_id = #{storeId}
+      <if test="orderStatus != -1">
+        AND orderStatus = #{orderStatus}
+      </if>
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from tb_order where order_id = #{orderId,jdbcType=VARCHAR}
   </delete>
 
