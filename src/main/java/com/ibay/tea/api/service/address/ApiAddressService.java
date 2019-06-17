@@ -3,6 +3,7 @@ package com.ibay.tea.api.service.address;
 import com.ibay.tea.entity.TbApiUserAddress;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ApiAddressService {
 
@@ -11,4 +12,9 @@ public interface ApiAddressService {
     TbApiUserAddress findUserAddressById(int id);
 
     void insertApiUserAddress(TbApiUserAddress tbApiUserAddress);
+
+    void updateUserAddress(TbApiUserAddress tbApiUserAddress);
+
+    void deleteApiUserAddress(Map<String, String> params);
+
 }

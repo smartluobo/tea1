@@ -11,9 +11,10 @@
     <result column="total_fee" jdbcType="DECIMAL" property="totalFee" />
     <result column="pic_path" jdbcType="VARCHAR" property="picPath" />
     <result column="sku_detail_ids" jdbcType="VARCHAR" property="skuDetailIds" />
+    <result column="sku_detail_desc" jdbcType="VARCHAR" property="skuDetailDesc" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, item_id, order_id, num, title, price, total_fee, pic_path, sku_detail_ids
+    id, item_id, order_id, num, title, price, total_fee, pic_path, sku_detail_ids,sku_detail_desc
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
@@ -27,11 +28,11 @@
   <insert id="insert" parameterType="com.ibay.tea.entity.TbOrderItem">
     insert into tb_order_item (item_id, order_id,
       num, title, price, 
-      total_fee, pic_path, sku_detail_ids
+      total_fee, pic_path, sku_detail_ids,sku_detail_desc
       )
     values (#{itemId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR},
       #{num,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
-      #{totalFee,jdbcType=DECIMAL}, #{picPath,jdbcType=VARCHAR}, #{skuDetailIds,jdbcType=VARCHAR}
+      #{totalFee,jdbcType=DECIMAL}, #{picPath,jdbcType=VARCHAR}, #{skuDetailIds,jdbcType=VARCHAR},#{skuDetailDesc,jdbcType=VARCHAR}
       )
   </insert>
 

@@ -19,6 +19,8 @@ public class TbOrderItem {
 
     private String skuDetailIds;
 
+    private String skuDetailDesc;
+
     public String getId() {
         return id;
     }
@@ -89,5 +91,13 @@ public class TbOrderItem {
 
     public void setSkuDetailIds(String skuDetailIds) {
         this.skuDetailIds = skuDetailIds;
+    }
+
+    public String getSkuDetailDesc() {
+        return skuDetailDesc;
+    }
+
+    public void setSkuDetailDesc(String skuDetailDesc) {
+        this.skuDetailDesc = skuDetailDesc;
     }
 }

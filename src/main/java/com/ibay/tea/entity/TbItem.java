@@ -49,6 +49,8 @@ public class TbItem{
 
     private int cartItemId;
 
+    private String skuDetailDesc;
+
     public Long getId() {
         return id;
     }
@@ -203,6 +205,14 @@ public class TbItem{
 
     public int getCartItemId() {
         return cartItemId;
+    }
+
+    public String getSkuDetailDesc() {
+        return skuDetailDesc;
+    }
+
+    public void setSkuDetailDesc(String skuDetailDesc) {
+        this.skuDetailDesc = skuDetailDesc;
     }
 
     public void setCartItemId(int cartItemId) {

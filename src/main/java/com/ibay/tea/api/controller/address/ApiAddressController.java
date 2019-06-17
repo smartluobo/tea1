@@ -76,4 +76,34 @@ public class ApiAddressController {
    }
 
 
+    @RequestMapping("/updateUserAddress")
+    public ResultInfo updateUserAddress(@RequestBody TbApiUserAddress tbApiUserAddress){
+
+        try {
+            if (tbApiUserAddress == null){
+                return ResultInfo.newEmptyParamsResultInfo();
+            }
+            apiAddressService.updateUserAddress(tbApiUserAddress);
+            return ResultInfo.newSuccessResultInfo();
+        }catch (Exception e){
+            return ResultInfo.newExceptionResultInfo();
+        }
+    }
+
+
+    @RequestMapping("/deleteUserAddress")
+    public ResultInfo deleteUserAddress(@RequestBody Map<String,String> params){
+
+        try {
+            if (params == null){
+                return ResultInfo.newEmptyParamsResultInfo();
+            }
+            apiAddressService.deleteApiUserAddress(params);
+            return ResultInfo.newSuccessResultInfo();
+        }catch (Exception e){
+            return ResultInfo.newExceptionResultInfo();
+        }
+    }
+
+
 }

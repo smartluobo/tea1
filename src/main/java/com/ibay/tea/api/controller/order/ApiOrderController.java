@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/order")
@@ -89,12 +90,17 @@ public class ApiOrderController {
             }
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
 
-            apiOrderService.createOrderByGoodsId(oppenId,goodsId,skuDetailIds,userCouponsId,addressId,selfGet,goodsCount,tbStore);
+            apiOrderService.createOrderByGoodsId(oppenId,goodsId,skuDetailIds,userCouponsId,addressId,selfGet,goodsCount,tbStore,goodsOrderParamVo);
             return resultInfo;
         }catch (Exception e){
             LOGGER.error("createOrderByGoodsId happen exception oppenId : {}, goodsId : {},skuDetailIds : {} userCouponsId: {} ,addressId :{} selfGet : {} goodsCount : {}",
                     oppenId,goodsId,skuDetailIds,userCouponsId,addressId,selfGet,goodsCount,e);
             return ResultInfo.newExceptionResultInfo();
         }
+    }
+
+    @RequestMapping("/findOrderItemByOrderId")
+    public ResultInfo findOrderItemByOrderId(@RequestBody Map<String,String> params){
+        return null;
     }
 }

@@ -37,6 +37,7 @@ public class ApiCartServiceImpl implements ApiCartService {
                 TbItem goods = buildCartGoodsInfo(tbCart);
                 if (goods != null){
                     goods.setCartItemId(tbCart.getId());
+                    goods.setSkuDetailDesc(tbCart.getSkuDetailDesc());
                     result.add(goods);
                 }
             }

@@ -1,5 +1,6 @@
 package com.ibay.tea.api.service.order.impl;
 
+import com.ibay.tea.api.paramVo.GoodsOrderParamVo;
 import com.ibay.tea.api.service.address.ApiAddressService;
 import com.ibay.tea.api.service.cart.ApiCartService;
 import com.ibay.tea.api.service.order.ApiOrderService;
@@ -104,6 +105,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
                 tbOrderItem.setTotalFee(tbItem.getCartTotalPrice());
                 tbOrderItem.setNum(cartItem.getItemCount());
                 tbOrderItem.setSkuDetailIds(cartItem.getSkuDetailIds());
+                tbOrderItem.setSkuDetailDesc(cartItem.getSkuDetailDesc());
                 tbOrderItems.add(tbOrderItem);
             }
             //商品信息组装完后创建订单，创建订单明细，生成支付记录
@@ -190,7 +192,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
 
     @Override
     public void createOrderByGoodsId(String oppenId, long goodsId, String skuDetailIds,
-                                     int userCouponsId, int addressId, int selfGet,int goodsCount,TbStore tbStore) {
+                                     int userCouponsId, int addressId, int selfGet, int goodsCount, TbStore tbStore, GoodsOrderParamVo goodsOrderParamVo) {
         int sendPrice = 0;
         int skuPrice = 0;
 
@@ -233,6 +235,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
         tbOrderItem.setTotalFee(orderPayment);
         tbOrderItem.setNum(goodsCount);
         tbOrderItem.setSkuDetailIds(skuDetailIds);
+        tbOrderItem.setSkuDetailDesc(goodsOrderParamVo.getSkuDetailDesc());
         TbOrder tbOrder = buildTbOrder(oppenId, selfGet, userAddress);
         tbOrder.setPosterUrl(goods.getImage());
         tbOrder.setGoodsName(goods.getTitle());

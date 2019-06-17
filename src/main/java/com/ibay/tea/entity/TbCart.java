@@ -17,6 +17,8 @@ public class TbCart {
 
     private int itemCount;
 
+    private String skuDetailDesc;
+
     public Integer getId() {
         return id;
     }
@@ -71,6 +73,14 @@ public class TbCart {
 
     public void setItemCount(int itemCount) {
         this.itemCount = itemCount;
+    }
+
+    public String getSkuDetailDesc() {
+        return skuDetailDesc;
+    }
+
+    public void setSkuDetailDesc(String skuDetailDesc) {
+        this.skuDetailDesc = skuDetailDesc;
     }
 
     @Override

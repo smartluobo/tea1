@@ -26,6 +26,9 @@
   <delete id="deleteByPrimaryKey" parameterType="int">
     delete from tb_api_user_address where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteApiUserAddress" parameterType="map">
+    delete from tb_api_user_address where id = #{id,jdbcType=INTEGER} and #{oppenId}
+  </delete>
 
   <insert id="insert" parameterType="com.ibay.tea.entity.TbApiUserAddress">
     insert into tb_api_user_address (oppen_id, address_name,
@@ -34,6 +37,14 @@
     values (#{oppenId,jdbcType=VARCHAR}, #{addressName,jdbcType=VARCHAR},
       #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR}, 
       #{bindNum,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="saveUpdateApiUserAddress" parameterType="com.ibay.tea.entity.TbApiUserAddress">
+      insert into tb_api_user_address (id,oppen_id, address_name,
+                                       longitude, latitude, phone_num,
+                                       bind_num,user_name)
+      values (#{id},#{oppenId,jdbcType=VARCHAR}, #{addressName,jdbcType=VARCHAR},
+              #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR},
+              #{bindNum,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR})
   </insert>
 
 </mapper>

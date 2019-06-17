@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/coupons")
+@RequestMapping("cms/coupons")
 public class CmsCouponsController {
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsCouponsController.class);
 

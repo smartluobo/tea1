@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ApiAddressServiceImpl implements ApiAddressService {
@@ -28,5 +29,22 @@ public class ApiAddressServiceImpl implements ApiAddressService {
     @Override
     public void insertApiUserAddress(TbApiUserAddress tbApiUserAddress) {
         tbApiUserAddressMapper.insert(tbApiUserAddress);
+    }
+
+    @Override
+    public void updateUserAddress(TbApiUserAddress tbApiUserAddress) {
+        TbApiUserAddress dbAddress = tbApiUserAddressMapper.selectByPrimaryKey(tbApiUserAddress.getId());
+        if (dbAddress == null){
+            return;
+        }
+        tbApiUserAddressMapper.deleteByPrimaryKey(tbApiUserAddress.getId());
+
+        tbApiUserAddressMapper.saveUpdateApiUserAddress(tbApiUserAddress);
+
+    }
+
+    @Override
+    public void deleteApiUserAddress(Map<String, String> params) {
+        tbApiUserAddressMapper.deleteApiUserAddress(params);
     }
 }
