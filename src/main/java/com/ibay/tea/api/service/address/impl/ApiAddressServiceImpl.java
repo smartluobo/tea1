@@ -17,8 +17,8 @@ public class ApiAddressServiceImpl implements ApiAddressService {
 
 
     @Override
-    public List<TbApiUserAddress> findUserAddressByOppenId(String oppenId) {
-        return tbApiUserAddressMapper.findUserAddressByOppenId(oppenId);
+    public List<TbApiUserAddress> findUserAddressByOppenId(String oppenId,String storeId) {
+        return tbApiUserAddressMapper.findUserAddressByOppenId(oppenId,storeId);
     }
 
     @Override

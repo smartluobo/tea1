@@ -3,20 +3,21 @@ package com.ibay.tea.entity;
 import com.alibaba.fastjson.JSONObject;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class TbItem{
+public class TbItem implements Comparable<TbItem>{
     private Long id;
 
     private String title;
 
     private String sellPoint;
 
-    private BigDecimal price;
+    private double price;
 
     //活动价
-    private BigDecimal activityPrice;
+    private double activityPrice;
 
     //是否显示活动价 0-不现实 1-显示
     private int showActivityPrice;
@@ -51,6 +52,8 @@ public class TbItem{
 
     private String skuDetailDesc;
 
+    private String defaultSkuDetailIds;
+
     public Long getId() {
         return id;
     }
@@ -75,11 +78,11 @@ public class TbItem{
         this.sellPoint = sellPoint == null ? null : sellPoint.trim();
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -139,11 +142,11 @@ public class TbItem{
         this.updated = updated;
     }
 
-    public BigDecimal getActivityPrice() {
+    public double getActivityPrice() {
         return activityPrice;
     }
 
-    public void setActivityPrice(BigDecimal activityPrice) {
+    public void setActivityPrice(double activityPrice) {
         this.activityPrice = activityPrice;
     }
 
@@ -219,9 +222,21 @@ public class TbItem{
         this.cartItemId = cartItemId;
     }
 
+    public String getDefaultSkuDetailIds() {
+        return defaultSkuDetailIds;
+    }
+
+    public void setDefaultSkuDetailIds(String defaultSkuDetailIds) {
+        this.defaultSkuDetailIds = defaultSkuDetailIds;
+    }
+
     public TbItem copy() {
         String thisStr = JSONObject.toJSONString(this);
         return JSONObject.parseObject(thisStr, TbItem.class);
     }
 
+    @Override
+    public int compareTo(TbItem o) {
+        return Double.compare(this.getCartPrice(),o.getCartPrice());
+    }
 }

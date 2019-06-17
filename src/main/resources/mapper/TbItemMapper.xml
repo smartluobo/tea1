@@ -7,7 +7,7 @@
     <result column="simple_desc" jdbcType="VARCHAR" property="simpleDesc" />
     <result column="sku_type_ids" jdbcType="VARCHAR" property="skuTypeIds" />
     <result column="sell_point" jdbcType="VARCHAR" property="sellPoint" />
-    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
     <result column="num" jdbcType="INTEGER" property="num" />
     <result column="limit_num" jdbcType="INTEGER" property="limitNum" />
     <result column="image" jdbcType="VARCHAR" property="image" />

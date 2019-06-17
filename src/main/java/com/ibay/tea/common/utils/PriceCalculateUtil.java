@@ -17,4 +17,9 @@ public class PriceCalculateUtil {
         BigDecimal reduceAmount = new BigDecimal(orderTotalPrice).subtract(realAmount);
         return reduceAmount.doubleValue();
     }
+
+    public static double multy(double price, String couponsRatio) {
+        BigDecimal multiply = new BigDecimal(price).multiply(new BigDecimal(couponsRatio));
+        return multiply.doubleValue();
+    }
 }

@@ -10,11 +10,12 @@
     <result column="sku_detail_ids" jdbcType="VARCHAR" property="skuDetailIds" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="sku_detail_desc" jdbcType="VARCHAR" property="skuDetailDesc" />
+    <result column="store_id" jdbcType="INTEGER" property="storeId" />
 
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, oppen_id, goods_id, show_price, sku_detail_ids, create_time,item_count,sku_detail_desc
+    id, oppen_id, goods_id, show_price, sku_detail_ids, create_time,item_count,sku_detail_desc,store_id
   </sql>
     <delete id="cartGoodsDelete">
       DELETE FROM tb_cart WHERE oppen_id = #{oppenId} and id = #{id}
@@ -42,10 +43,10 @@
 
   <insert id="insert" parameterType="com.ibay.tea.entity.TbCart">
     insert into tb_cart (oppen_id, goods_id,
-      show_price, sku_detail_ids, create_time,item_count,sku_detail_desc
+      show_price, sku_detail_ids, create_time,item_count,sku_detail_desc,store_id
       )
     values (#{oppenId,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER},
-      #{showPrice,jdbcType=DOUBLE}, #{skuDetailIds,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},#{itemCount},#{skuDetailDesc,jdbcType=VARCHAR}
+      #{showPrice,jdbcType=DOUBLE}, #{skuDetailIds,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},#{itemCount},#{skuDetailDesc,jdbcType=VARCHAR},#{storeId}
       )
   </insert>
 

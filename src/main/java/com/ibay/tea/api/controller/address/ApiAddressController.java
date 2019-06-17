@@ -29,12 +29,13 @@ public class ApiAddressController {
             return ResultInfo.newEmptyParamsResultInfo();
         }
         String oppenId = params.get("oppenId");
-        if (StringUtils.isEmpty(oppenId)){
+        String storeId = params.get("storeId");
+        if (StringUtils.isEmpty(oppenId) || StringUtils.isEmpty(storeId)){
             return ResultInfo.newEmptyParamsResultInfo();
         }
         try {
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
-            List<TbApiUserAddress> userAddressByOppenId = apiAddressService.findUserAddressByOppenId(oppenId);
+            List<TbApiUserAddress> userAddressByOppenId = apiAddressService.findUserAddressByOppenId(oppenId,storeId);
             resultInfo.setData(userAddressByOppenId);
             return resultInfo;
         }catch (Exception e){

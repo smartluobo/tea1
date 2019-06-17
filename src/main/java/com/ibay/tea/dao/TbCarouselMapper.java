@@ -15,4 +15,6 @@ public interface TbCarouselMapper {
     void deleteCarousel(int id);
 
     void saveUpdateCarousel(TbCarousel tbCarousel);
+
+    List<TbCarousel> findCarouselByStoreId(int storeId);
 }

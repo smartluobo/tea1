@@ -6,9 +6,9 @@ import com.ibay.tea.entity.TbUserCoupons;
 
 public interface ApiActivityService {
 
-    TbActivity getTodayActivity();
+    TbActivity getTodayActivity(int storeId);
 
-    TbActivityCouponsRecord extractPrize(String oppenId);
+    TbActivityCouponsRecord extractPrize(String oppenId,int storeId);
 
     void saveUserCouponsToDb(TbUserCoupons tbUserCoupons);
 

@@ -2,6 +2,7 @@ package com.ibay.tea.api.controller.store;
 
 import com.ibay.tea.api.response.ResultInfo;
 import com.ibay.tea.api.service.store.ApiStoreService;
+import com.ibay.tea.cache.StoreCache;
 import com.ibay.tea.entity.TbStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +19,13 @@ public class ApiStoreController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiStoreController.class);
 
     @Resource
-    private ApiStoreService apiStoreService;
+    private StoreCache storeCache;
 
     @RequestMapping("/list")
     public ResultInfo list(){
         try {
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
-            List<TbStore> all = apiStoreService.findAll();
+            List<TbStore> all = storeCache.getStoreList();
             resultInfo.setData(all);
             return  resultInfo;
         }catch (Exception e){

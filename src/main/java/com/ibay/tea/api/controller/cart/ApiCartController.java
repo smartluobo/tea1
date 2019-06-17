@@ -2,6 +2,7 @@ package com.ibay.tea.api.controller.cart;
 
 import com.ibay.tea.api.response.ResultInfo;
 import com.ibay.tea.api.service.cart.ApiCartService;
+import com.ibay.tea.api.service.goods.ApiGoodsService;
 import com.ibay.tea.entity.TbCart;
 import com.ibay.tea.entity.TbItem;
 import org.apache.commons.lang3.StringUtils;
@@ -26,18 +27,23 @@ public class ApiCartController {
     @Resource
     private ApiCartService apiCartService;
 
+    @Resource
+    private ApiGoodsService apiGoodsService;
+
     @RequestMapping("cartGoodsList")
     public ResultInfo getCartList(@RequestBody Map<String,String> params){
         if (CollectionUtils.isEmpty(params)){
             return ResultInfo.newEmptyParamsResultInfo();
         }
         String oppenId = params.get("oppenId");
+        String storeId = params.get("storeId");
         if (StringUtils.isEmpty(oppenId)){
             return  ResultInfo.newEmptyParamsResultInfo();
         }
         try {
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
-            List<TbItem> cartGoodsList = apiCartService.findCartGoodsListByOppenId(oppenId);
+            List<TbItem> cartGoodsList = apiCartService.findCartGoodsListByOppenId(oppenId,Integer.valueOf(storeId));
+            apiGoodsService.checkGoodsInventory(cartGoodsList,Integer.valueOf(storeId));
             resultInfo.setData(cartGoodsList);
             return resultInfo;
         }catch (Exception e){
@@ -52,12 +58,13 @@ public class ApiCartController {
             return  ResultInfo.newEmptyParamsResultInfo();
         }
         Integer id = params.get("id");
-        if (id == null || id == 0){
+        Integer storeId = params.get("storeId");
+        if (id == null || id == 0 ||storeId == null || storeId == 0){
             return ResultInfo.newEmptyParamsResultInfo();
         }
         try {
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
-            TbItem cartGoodsInfo = apiCartService.findCartGoodsById(id);
+            TbItem cartGoodsInfo = apiCartService.findCartGoodsById(id,storeId);
             resultInfo.setData(cartGoodsInfo);
             return resultInfo;
         }catch (Exception e){

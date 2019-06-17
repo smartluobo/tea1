@@ -5,12 +5,10 @@ import com.ibay.tea.common.utils.DateUtil;
 import com.ibay.tea.dao.TbActivityCouponsRecordMapper;
 import com.ibay.tea.dao.TbActivityMapper;
 import com.ibay.tea.dao.TbCouponsMapper;
-import com.ibay.tea.entity.TbActivity;
-import com.ibay.tea.entity.TbActivityCouponsRecord;
-import com.ibay.tea.entity.TbCoupons;
-import com.ibay.tea.entity.TodayActivityBean;
+import com.ibay.tea.entity.*;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -27,11 +25,14 @@ public class ActivityCache implements InitializingBean{
     @Resource
     private TbActivityCouponsRecordMapper tbActivityCouponsRecordMapper;
 
+    @Resource
+    private StoreCache storeCache;
+
     //当日活动
-    private TbActivity todayActivity;
+    private List<TbActivity> todayActivityList = new ArrayList<>();
 
     //今日活动对象 包含了活动关联的优惠券信息
-    private TodayActivityBean todayActivityBean;
+    private List<TodayActivityBean> todayActivityBeans = new ArrayList<>();
 
     private List<TbCoupons> couponsListCache;
 
@@ -42,19 +43,30 @@ public class ActivityCache implements InitializingBean{
 
 
 
+
+
     private void initActivityCache(){
-        //如果有及节日活动优先选择当天活动为节假日活动
-        todayActivity = tbActivityMapper.findFullActivity(DateUtil.getDateYyyyMMdd());
-        if (todayActivity == null){
-            todayActivity = tbActivityMapper.findHolidayActivity(DateUtil.getDateYyyyMMdd());
+        List<TbStore> storeList = storeCache.getStoreList();
+        if (!CollectionUtils.isEmpty(storeList)){
+            for (TbStore store : storeList) {
+                //如果有及节日活动优先选择当天活动为节假日活动
+                TbActivity tbActivity = tbActivityMapper.findFullActivity(DateUtil.getDateYyyyMMdd(),store.getId());
+                if (tbActivity == null){
+                    tbActivity = tbActivityMapper.findHolidayActivity(DateUtil.getDateYyyyMMdd(),store.getId());
+                }
+                if(tbActivity == null){
+                    //没有节假日活动查询常规活动
+                    tbActivity = tbActivityMapper.findRegularActivity(DateUtil.getDateYyyyMMdd(),store.getId());
+                }
+                if (tbActivity != null){
+                    todayActivityList.add(tbActivity);
+                }
+            }
         }
-        if(todayActivity == null){
-            //没有节假日活动查询常规活动
-            todayActivity = tbActivityMapper.findRegularActivity(DateUtil.getDateYyyyMMdd());
-        }
+
         couponsListCache = tbCouponsMapper.findAll();
         tbActivityCouponsRecordsCache = tbActivityCouponsRecordMapper.findAll();
-        if (todayActivity != null){
+        if (todayActivityList.size() > 0){
             buildTodayActivityInfoBean();
         }
 
@@ -79,18 +91,26 @@ public class ActivityCache implements InitializingBean{
         initActivityCache();
     }
 
-    public TbActivity getTodayActivity() {
-        return todayActivity;
+    public TbActivity getTodayActivity(int storeId) {
+        for (TbActivity tbActivity : todayActivityList) {
+            if (tbActivity.getStoreId() == storeId){
+                return tbActivity;
+            }
+        }
+        return null;
     }
 
     public void buildTodayActivityInfoBean(){
 
-        if (todayActivity != null){
-            todayActivityBean = new TodayActivityBean();
-            todayActivityBean.setTbActivity(todayActivity);
-            setTodayActivityCouponsRecordList(todayActivityBean,todayActivity);
-            setTodayActivityCouponsMap(todayActivityBean);
+        if (CollectionUtils.isEmpty(todayActivityList)){
 
+            for (TbActivity tbActivity : todayActivityList) {
+                TodayActivityBean todayActivityBean = new TodayActivityBean();
+                todayActivityBean.setTbActivity(tbActivity);
+                setTodayActivityCouponsRecordList(todayActivityBean,tbActivity);
+                setTodayActivityCouponsMap(todayActivityBean);
+                todayActivityBeans.add(todayActivityBean);
+            }
         }
     }
 
@@ -120,8 +140,13 @@ public class ActivityCache implements InitializingBean{
      * 获取今日抽奖活动信息
      * @return 返回今日活动信息
      */
-    public TodayActivityBean getTodayActivityBean() {
-        return todayActivityBean;
+    public TodayActivityBean getTodayActivityBean(int storeId) {
+        for (TodayActivityBean todayActivityBean : todayActivityBeans) {
+            if (todayActivityBean.getTbActivity().getStoreId() == storeId){
+                return todayActivityBean;
+            }
+        }
+        return null;
     }
 
     public TbCoupons getGeneralCoupons() {

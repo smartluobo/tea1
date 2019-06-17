@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface ApiAddressService {
 
-    List<TbApiUserAddress> findUserAddressByOppenId(String oppenId);
+    List<TbApiUserAddress> findUserAddressByOppenId(String oppenId,String storeId);
 
     TbApiUserAddress findUserAddressById(int id);
 

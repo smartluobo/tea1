@@ -41,8 +41,11 @@
   <select id="findAll" resultMap="BaseResultMap">
       SELECT * FROM tb_coupons
   </select>
+  <select id="findFullReduceCoupons" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> from tb_coupons where coupons_type = 2 ORDER BY consume_amount DESC
+  </select>
 
-  <delete id="deleteCoupons" parameterType="java.lang.Integer">
+    <delete id="deleteCoupons" parameterType="java.lang.Integer">
     delete from tb_coupons where id = #{id}
   </delete>
 </mapper>

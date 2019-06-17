@@ -1,5 +1,7 @@
 package com.ibay.tea.entity;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.Date;
 
 public class TbSkuDetail {
@@ -62,5 +64,10 @@ public class TbSkuDetail {
 
     public void setIsSelected(int isSelected) {
         this.isSelected = isSelected;
+    }
+
+    public TbSkuDetail copy(){
+        String thisStr = JSONObject.toJSONString(this);
+        return JSONObject.parseObject(thisStr, TbSkuDetail.class);
     }
 }

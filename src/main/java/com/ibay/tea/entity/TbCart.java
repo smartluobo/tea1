@@ -19,6 +19,8 @@ public class TbCart {
 
     private String skuDetailDesc;
 
+    private int storeId;
+
     public Integer getId() {
         return id;
     }
@@ -81,6 +83,14 @@ public class TbCart {
 
     public void setSkuDetailDesc(String skuDetailDesc) {
         this.skuDetailDesc = skuDetailDesc;
+    }
+
+    public int getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
     }
 
     @Override

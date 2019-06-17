@@ -11,6 +11,8 @@ public class TbCarousel {
 
     private Date createTime;
 
+    private int storeId;
+
     public Integer getId() {
         return id;
     }
@@ -41,5 +43,13 @@ public class TbCarousel {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public int getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
     }
 }

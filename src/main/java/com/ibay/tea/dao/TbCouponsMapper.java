@@ -18,4 +18,7 @@ public interface TbCouponsMapper {
     void saveUpdateCoupons(TbCoupons tbCoupons);
 
     void deleteCoupons(int id);
+
+    List<TbCoupons> findFullReduceCoupons();
+
 }

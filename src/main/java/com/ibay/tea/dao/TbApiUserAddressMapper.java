@@ -1,6 +1,7 @@
 package com.ibay.tea.dao;
 
 import com.ibay.tea.entity.TbApiUserAddress;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface TbApiUserAddressMapper {
 
     TbApiUserAddress selectByPrimaryKey(int id);
 
-    List<TbApiUserAddress> findUserAddressByOppenId(String oppenId);
+    List<TbApiUserAddress> findUserAddressByOppenId(@Param("oppenId") String oppenId, @Param("storeId") String storeId);
 
     void saveUpdateApiUserAddress(TbApiUserAddress tbApiUserAddress);
 

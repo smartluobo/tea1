@@ -27,6 +27,8 @@ public class TbActivity {
 
     private String tips;
 
+    private int storeId;
+
     public Integer getId() {
         return id;
     }
@@ -113,6 +115,14 @@ public class TbActivity {
 
     public void setTips(String tips) {
         this.tips = tips;
+    }
+
+    public int getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
     }
 
     public TbActivity copy(){

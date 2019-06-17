@@ -6,6 +6,7 @@ import com.ibay.tea.dao.TbItemMapper;
 import com.ibay.tea.dao.TbSkuDetailMapper;
 import com.ibay.tea.dao.TbSkuTypeMapper;
 import com.ibay.tea.entity.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
@@ -43,32 +44,15 @@ public class GoodsCache implements InitializingBean {
         initSkuTypeCache();
         initSkuDetailCache();
         List<TbItem> goodsList = tbItemMapper.findAll();
-        TbActivity todayActivity = activityCache.getTodayActivity();
-        if (todayActivity != null && todayActivity.getActivityType() == ApiConstant.ACTIVITY_TYPE_FULL){
-            List<TbActivityCouponsRecord> records = activityCache.getActivityCouponsRecordsByActivityId(todayActivity.getId());
-            if (records != null && records.size() > 0){
-                for (TbActivityCouponsRecord record : records) {
-                    TbCoupons tbCoupons = activityCache.getTbCouponsById(record.getCouponsId());
-                    if (tbCoupons != null && tbCoupons.getCouponsType() == ApiConstant.USER_COUPONS_TYPE_RATIO){
-                        String couponsRatio = tbCoupons.getCouponsRatio();
-                        for (TbItem tbItem : goodsList) {
-                            BigDecimal activityPrice = PriceCalculateUtil.activityPriceCalculate(tbItem.getPrice(),new BigDecimal(couponsRatio));
-                            tbItem.setActivityPrice(activityPrice);
-                            tbItem.setShowActivityPrice(1);
-                        }
-                        break;
-                    }
-                }
-            }
-        }
         categoryGoodsCacheMap = new HashMap<>();
         goodsIdCacheMap = new HashMap<>();
         for (TbItem tbItem : goodsList) {
             List<TbItem> categoryTbItems = categoryGoodsCacheMap.get(tbItem.getCid());
             String skuTypeIds = tbItem.getSkuTypeIds();
+            String defaultSkuDetailIds = tbItem.getDefaultSkuDetailIds();
 
             if (skuTypeIds != null && skuTypeIds.trim().length() > 0){
-                setGoodsSkuShowInfo(skuTypeIds,tbItem);
+                setGoodsSkuShowInfo(skuTypeIds,defaultSkuDetailIds,tbItem);
             }
             if (categoryTbItems == null){
                 List<TbItem> categoryGoodsList = new ArrayList<>();
@@ -89,9 +73,14 @@ public class GoodsCache implements InitializingBean {
         tbSkuDetailCache =tbSkuDetailMapper.findAll();
     }
 
-    private void setGoodsSkuShowInfo(String skuTypeIds, TbItem tbItem) {
+    private void setGoodsSkuShowInfo(String skuTypeIds,String defaultSkuDetailIds, TbItem tbItem) {
+        if (StringUtils.isEmpty(skuTypeIds)){
+            return;
+        }
         List<TbSkuType> skuTypes = new ArrayList<>();
         String[] skuTypeIdArr = skuTypeIds.split(",");
+        String[] defaultSkuDetailIdArr = defaultSkuDetailIds.split(",");
+
         for (String skuTypeId : skuTypeIdArr) {
             for (TbSkuType tbSkuType : tbSkuTypeCache) {
                 if (tbSkuType.getId() == Long.parseLong(skuTypeId)){
@@ -99,8 +88,14 @@ public class GoodsCache implements InitializingBean {
                     //设置skuType下的sku_detail
                     List<TbSkuDetail> skuDetails = new ArrayList<>();
                     for (TbSkuDetail tbSkuDetail : tbSkuDetailCache) {
+                        TbSkuDetail copySkuDetail = tbSkuDetail.copy();
                         if (tbSkuDetail.getSkuTypeId() == tbSkuType.getId()){
-                            skuDetails.add(tbSkuDetail);
+                            skuDetails.add(copySkuDetail);
+                        }
+                        for (String s : defaultSkuDetailIdArr) {
+                            if (copySkuDetail.getId().intValue() == Integer.valueOf(s).intValue()){
+                                copySkuDetail.setIsSelected(1);
+                            }
                         }
                     }
                     tbSkuType.setSkuDetails(skuDetails);

@@ -50,12 +50,13 @@ public class ApiActivityController {
         ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
         try {
             String oppenId = params.get("oppenId");
-            if (StringUtils.isEmpty(oppenId)){
+            String storeId = params.get("storeId");
+            if (StringUtils.isEmpty(oppenId) || StringUtils.isEmpty(storeId)){
                 return ResultInfo.newEmptyParamsResultInfo();
             }
             Map<String,Object> result = new HashMap<>();
-            TbActivity activityInfo = apiActivityService.getTodayActivity();
-            if (activityInfo == null){
+            TbActivity activityInfo = apiActivityService.getTodayActivity(Integer.valueOf(storeId));
+            if (activityInfo == null || activityInfo.getActivityType() == ApiConstant.ACTIVITY_TYPE_FULL){
                 return ResultInfo.newEmptyResultInfo();
             }
             int activityStatus = apiActivityService.checkActivityStatus(activityInfo);
@@ -117,7 +118,8 @@ public class ApiActivityController {
             return ResultInfo.newEmptyParamsResultInfo();
         }
         String oppenId = params.get("oppenId");
-        if (StringUtils.isEmpty(oppenId)){
+        String storeId = params.get("storeId");
+        if (StringUtils.isEmpty(oppenId) || StringUtils.isEmpty(storeId)){
             return ResultInfo.newEmptyParamsResultInfo();
         }
         ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
@@ -127,7 +129,7 @@ public class ApiActivityController {
                 return ResultInfo.newEmptyResultInfo();
             }
             //判断通过执行抽奖过程
-            TbActivityCouponsRecord record = apiActivityService.extractPrize(oppenId);
+            TbActivityCouponsRecord record = apiActivityService.extractPrize(oppenId,Integer.valueOf(storeId));
             if (record != null){
                 //将用户的优惠券存入数据库
                 TbUserCoupons tbUserCoupons = apiActivityService.buildUserCoupons(oppenId,record);

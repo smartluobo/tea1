@@ -3,6 +3,7 @@ package com.ibay.tea.api.controller.order;
 import com.ibay.tea.api.paramVo.CartOrderParamVo;
 import com.ibay.tea.api.paramVo.GoodsOrderParamVo;
 import com.ibay.tea.api.response.ResultInfo;
+import com.ibay.tea.api.responseVo.CalculateReturnVo;
 import com.ibay.tea.api.service.order.ApiOrderService;
 import com.ibay.tea.dao.TbStoreMapper;
 import com.ibay.tea.entity.TbStore;
@@ -102,5 +103,41 @@ public class ApiOrderController {
     @RequestMapping("/findOrderItemByOrderId")
     public ResultInfo findOrderItemByOrderId(@RequestBody Map<String,String> params){
         return null;
+    }
+
+    @RequestMapping("/calculateCartOrderPrice")
+    public ResultInfo calculateCartOrderPrice(CartOrderParamVo paramVo){
+
+        if (paramVo == null){
+        	return ResultInfo.newEmptyParamsResultInfo();
+        }
+
+        try {
+        	ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            CalculateReturnVo calculateReturnVo = apiOrderService.calculateCartOrderPrice(paramVo);
+            resultInfo.setData(calculateReturnVo);
+            return resultInfo;
+        }catch (Exception e){
+        	return ResultInfo.newExceptionResultInfo();
+        }
+
+    }
+
+    @RequestMapping("/calculateGoodsOrderPrice")
+    public ResultInfo calculateGoodsOrderPrice(GoodsOrderParamVo paramVo){
+
+        if (paramVo == null){
+            return ResultInfo.newEmptyParamsResultInfo();
+        }
+
+        try {
+            ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            double orderPrice = apiOrderService.calculateGoodsOrderPrice(paramVo);
+            resultInfo.setData(orderPrice);
+            return resultInfo;
+        }catch (Exception e){
+            return ResultInfo.newExceptionResultInfo();
+        }
+
     }
 }

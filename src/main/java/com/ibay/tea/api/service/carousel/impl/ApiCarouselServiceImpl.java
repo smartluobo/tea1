@@ -15,7 +15,7 @@ public class ApiCarouselServiceImpl implements ApiCarouselService {
     private TbCarouselMapper tbCarouselMapper;
 
     @Override
-    public List<TbCarousel> findAll() {
-        return tbCarouselMapper.findAll();
+    public List<TbCarousel> findCarouselByStoreId(int storeId) {
+        return tbCarouselMapper.findCarouselByStoreId(storeId);
     }
 }

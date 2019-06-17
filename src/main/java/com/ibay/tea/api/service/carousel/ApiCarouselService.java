@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ApiCarouselService {
 
-    List<TbCarousel> findAll();
+    List<TbCarousel> findCarouselByStoreId(int storeId);
 
 }

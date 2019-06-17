@@ -28,8 +28,8 @@ public class ApiActivityServiceImpl implements ApiActivityService {
     private TbUserCouponsMapper tbUserCouponsMapper;
 
     @Override
-    public TbActivity getTodayActivity() {
-        TbActivity activity = activityCache.getTodayActivity();
+    public TbActivity getTodayActivity(int storeId) {
+        TbActivity activity = activityCache.getTodayActivity(storeId);
         if (activity != null){
             return activity.copy();
         }
@@ -37,9 +37,12 @@ public class ApiActivityServiceImpl implements ApiActivityService {
     }
 
     @Override
-    public TbActivityCouponsRecord extractPrize(String oppenId) {
-        TodayActivityBean todayActivityBean = activityCache.getTodayActivityBean();
+    public TbActivityCouponsRecord extractPrize(String oppenId,int storeId) {
+        TodayActivityBean todayActivityBean = activityCache.getTodayActivityBean(storeId);
         TbActivityCouponsRecord record = null;
+        if (todayActivityBean == null || todayActivityBean.getTbActivity().getActivityType() == ApiConstant.ACTIVITY_TYPE_FULL){
+            return null;
+        }
         List<TbActivityCouponsRecord> tbActivityCouponsRecordList = todayActivityBean.getTbActivityCouponsRecordList();
         synchronized (LOCK_STRING){
             for (TbActivityCouponsRecord tbActivityCouponsRecord : tbActivityCouponsRecordList) {

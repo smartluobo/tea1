@@ -17,6 +17,8 @@ public class TbApiUserAddress {
 
     private String userName;
 
+    private int storeId;
+
     public Integer getId() {
         return id;
     }
@@ -79,5 +81,13 @@ public class TbApiUserAddress {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public int getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
     }
 }
