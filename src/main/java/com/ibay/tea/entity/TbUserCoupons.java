@@ -18,6 +18,8 @@ public class TbUserCoupons {
 
     private Integer status;
 
+    private String couponsPoster;
+
     public Integer getId() {
         return id;
     }
@@ -72,5 +74,13 @@ public class TbUserCoupons {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getCouponsPoster() {
+        return couponsPoster;
+    }
+
+    public void setCouponsPoster(String couponsPoster) {
+        this.couponsPoster = couponsPoster;
     }
 }

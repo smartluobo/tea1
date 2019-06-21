@@ -30,9 +30,9 @@
       </if>
 
   </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from tb_store_goods
-    where id = #{id,jdbcType=INTEGER}
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_store_goods where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ibay.tea.entity.TbStoreGoods">
     insert into tb_store_goods (id, goods_id, goods_name, 
@@ -42,97 +42,9 @@
       #{goodsInventory,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{storeId,jdbcType=INTEGER}, #{storeName,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.ibay.tea.entity.TbStoreGoods">
-    insert into tb_store_goods
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="goodsId != null">
-        goods_id,
-      </if>
-      <if test="goodsName != null">
-        goods_name,
-      </if>
-      <if test="goodsInventory != null">
-        goods_inventory,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-      <if test="storeId != null">
-        store_id,
-      </if>
-      <if test="storeName != null">
-        store_name,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="goodsId != null">
-        #{goodsId,jdbcType=INTEGER},
-      </if>
-      <if test="goodsName != null">
-        #{goodsName,jdbcType=VARCHAR},
-      </if>
-      <if test="goodsInventory != null">
-        #{goodsInventory,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="storeId != null">
-        #{storeId,jdbcType=INTEGER},
-      </if>
-      <if test="storeName != null">
-        #{storeName,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ibay.tea.entity.TbStoreGoods">
-    update tb_store_goods
-    <set>
-      <if test="goodsId != null">
-        goods_id = #{goodsId,jdbcType=INTEGER},
-      </if>
-      <if test="goodsName != null">
-        goods_name = #{goodsName,jdbcType=VARCHAR},
-      </if>
-      <if test="goodsInventory != null">
-        goods_inventory = #{goodsInventory,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="storeId != null">
-        store_id = #{storeId,jdbcType=INTEGER},
-      </if>
-      <if test="storeName != null">
-        store_name = #{storeName,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
+
+  <update id="updateInventory" parameterType="map">
+    UPDATE tb_store_goods SET goods_inventory = goods_inventory - #{num} where goods_id = #{goodsId} and store_id = #{storeId}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ibay.tea.entity.TbStoreGoods">
-    update tb_store_goods
-    set goods_id = #{goodsId,jdbcType=INTEGER},
-      goods_name = #{goodsName,jdbcType=VARCHAR},
-      goods_inventory = #{goodsInventory,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      store_id = #{storeId,jdbcType=INTEGER},
-      store_name = #{storeName,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
 </mapper>

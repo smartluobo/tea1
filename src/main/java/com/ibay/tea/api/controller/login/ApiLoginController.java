@@ -29,6 +29,7 @@ public class ApiLoginController {
 
     @RequestMapping("/login")
     public ResultInfo login(@RequestBody Map<String,String> codeParam){
+        LOGGER.info("api user login call.....");
         String code = null;
         try {
             if (CollectionUtils.isEmpty(codeParam)){

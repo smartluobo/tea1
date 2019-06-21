@@ -22,4 +22,5 @@ public interface TbApiUserAddressMapper {
 
     void deleteApiUserAddress(Map<String, String> params);
 
+    void updateAddressNotDefault(@Param("oppenId") String oppenId, @Param("storeId") int storeId);
 }

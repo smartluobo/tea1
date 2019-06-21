@@ -12,6 +12,7 @@ public class GoodsOrderParamVo {
     private int goodsCount;
     private int storeId;
     private String skuDetailDesc;
+    private String orderId;
 
     public String getOppenId() {
         return oppenId;
@@ -83,5 +84,13 @@ public class GoodsOrderParamVo {
 
     public void setSkuDetailDesc(String skuDetailDesc) {
         this.skuDetailDesc = skuDetailDesc;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 }

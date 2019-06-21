@@ -38,7 +38,7 @@ public class ApiGoodsServiceImpl implements ApiGoodsService {
 
         List<TbItem> goodsListByCategoryId = goodsCache.getGoodsListByCategoryId(categoryId);
 
-        if (CollectionUtils.isEmpty(goodsListByCategoryId)){
+        if (!CollectionUtils.isEmpty(goodsListByCategoryId)){
             List<TbItem> goodsList = new ArrayList<>(goodsListByCategoryId.size());
             for (TbItem tbItem : goodsListByCategoryId) {
                 goodsList.add(tbItem.copy());
@@ -74,7 +74,7 @@ public class ApiGoodsServiceImpl implements ApiGoodsService {
                     tbItem.setActivityPrice(activityPrice);
                 }
             }else {
-                if (extraPrice != 0){
+                if (extraPrice != 0 && !CollectionUtils.isEmpty(goodsListByCategoryId)){
                     for (TbItem tbItem : goodsListByCategoryId) {
                         tbItem.setPrice(tbItem.getPrice() + extraPrice);
                     }

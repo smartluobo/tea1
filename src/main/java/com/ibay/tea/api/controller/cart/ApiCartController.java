@@ -3,8 +3,12 @@ package com.ibay.tea.api.controller.cart;
 import com.ibay.tea.api.response.ResultInfo;
 import com.ibay.tea.api.service.cart.ApiCartService;
 import com.ibay.tea.api.service.goods.ApiGoodsService;
+import com.ibay.tea.cache.ActivityCache;
+import com.ibay.tea.cache.StoreCache;
 import com.ibay.tea.entity.TbCart;
 import com.ibay.tea.entity.TbItem;
+import com.ibay.tea.entity.TbStore;
+import com.ibay.tea.entity.TodayActivityBean;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +34,12 @@ public class ApiCartController {
     @Resource
     private ApiGoodsService apiGoodsService;
 
+    @Resource
+    private StoreCache storeCache;
+
+    @Resource
+    private ActivityCache activityCache;
+
     @RequestMapping("cartGoodsList")
     public ResultInfo getCartList(@RequestBody Map<String,String> params){
         if (CollectionUtils.isEmpty(params)){
@@ -42,7 +52,13 @@ public class ApiCartController {
         }
         try {
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            TbStore store = storeCache.findStoreById(Integer.valueOf(storeId));
             List<TbItem> cartGoodsList = apiCartService.findCartGoodsListByOppenId(oppenId,Integer.valueOf(storeId));
+            if (CollectionUtils.isEmpty(cartGoodsList)){
+                return ResultInfo.newEmptyResultInfo();
+            }
+            TodayActivityBean todayActivityBean = activityCache.getTodayActivityBean(Integer.valueOf(storeId));
+            apiGoodsService.calculateGoodsPrice(cartGoodsList,store.getExtraPrice(),todayActivityBean);
             apiGoodsService.checkGoodsInventory(cartGoodsList,Integer.valueOf(storeId));
             resultInfo.setData(cartGoodsList);
             return resultInfo;

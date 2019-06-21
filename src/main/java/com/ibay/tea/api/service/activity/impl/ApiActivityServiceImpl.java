@@ -100,7 +100,7 @@ public class ApiActivityServiceImpl implements ApiActivityService {
             //活动未开始
             return ApiConstant.ACTIVITY_STATUS_NOT_START;
         }
-        if (tbActivity.getStartHour() < hour && tbActivity.getEndHour() > hour){
+        if (tbActivity.getStartHour() <= hour && tbActivity.getEndHour() >= hour){
             //活动正在进行中
             return ApiConstant.ACTIVITY_STATUS_STARTING;
         }

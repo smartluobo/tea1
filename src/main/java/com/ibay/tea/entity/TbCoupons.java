@@ -23,6 +23,8 @@ public class TbCoupons {
 
     private Date updateTime;
 
+    private String couponsPoster;
+
     public Integer getId() {
         return id;
     }
@@ -101,5 +103,13 @@ public class TbCoupons {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getCouponsPoster() {
+        return couponsPoster;
+    }
+
+    public void setCouponsPoster(String couponsPoster) {
+        this.couponsPoster = couponsPoster;
     }
 }

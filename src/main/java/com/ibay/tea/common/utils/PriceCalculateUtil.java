@@ -22,4 +22,8 @@ public class PriceCalculateUtil {
         BigDecimal multiply = new BigDecimal(price).multiply(new BigDecimal(couponsRatio));
         return multiply.doubleValue();
     }
+
+    public static int intOrderTbPrice(BigDecimal payment) {
+        return payment.multiply(new BigDecimal(100)).intValue();
+    }
 }

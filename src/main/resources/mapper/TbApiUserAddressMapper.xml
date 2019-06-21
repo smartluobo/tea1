@@ -11,12 +11,16 @@
     <result column="bind_num" jdbcType="VARCHAR" property="bindNum" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="store_id" jdbcType="INTEGER" property="storeId" />
+    <result column="is_default" jdbcType="INTEGER" property="isDefault" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, oppen_id, address_name, longitude, latitude, phone_num, bind_num,user_name,store_id
+    id, oppen_id, address_name, longitude, latitude, phone_num, bind_num,user_name,store_id,is_default
   </sql>
+    <update id="updateAddressNotDefault" parameterType="map">
+      UPDATE tb_api_user_address SET is_default = 0 WHERE oppen_id=#{oppenId} AND store_id = #{storeId}
+    </update>
 
-  <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from tb_api_user_address where id = #{id,jdbcType=INTEGER}
   </select>
 
@@ -34,18 +38,18 @@
   <insert id="insert" parameterType="com.ibay.tea.entity.TbApiUserAddress">
     insert into tb_api_user_address (oppen_id, address_name,
       longitude, latitude, phone_num, 
-      bind_num,user_name,store_id)
+      bind_num,user_name,store_id,is_default)
     values (#{oppenId,jdbcType=VARCHAR}, #{addressName,jdbcType=VARCHAR},
       #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR}, 
-      #{bindNum,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{storeId})
+      #{bindNum,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{storeId},#{isDefault})
   </insert>
   <insert id="saveUpdateApiUserAddress" parameterType="com.ibay.tea.entity.TbApiUserAddress">
       insert into tb_api_user_address (id,oppen_id, address_name,
                                        longitude, latitude, phone_num,
-                                       bind_num,user_name,store_id)
+                                       bind_num,user_name,store_id,is_default)
       values (#{id},#{oppenId,jdbcType=VARCHAR}, #{addressName,jdbcType=VARCHAR},
               #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR},
-              #{bindNum,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{storeId})
+              #{bindNum,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{storeId},#{isDefault})
   </insert>
 
 </mapper>

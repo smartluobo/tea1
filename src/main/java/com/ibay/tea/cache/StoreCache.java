@@ -23,7 +23,7 @@ public class StoreCache implements InitializingBean {
 
     private void initStoreCache(){
         storeList = tbStoreMapper.findAll();
-        if (CollectionUtils.isEmpty(storeList)){
+        if (!CollectionUtils.isEmpty(storeList)){
             for (TbStore tbStore : storeList) {
                 if (storeMap == null){
                     storeMap = new HashMap<>();

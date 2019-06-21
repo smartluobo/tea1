@@ -2,6 +2,7 @@ package com.ibay.tea.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class TbOrder {
     private String orderId;
@@ -47,6 +48,10 @@ public class TbOrder {
     private String phoneNum;
 
     private String posterUrl;
+
+    private List<TbOrderItem> orderItems;
+
+    private String createDateStr;
 
     //订单商品数量
     private int goodsTotalCount = 1;
@@ -320,5 +325,21 @@ public class TbOrder {
 
     public void setGoodsName(String goodsName) {
         this.goodsName = goodsName;
+    }
+
+    public List<TbOrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<TbOrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public String getCreateDateStr() {
+        return createDateStr;
+    }
+
+    public void setCreateDateStr(String createDateStr) {
+        this.createDateStr = createDateStr;
     }
 }

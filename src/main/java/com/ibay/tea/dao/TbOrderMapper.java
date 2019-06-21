@@ -24,4 +24,7 @@ public interface TbOrderMapper {
 
     long countByCondition(Map<String, Object> condition);
 
+    List<TbOrder> findOrderByOppenId(String oppenId);
+
+    void updatePayStatus(Map<String, Object> updateMap);
 }

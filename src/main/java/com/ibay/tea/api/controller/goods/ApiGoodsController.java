@@ -12,6 +12,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -63,13 +64,22 @@ public class ApiGoodsController {
             return  ResultInfo.newEmptyParamsResultInfo();
         }
         Long goodsId = params.get("goodsId");
-        if (goodsId == null || goodsId == 0){
+        Long storeId = params.get("storeId");
+        if (goodsId == null || goodsId == 0 ||storeId == null || storeId == 0){
             return  ResultInfo.newEmptyParamsResultInfo();
         }
         try {
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
             TbItem goods = apiGoodsService.getGoodsDetailById(goodsId);
-            resultInfo.setData(goods);
+            TbStore store = storeCache.findStoreById(storeId.intValue());
+            //店铺扩展价格
+            int extraPrice = store.getExtraPrice();
+            TodayActivityBean todayActivityBean = activityCache.getTodayActivityBean(storeId.intValue());
+            List<TbItem> goodsList = new ArrayList<>();
+            goodsList.add(goods);
+            apiGoodsService.calculateGoodsPrice(goodsList,extraPrice,todayActivityBean);
+            apiGoodsService.checkGoodsInventory(goodsList,storeId.intValue());
+            resultInfo.setData(goodsList.get(0));
             return resultInfo;
         }catch (Exception e){
             return ResultInfo.newExceptionResultInfo();

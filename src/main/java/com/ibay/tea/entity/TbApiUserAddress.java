@@ -19,6 +19,8 @@ public class TbApiUserAddress {
 
     private int storeId;
 
+    private int isDefault;
+
     public Integer getId() {
         return id;
     }
@@ -89,5 +91,13 @@ public class TbApiUserAddress {
 
     public void setStoreId(int storeId) {
         this.storeId = storeId;
+    }
+
+    public int getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(int isDefault) {
+        this.isDefault = isDefault;
     }
 }

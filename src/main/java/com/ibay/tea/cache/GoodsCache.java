@@ -1,17 +1,16 @@
 package com.ibay.tea.cache;
 
-import com.ibay.tea.common.constant.ApiConstant;
-import com.ibay.tea.common.utils.PriceCalculateUtil;
 import com.ibay.tea.dao.TbItemMapper;
 import com.ibay.tea.dao.TbSkuDetailMapper;
 import com.ibay.tea.dao.TbSkuTypeMapper;
-import com.ibay.tea.entity.*;
+import com.ibay.tea.entity.TbItem;
+import com.ibay.tea.entity.TbSkuDetail;
+import com.ibay.tea.entity.TbSkuType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

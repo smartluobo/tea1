@@ -1,16 +1,20 @@
 package com.ibay.tea.api.service.order.impl;
 
+import com.ibay.tea.api.config.WechatInfoProperties;
 import com.ibay.tea.api.paramVo.CartOrderParamVo;
 import com.ibay.tea.api.paramVo.GoodsOrderParamVo;
 import com.ibay.tea.api.responseVo.CalculateReturnVo;
 import com.ibay.tea.api.service.address.ApiAddressService;
 import com.ibay.tea.api.service.cart.ApiCartService;
+import com.ibay.tea.api.service.goods.ApiGoodsService;
 import com.ibay.tea.api.service.order.ApiOrderService;
 import com.ibay.tea.api.service.pay.ApiPayService;
 import com.ibay.tea.cache.ActivityCache;
 import com.ibay.tea.cache.GoodsCache;
 import com.ibay.tea.cache.StoreCache;
 import com.ibay.tea.common.constant.ApiConstant;
+import com.ibay.tea.common.utils.DateUtil;
+import com.ibay.tea.common.utils.Md5Util;
 import com.ibay.tea.common.utils.PriceCalculateUtil;
 import com.ibay.tea.common.utils.SerialGenerator;
 import com.ibay.tea.dao.*;
@@ -18,6 +22,8 @@ import com.ibay.tea.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -64,8 +70,14 @@ public class ApiOrderServiceImpl implements ApiOrderService {
     @Resource
     private TbCouponsMapper tbCouponsMapper;
 
+    @Resource
+    private ApiGoodsService apiGoodsService;
+
+    @Resource
+    private WechatInfoProperties wechatInfoProperties;
+
     @Override
-    public void createOrderByCart(String oppenId, String cartItemIds, int userCouponsId, int addressId, int selfGet,TbStore tbStore) throws Exception{
+    public Map<String, Object> createOrderByCart(String oppenId, String cartItemIds, int userCouponsId, int addressId, int selfGet,TbStore tbStore) throws Exception{
         TbUserCoupons tbUserCoupons = null;
         int sendPrice = 0;
         if (selfGet == ApiConstant.ORDER_TAKE_WAY_SEND){
@@ -74,7 +86,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
         //创建订单成功自动调起支付接口支付
         TbApiUserAddress userAddress = apiAddressService.findUserAddressById(addressId);
         if (selfGet == ApiConstant.ORDER_TAKE_WAY_SEND && userAddress == null){
-            return;
+            return null;
         }
         if (userCouponsId != 0){
             tbUserCoupons = tbUserCouponsMapper.selectValidUserCoupons(oppenId,userCouponsId);
@@ -94,6 +106,9 @@ public class ApiOrderServiceImpl implements ApiOrderService {
 
             String[] cartItemIdArr = cartItemIds.split(",");
             List<TbCart> cartItemByIds = tbCartMapper.findCartItemByIds(Arrays.asList(cartItemIdArr));
+            if (CollectionUtils.isEmpty(cartItemByIds)){
+                return null;
+            }
             List<TbItem> goodsList = new ArrayList<>();
             List<TbOrderItem> tbOrderItems = new ArrayList<>();
             String orderId = SerialGenerator.getOrderSerial();
@@ -154,16 +169,24 @@ public class ApiOrderServiceImpl implements ApiOrderService {
                 tbOrderItemMapper.insert(tbOrderItems.get(0));
             }
             //如果减少金额等于订单金额 更新优惠券为已经使用 订单状态为已支付
-            insertPayRecordAndUpdateCoupons(oppenId, userCouponsId, orderId, tbOrder);
+            TbUserPayRecord tbUserPayRecord = buildPayRecordAndUpdateCoupons(oppenId, userCouponsId, orderId, tbOrder);
 
             //保存订单
             tbOrderMapper.insert(tbOrder);
-
-            //调用支付接口
-            //TODO
-            //apiPayService.createPayOrderToWechat(tbOrder);
-
+            Map<String, Object> payMap = apiPayService.createPayOrderToWechat(tbOrder);
+            tbUserPayRecord.setNonceStr(String.valueOf(payMap.get("nonce_str")));
+            tbUserPayRecord.setPrepayId(String.valueOf(payMap.get("prepay_id")));
+            String timeStamp = String.valueOf(System.currentTimeMillis() / 1000);
+            payMap.put("timeStamp",timeStamp);
+            payMap.put("signType",wechatInfoProperties.getSignType());
+            String paySign = apiPayService.secondEncrypt(tbUserPayRecord,timeStamp);
+            payMap.put("paySign",paySign);
+            tbUserPayRecordMapper.insert(tbUserPayRecord);
+            tbCartMapper.deleteCartItemByIds(Arrays.asList(cartItemIdArr));
+            payMap.remove("mch_id");
+            return payMap;
         }
+        return null;
     }
 
     private TbOrderItem buildOrderItem(TbItem tbItem,String orderId) {
@@ -190,8 +213,9 @@ public class ApiOrderServiceImpl implements ApiOrderService {
     }
 
     @Override
-    public void createOrderByGoodsId(String oppenId, long goodsId, String skuDetailIds,
-                                     int userCouponsId, int addressId, int selfGet, int goodsCount, TbStore tbStore, GoodsOrderParamVo goodsOrderParamVo) {
+    public Map<String, Object> createOrderByGoodsId(String oppenId, long goodsId, String skuDetailIds,
+                                     int userCouponsId, int addressId, int selfGet, int goodsCount,
+                                                    TbStore tbStore, GoodsOrderParamVo goodsOrderParamVo) throws Exception{
         int sendPrice = 0;
         int skuPrice = 0;
 
@@ -201,7 +225,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
 
         TbApiUserAddress userAddress = apiAddressService.findUserAddressById(addressId);
         if (selfGet == ApiConstant.ORDER_TAKE_WAY_SEND && userAddress == null){
-            return;
+            return null;
         }
 
         if (selfGet == ApiConstant.ORDER_TAKE_WAY_SEND){
@@ -267,7 +291,8 @@ public class ApiOrderServiceImpl implements ApiOrderService {
         tbOrderItemMapper.insert(tbOrderItem);
 
         //如果减少金额等于订单金额 更新优惠券为已经使用 订单状态为已支付
-        insertPayRecordAndUpdateCoupons(oppenId, userCouponsId, orderId, tbOrder);
+        TbUserPayRecord tbUserPayRecord = buildPayRecordAndUpdateCoupons(oppenId, userCouponsId, orderId, tbOrder);
+
 
         //保存订单
         tbOrder.setStoreId(tbStore.getId());
@@ -276,12 +301,26 @@ public class ApiOrderServiceImpl implements ApiOrderService {
 
         //调用支付接口
         //TODO
+        Map<String, Object> payMap = apiPayService.createPayOrderToWechat(tbOrder);
+        tbUserPayRecord.setNonceStr(String.valueOf(payMap.get("nonce_str")));
+        tbUserPayRecord.setPrepayId(String.valueOf(payMap.get("prepay_id")));
+        String timeStamp = String.valueOf(System.currentTimeMillis() / 1000);
+        payMap.put("timeStamp",timeStamp);
+        payMap.put("signType",wechatInfoProperties.getSignType());
+        String paySign = apiPayService.secondEncrypt(tbUserPayRecord,timeStamp);
+        payMap.put("paySign",paySign);
+        tbUserPayRecordMapper.insert(tbUserPayRecord);
+        payMap.remove("mch_id");
+        return payMap;
     }
 
-    private void insertPayRecordAndUpdateCoupons(String oppenId, int userCouponsId, String orderId, TbOrder tbOrder) {
+
+
+    private TbUserPayRecord buildPayRecordAndUpdateCoupons(String oppenId, int userCouponsId, String orderId, TbOrder tbOrder) {
         if (tbOrder.getPayment().doubleValue() == 0){
             tbUserCouponsMapper.updateStatusById(userCouponsId, ApiConstant.USER_COUPONS_STATUS_USED);
             tbOrder.setStatus(ApiConstant.ORDER_STATUS_PAYED);
+            return null;
         }else {
             tbUserCouponsMapper.updateStatusById(userCouponsId,ApiConstant.USER_COUPONS_STATUS_LOCK);
             tbOrder.setStatus(ApiConstant.ORDER_STATUS_NO_PAY);
@@ -294,7 +333,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
             tbUserPayRecord.setOrderId(orderId);
             tbUserPayRecord.setOrderPayment(tbOrder.getOrderPayment());
             tbUserPayRecord.setPayment(tbOrder.getPayment().doubleValue());
-            tbUserPayRecordMapper.insert(tbUserPayRecord);
+            return tbUserPayRecord;
         }
     }
 
@@ -369,13 +408,15 @@ public class ApiOrderServiceImpl implements ApiOrderService {
                 orderTotalPrice += tbItem.getCartTotalPrice();
                 goodsList.add(tbItem);
             }
+
+            apiGoodsService.calculateGoodsPrice(goodsList,store.getExtraPrice(),activityCache.getTodayActivityBean(store.getId()));
             String groupGiveName = null;
             String fullReduceName = null;
             String couponsName = null;
             if (totalGoodsCount >=6){
                 //走满五赠一的流程，数量6 赠送一杯付款五杯价钱 数量12 赠送两杯 付款十杯价钱
                 int giveCount = totalGoodsCount / 6;
-                groupGiveName = "满"+(totalGoodsCount-giveCount)+"杯送"+giveCount+"杯";
+                groupGiveName = "满"+(giveCount*5)+"杯送"+giveCount+"杯";
                 Collections.sort(goodsList);
                 for (int i = 0; i< goodsList.size() && giveCount > 0; i++){
                     TbItem tbItem = goodsList.get(i);
@@ -447,9 +488,120 @@ public class ApiOrderServiceImpl implements ApiOrderService {
     }
 
     @Override
-    public double calculateGoodsOrderPrice(GoodsOrderParamVo goodsOrderParamVo){
+    public CalculateReturnVo calculateGoodsOrderPrice(GoodsOrderParamVo goodsOrderParamVo){
 
-        return 0;
+        int sendPrice = 0;
+        int skuPrice = 0;
+        TbUserCoupons tbUserCoupons = null;
+        if (goodsOrderParamVo.getSelfGet() == ApiConstant.ORDER_TAKE_WAY_SEND){
+            sendPrice = ApiConstant.ORDER_SEND_PRICE;
+        }
+
+        if (goodsOrderParamVo.getUserCouponsId() != 0){
+            tbUserCoupons = tbUserCouponsMapper.selectValidUserCoupons(goodsOrderParamVo.getOppenId(),goodsOrderParamVo.getUserCouponsId());
+        }
+
+        TbItem goods = goodsCache.findGoodsById(goodsOrderParamVo.getGoodsId());
+        goods = goods.copy();
+        List<TbItem> goodsList = new ArrayList<>();
+        TbStore store = storeCache.findStoreById(goodsOrderParamVo.getStoreId());
+        goodsList.add(goods);
+        apiGoodsService.calculateGoodsPrice(goodsList,store.getExtraPrice(),activityCache.getTodayActivityBean(goodsOrderParamVo.getStoreId()));
+
+        double goodsPrice = goods.getPrice();
+        if (goods.getShowActivityPrice() == 1){
+            goodsPrice = goods.getActivityPrice();
+        }
+
+        if (goodsOrderParamVo.getSkuDetailIds() != null ){
+            skuPrice = goodsCache.calculateSkuPrice(goodsOrderParamVo.getSkuDetailIds());
+        }
+
+        goodsPrice = goodsPrice + skuPrice;
+        double orderPayment = new BigDecimal(goodsPrice).multiply(new BigDecimal(goodsOrderParamVo.getGoodsCount())).doubleValue();
+
+        double couponsReduceAmount = 0.0;
+        String couponsName = null;
+        double groupGiveAmount = 0.0;
+        String groupGiveName = null;
+        double fullReduceAmount = 0.0;
+        String fullReduceName = null;
+        int goodsCount = goodsOrderParamVo.getGoodsCount();
+       double orderTotalPrice = PriceCalculateUtil.multy(goodsPrice,String.valueOf(goodsCount));
+        if (goodsCount >=6){
+            //走满五赠一的流程，数量6 赠送一杯付款五杯价钱 数量12 赠送两杯 付款十杯价钱
+            int giveCount = goodsCount / 6;
+            groupGiveName = "满"+(giveCount*5)+"杯送"+giveCount+"杯";
+            groupGiveAmount += PriceCalculateUtil.multy(goodsPrice,String.valueOf(giveCount));
+        }
+        if (orderTotalPrice >= 100){
+            List<TbCoupons> tbCouponsList = tbCouponsMapper.findFullReduceCoupons();
+            for (TbCoupons tbCoupons : tbCouponsList) {
+                if (orderTotalPrice >= tbCoupons.getConsumeAmount()){
+                    fullReduceAmount = tbCoupons.getReduceAmount();
+                    fullReduceName = tbCoupons.getCouponsName();
+                    break;
+                }
+            }
+        }
+
+        if (tbUserCoupons != null){
+            //如果有优惠券计算优惠券减少金额
+            Long couponsId = Long.valueOf(tbUserCoupons.getCouponsId());
+            TbCoupons tbCouponsById = activityCache.getTbCouponsById(couponsId);
+            if (tbCouponsById != null){
+                couponsReduceAmount = getCouponsReduceAmount(goodsPrice,tbCouponsById);
+                couponsName = tbCouponsById.getCouponsName();
+            }
+        }
+        //判断哪种策略对消费者最优惠
+        if (goodsOrderParamVo.getSelfGet() == ApiConstant.ORDER_TAKE_WAY_SEND){
+            orderTotalPrice += sendPrice;
+        }
+
+        double maxReduceAmount = Math.max(groupGiveAmount, Math.max(fullReduceAmount, couponsReduceAmount));
+        CalculateReturnVo calculateReturnVo = new CalculateReturnVo();
+        calculateReturnVo.setOrderTotalAmount(orderTotalPrice);
+        calculateReturnVo.setOrderPayAmount(orderTotalPrice);
+        calculateReturnVo.setCouponsName("无优惠");
+        if (maxReduceAmount == 0){
+            return calculateReturnVo;
+        }else if (maxReduceAmount == groupGiveAmount){
+            calculateReturnVo.setOrderPayAmount(orderTotalPrice-groupGiveAmount);
+            calculateReturnVo.setOrderReduceAmount(groupGiveAmount);
+            calculateReturnVo.setCouponsName(groupGiveName);
+        }else if (maxReduceAmount == fullReduceAmount){
+            calculateReturnVo.setOrderPayAmount(orderTotalPrice-fullReduceAmount);
+            calculateReturnVo.setOrderReduceAmount(fullReduceAmount);
+            calculateReturnVo.setCouponsName(fullReduceName);
+        }else if (maxReduceAmount == couponsReduceAmount){
+            calculateReturnVo.setOrderPayAmount(orderTotalPrice-couponsReduceAmount);
+            calculateReturnVo.setOrderReduceAmount(couponsReduceAmount);
+            calculateReturnVo.setCouponsName(couponsName);
+        }
+        return calculateReturnVo;
     }
+
+    @Override
+    public TbOrder findOrderDetailById(String orderId) {
+        return tbOrderMapper.selectByPrimaryKey(orderId);
+    }
+
+    @Override
+    public List<TbOrderItem> findOrderItemByOrderId(String orderId) {
+        return tbOrderItemMapper.findOrderItemByOrderId(orderId);
+    }
+
+    @Override
+    public List<TbOrder> findOrderByOppenId(String oppenId) {
+        List<TbOrder> orderByOppenId = tbOrderMapper.findOrderByOppenId(oppenId);
+        if (!CollectionUtils.isEmpty(orderByOppenId)){
+            for (TbOrder tbOrder : orderByOppenId) {
+                tbOrder.setCreateDateStr(DateUtil.viewDateFormat(tbOrder.getCreateTime()));
+            }
+        }
+        return orderByOppenId;
+    }
+
 
 }

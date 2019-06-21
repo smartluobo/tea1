@@ -50,6 +50,9 @@
   <update id="updateOrderStatusByCondition" parameterType="map">
     UPDATE tb_order SET `status` = #{orderStatus} where order_id = #{orderId} and store_id = #{storeId}
   </update>
+  <update id="updatePayStatus" parameterType="map">
+    UPDATE tb_order SET `status` = #{orderStatus},update_time = #{updateTime} where order_id = #{orderId}
+  </update>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from tb_order where order_id = #{orderId,jdbcType=VARCHAR}
@@ -68,8 +71,11 @@
         AND orderStatus = #{orderStatus}
       </if>
     </select>
+  <select id="findOrderByOppenId" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> from tb_order where oppen_id = #{oppenId,jdbcType=VARCHAR} order by create_time desc
+  </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from tb_order where order_id = #{orderId,jdbcType=VARCHAR}
   </delete>
 

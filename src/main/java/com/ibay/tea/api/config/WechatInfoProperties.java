@@ -20,6 +20,10 @@ public class WechatInfoProperties {
     //小程序后台配置的随机字符串
     private String secret;
 
+    private String apiKey;
+
+    private String tradeType;
+
     private String tokenUrl;
 
     //订单支付成功模板id
@@ -37,6 +41,10 @@ public class WechatInfoProperties {
     private String orderCompleteTips;
 
     private String orderCloseTips;
+
+    private String clientIp;
+
+    private String notifyUrl;
 
     public String getCreateOrderUrl() {
         return createOrderUrl;
@@ -142,5 +150,37 @@ public class WechatInfoProperties {
 
     public void setOrderCompleteTips(String orderCompleteTips) {
         this.orderCompleteTips = orderCompleteTips;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public String getTradeType() {
+        return tradeType;
+    }
+
+    public void setTradeType(String tradeType) {
+        this.tradeType = tradeType;
+    }
+
+    public String getClientIp() {
+        return clientIp;
+    }
+
+    public void setClientIp(String clientIp) {
+        this.clientIp = clientIp;
+    }
+
+    public String getNotifyUrl() {
+        return notifyUrl;
+    }
+
+    public void setNotifyUrl(String notifyUrl) {
+        this.notifyUrl = notifyUrl;
     }
 }

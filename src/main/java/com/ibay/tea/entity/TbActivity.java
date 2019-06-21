@@ -29,6 +29,12 @@ public class TbActivity {
 
     private int storeId;
 
+    private String noStartPoster;
+
+    private String startingPoster;
+
+    private String winPoster;
+
     public Integer getId() {
         return id;
     }
@@ -123,6 +129,30 @@ public class TbActivity {
 
     public void setStoreId(int storeId) {
         this.storeId = storeId;
+    }
+
+    public String getNoStartPoster() {
+        return noStartPoster;
+    }
+
+    public void setNoStartPoster(String noStartPoster) {
+        this.noStartPoster = noStartPoster;
+    }
+
+    public String getStartingPoster() {
+        return startingPoster;
+    }
+
+    public void setStartingPoster(String startingPoster) {
+        this.startingPoster = startingPoster;
+    }
+
+    public String getWinPoster() {
+        return winPoster;
+    }
+
+    public void setWinPoster(String winPoster) {
+        this.winPoster = winPoster;
     }
 
     public TbActivity copy(){

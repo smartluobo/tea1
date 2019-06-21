@@ -5,6 +5,7 @@ import com.ibay.tea.entity.TbUserCoupons;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -23,4 +24,6 @@ public interface TbUserCouponsMapper {
     void updateStatusById(@Param("id") int id, @Param("status") int status);
 
     TbUserCoupons selectValidUserCoupons(@Param("oppenId") String oppenId,@Param("id") int id);
+
+    List<TbUserCoupons> findUserValidCoupons(String oppenId);
 }

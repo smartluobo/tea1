@@ -15,24 +15,25 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="created" jdbcType="TIMESTAMP" property="created" />
     <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="default_sku_detail_ids" jdbcType="VARCHAR" property="defaultSkuDetailIds" />
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, title, sku_type_ids, simple_desc,sell_point, price, num, limit_num, image, cid, `status`, created, updated
+    id, title, sku_type_ids, simple_desc,sell_point, price, num, limit_num, image, cid, `status`, created, updated,default_sku_detail_ids
   </sql>
   <insert id="addGoods" parameterType="com.ibay.tea.entity.TbItem">
     INSERT INTO tb_item (title, sell_point, price, num, limit_num, image, cid, `status`,
-                         created, sku_type_ids, simple_desc)
+                         created, sku_type_ids, simple_desc,default_sku_detail_ids)
     VALUES (#{title},#{sellPoint},#{price},#{num},#{limitNum},#{image},#{cid},#{status},
-      #{created},#{skuTypeIds},#{simpleDesc}
+      #{created},#{skuTypeIds},#{simpleDesc},#{defaultSkuDetailIds}
     )
   </insert>
 
   <insert id="saveUpdateGoods" parameterType="com.ibay.tea.entity.TbItem">
     INSERT INTO tb_item (id,title, sell_point, price, num, limit_num, image, cid, `status`,
-                         created, sku_type_ids, simple_desc)
+                         created, sku_type_ids, simple_desc,default_sku_detail_ids)
     VALUES (#{id},#{title},#{sellPoint},#{price},#{num},#{limitNum},#{image},#{cid},#{status},
-                     #{created},#{skuTypeIds},#{simpleDesc}
+                     #{created},#{skuTypeIds},#{simpleDesc},#{defaultSkuDetailIds}
     )
   </insert>
 

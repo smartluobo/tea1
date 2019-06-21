@@ -25,6 +25,8 @@ public class WechatCreateOrderRequest {
     //交易类型  JSAPI
     private String trade_type;
 
+    private String openid;
+
     public String getAppid() {
         return appid;
     }
@@ -111,5 +113,13 @@ public class WechatCreateOrderRequest {
 
     public void setTrade_type(String trade_type) {
         this.trade_type = trade_type;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
     }
 }

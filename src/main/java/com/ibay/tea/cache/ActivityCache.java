@@ -102,7 +102,7 @@ public class ActivityCache implements InitializingBean{
 
     public void buildTodayActivityInfoBean(){
 
-        if (CollectionUtils.isEmpty(todayActivityList)){
+        if (!CollectionUtils.isEmpty(todayActivityList)){
 
             for (TbActivity tbActivity : todayActivityList) {
                 TodayActivityBean todayActivityBean = new TodayActivityBean();

@@ -20,6 +20,9 @@
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from tb_order_item where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="findOrderItemByOrderId" resultMap="BaseResultMap" parameterType="string">
+    SELECT <include refid="Base_Column_List" /> from tb_order_item where order_id = #{orderId}
+  </select>
 
   <delete id="deleteByPrimaryKey" parameterType="int">
     delete from tb_order_item where id = #{id,jdbcType=INTEGER}

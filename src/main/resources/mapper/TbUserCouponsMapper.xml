@@ -9,9 +9,11 @@
     <result column="receive_date" jdbcType="INTEGER" property="receiveDate" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="coupons_poster" jdbcType="VARCHAR" property="couponsPoster" />
+
   </resultMap>
   <sql id="Base_Column_List">
-    id, oppen_id, coupons_id, coupons_name, receive_date, create_time, status
+    id, oppen_id, coupons_id, coupons_name, receive_date, create_time, `status`,coupons_poster
   </sql>
 
   <update id="updateStatusById" parameterType="int">
@@ -31,8 +33,9 @@
       <if test="receiveDate != null">
         AND receive_date = #{receiveDate}
       </if>
-      limit 0,1
+      and `status` = 0
     </where>
+    limit 0,1
   </select>
 
   <select id="findOneCouponsByOppenId" parameterType="string" resultMap="BaseResultMap">
@@ -43,14 +46,18 @@
     SELECT <include refid="Base_Column_List" /> from tb_user_coupons where id = #{id,jdbcType=INTEGER} and oppen_id = #{oppenId} and `status` = 0
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="findUserValidCoupons" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> from tb_user_coupons where oppen_id = #{oppenId} and `status` = 0
+  </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_user_coupons  where id = #{id,jdbcType=INTEGER}
   </delete>
 
   <insert id="insert" parameterType="com.ibay.tea.entity.TbUserCoupons" keyProperty="id" useGeneratedKeys="true">
-    insert into tb_user_coupons (oppen_id, coupons_id, coupons_name, receive_date, create_time, `status`)
+    insert into tb_user_coupons (oppen_id, coupons_id, coupons_name, receive_date, create_time, `status`,coupons_poster)
     values (#{oppenId,jdbcType=VARCHAR}, #{couponsId,jdbcType=INTEGER},
       #{couponsName,jdbcType=VARCHAR}, #{receiveDate,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=INTEGER})
+      #{status,jdbcType=INTEGER},#{couponsPoster})
   </insert>
 </mapper>

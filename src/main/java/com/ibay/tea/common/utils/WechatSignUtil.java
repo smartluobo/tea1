@@ -1,14 +1,17 @@
 package com.ibay.tea.common.utils;
 
+import com.ibay.tea.api.config.ApiSysProperties;
 import com.ibay.tea.common.annotation.NotSign;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -34,8 +37,7 @@ public class WechatSignUtil {
             FileInputStream in = null;
             try {
                 keyStore = KeyStore.getInstance("PKCS12");
-                Resource resource = new ClassPathResource("wechat/apiclient_cert.p12");
-                File file =resource.getFile();
+                File file = new File(ApiSysProperties.getStaticCertPath()+"apiclient_cert.p12");
                 in = new FileInputStream(file);
                 keyStore.load(in, mchId.toCharArray());
                 return keyStore;
@@ -53,8 +55,9 @@ public class WechatSignUtil {
 
     public static String getSignForObject(Object o,String apiKey){
         String result = getNotSign(o,apiKey);
-        String signResult = Md5Util.encryptMD5(result).toUpperCase();
-        return signResult;
+        LOGGER.info("No sign result : {}",result);
+        return Md5Util.encryptMD5(result).toUpperCase();
+
     }
 
     /**

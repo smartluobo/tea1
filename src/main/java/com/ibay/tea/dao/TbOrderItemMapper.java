@@ -14,4 +14,6 @@ public interface TbOrderItemMapper {
     TbOrderItem selectByPrimaryKey(String id);
 
     void insertBatch(List<TbOrderItem> tbOrderItems);
+
+    List<TbOrderItem> findOrderItemByOrderId(String orderId);
 }

@@ -1,5 +1,6 @@
 package com.ibay.tea.api.service.wechat.impl;
 
+import com.ibay.tea.api.config.WechatInfoProperties;
 import com.ibay.tea.api.service.wechat.WechatSendService;
 import com.ibay.tea.common.utils.WechatSignUtil;
 import org.apache.http.HttpEntity;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.net.ssl.SSLContext;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -26,11 +28,12 @@ public class WechatSendServiceImpl implements WechatSendService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WechatSendServiceImpl.class);
 
-    private String mchId = "13530852671";
+    @Resource
+    private WechatInfoProperties wechatInfoProperties;
 
     public String sendDataToWechatServer(String sendXml) throws Exception {
         String result  = "";
-        KeyStore keyStore = WechatSignUtil.getKeyStore(mchId);
+        KeyStore keyStore = WechatSignUtil.getKeyStore(wechatInfoProperties.getMchId());
         if (keyStore == null){
             LOGGER.error("send redpacket data to wechat server load keyStore fail keyStore is null ");
             return result;
@@ -38,7 +41,7 @@ public class WechatSendServiceImpl implements WechatSendService {
         CloseableHttpClient httpclient = null;
         try {
             SSLContext sslcontext = SSLContexts.custom()
-                    .loadKeyMaterial(keyStore, mchId.toCharArray())
+                    .loadKeyMaterial(keyStore, wechatInfoProperties.getMchId().toCharArray())
                     .build();
 
             SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory( sslcontext,new String[] { "TLSv1" },
@@ -47,7 +50,7 @@ public class WechatSendServiceImpl implements WechatSendService {
                     .setSSLSocketFactory(sslsf)
                     .build();
 
-            HttpPost httpPost = new HttpPost("13530852671");
+            HttpPost httpPost = new HttpPost(wechatInfoProperties.getCreateOrderUrl());
             StringEntity sendEntity = new StringEntity(sendXml,"utf-8");
             sendEntity.setContentEncoding("UTF-8");
             sendEntity.setContentType("application/json;charset=utf8");

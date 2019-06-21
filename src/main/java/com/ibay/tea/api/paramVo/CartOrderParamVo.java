@@ -8,6 +8,7 @@ public class CartOrderParamVo {
    private int addressId;
    private int selfGet;
    private int storeId;
+   private String orderId;
 
     public String getOppenId() {
         return oppenId;
@@ -55,5 +56,13 @@ public class CartOrderParamVo {
 
     public void setStoreId(int storeId) {
         this.storeId = storeId;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 }

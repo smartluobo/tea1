@@ -21,12 +21,17 @@ mybatis:
   mapper-locations: classpath*:mapper/**/*.xml
 wechat:
   info:
-    createOrderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
+
     appId: wx4123b4481a5e6e66
-    mchId: 13530852671
+    mchId: 1540685681
     signType: MD5
-    loginUrl: https://api.weixin.qq.com/sns/jscode2session?grant_type=authorization_code&
     secret: bf861f60fbc30bf11ad07a73b4fbcf98
+    tradeType: JSAPI
+    apiKey: eecup2019outlookcom1234567891234
+    clientIp: 114.119.117.159
+    notifyUrl: https://114.119.117.159:9001/api/order/payUpdateOrder?orderId=
+    loginUrl: https://api.weixin.qq.com/sns/jscode2session?grant_type=authorization_code&
+    createOrderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
     tokenUrl: https://api.weixin.qq.com/cgi-bin/token
     orderPayTemplateId: GdULC46QEOpKeMtSwtONLUSVvPu5js7ZbyDcXdCMF5U
     orderMakeCompleteTemplateId: jmcqiI2nIAtWzGqVLDNYixMV065v0BR4d-ZJ5mkfT2o
@@ -35,3 +40,10 @@ wechat:
     orderCompleteTips: 您的订单已经制作完成，为不影响口感，请尽快到店提取。
     orderCloseTips: 客官，您好！感谢你的信任。每天有抢券活动，记得来参加哦。
 
+cms:
+  sys:
+    imageUrlPrefix: http://localhost:8888/tea/image/
+    imagePath: D:/tea_img/
+api:
+  sys:
+    certPath: E:/ibay/cert/

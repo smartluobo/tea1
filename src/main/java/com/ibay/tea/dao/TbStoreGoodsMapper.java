@@ -1,6 +1,7 @@
 package com.ibay.tea.dao;
 
 import com.ibay.tea.entity.TbStoreGoods;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,13 +13,9 @@ public interface TbStoreGoodsMapper {
 
     int insert(TbStoreGoods record);
 
-    int insertSelective(TbStoreGoods record);
-
     TbStoreGoods selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(TbStoreGoods record);
-
-    int updateByPrimaryKey(TbStoreGoods record);
-
     List<TbStoreGoods> findRecordByCondition(Map<String, Object> condition);
+
+    void updateInventory(@Param("goodsId") long itemId, @Param("storeId") int storeId, @Param("num") int num);
 }

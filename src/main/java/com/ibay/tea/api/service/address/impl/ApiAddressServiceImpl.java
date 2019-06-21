@@ -28,6 +28,10 @@ public class ApiAddressServiceImpl implements ApiAddressService {
 
     @Override
     public void insertApiUserAddress(TbApiUserAddress tbApiUserAddress) {
+        //判断地址是否是默认地址，如果是将数据库中已经存在的默认地址换成非默认地址
+        if (tbApiUserAddress.getIsDefault() == 1){
+            tbApiUserAddressMapper.updateAddressNotDefault(tbApiUserAddress.getOppenId(),tbApiUserAddress.getStoreId());
+        }
         tbApiUserAddressMapper.insert(tbApiUserAddress);
     }
 
@@ -37,10 +41,11 @@ public class ApiAddressServiceImpl implements ApiAddressService {
         if (dbAddress == null){
             return;
         }
+        if (tbApiUserAddress.getIsDefault() == 1){
+            tbApiUserAddressMapper.updateAddressNotDefault(tbApiUserAddress.getOppenId(),tbApiUserAddress.getStoreId());
+        }
         tbApiUserAddressMapper.deleteByPrimaryKey(tbApiUserAddress.getId());
-
         tbApiUserAddressMapper.saveUpdateApiUserAddress(tbApiUserAddress);
-
     }
 
     @Override
