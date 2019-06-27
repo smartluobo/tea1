@@ -5,6 +5,8 @@ import com.ibay.tea.api.factory.XStreamFactory;
 import com.ibay.tea.api.request.WechatCreateOrderRequest;
 import com.ibay.tea.api.service.pay.ApiPayService;
 import com.ibay.tea.api.service.wechat.WechatSendService;
+import com.ibay.tea.cache.StoreCache;
+import com.ibay.tea.common.service.PrintService;
 import com.ibay.tea.common.utils.*;
 import com.ibay.tea.dao.TbOrderItemMapper;
 import com.ibay.tea.dao.TbOrderMapper;
@@ -12,6 +14,7 @@ import com.ibay.tea.dao.TbStoreGoodsMapper;
 import com.ibay.tea.dao.TbUserPayRecordMapper;
 import com.ibay.tea.entity.TbOrder;
 import com.ibay.tea.entity.TbOrderItem;
+import com.ibay.tea.entity.TbStore;
 import com.ibay.tea.entity.TbUserPayRecord;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +26,9 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
+import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 
 @Service
 public class ApiPayServiceImpl implements ApiPayService {
@@ -47,6 +52,15 @@ public class ApiPayServiceImpl implements ApiPayService {
 
     @Resource
     private TbOrderItemMapper orderItemMapper;
+
+    @Resource(name = "sendExecutorService")
+    private ExecutorService sendExecutorService;
+
+    @Resource
+    private PrintService printService;
+
+    @Resource
+    private StoreCache storeCache;
 
     @Override
     public Map<String, Object> createPayOrderToWechat(TbOrder tbOrder) throws Exception{
@@ -135,6 +149,9 @@ public class ApiPayServiceImpl implements ApiPayService {
                 //3更新支付记录状态
                 updateMap.put("payStatus",1);
                 tbUserPayRecordMapper.updatePayStatus(updateMap);
+                //异步调用订单打印
+                TbStore store = storeCache.findStoreById(tbOrder.getStoreId());
+                sendExecutorService.submit(() -> printService.printOrder(tbOrder, store));
             } else {
                 //支付失败更新
                 //更新支付记录状态，库存和订单状态不用修改
@@ -174,7 +191,7 @@ public class ApiPayServiceImpl implements ApiPayService {
         LOGGER.info("order pay notifyUrl : {}",notifyUrl);
         request.setNotify_url(notifyUrl);
         request.setSign_type(wechatInfoProperties.getSignType());
-        request.setTotal_fee(PriceCalculateUtil.intOrderTbPrice(tbOrder.getPayment()));
+        request.setTotal_fee(PriceCalculateUtil.intOrderTbPrice(new BigDecimal(tbOrder.getPayment())));
         request.setTrade_type(wechatInfoProperties.getTradeType());
         request.setOut_trade_no(tbOrder.getOrderId());
         request.setSpbill_create_ip(wechatInfoProperties.getClientIp());

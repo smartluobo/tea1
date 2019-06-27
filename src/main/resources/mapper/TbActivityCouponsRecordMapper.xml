@@ -9,20 +9,25 @@
     <result column="coupons_id" jdbcType="INTEGER" property="couponsId" />
     <result column="coupons_name" jdbcType="VARCHAR" property="couponsName" />
     <result column="coupons_count" jdbcType="INTEGER" property="couponsCount" />
+    <result column="coupons_poster" jdbcType="VARCHAR" property="couponsPoster" />
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, activity_id, activity_name, coupons_id, coupons_name, coupons_count
+    id, activity_id, activity_name, coupons_id, coupons_name, coupons_count,coupons_poster
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select  <include refid="Base_Column_List" /> from tb_activity_coupons_record where id = #{id,jdbcType=INTEGER}
   </select>
 
   <select id="findAll" resultMap="BaseResultMap">
-      SELECT * FROM tb_activity_coupons_record
+      SELECT <include refid="Base_Column_List" />  FROM tb_activity_coupons_record
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="getJackpotInfo" resultMap="BaseResultMap" parameterType="int">
+    SELECT <include refid="Base_Column_List" /> FROM tb_activity_coupons_record WHERE activity_id = #{activityId}
+  </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_activity_coupons_record where id = #{id,jdbcType=INTEGER}
   </delete>
 </mapper>

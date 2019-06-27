@@ -22,11 +22,13 @@ public class WechatTokenServiceImpl implements WechatTokenService {
 
     @Override
     public String getToken() {
-        Map<String,Object> param = new HashMap<>();
+        Map<String,String> param = new HashMap<>();
         param.put("grant_type","client_credential");
         param.put("appid",wechatInfoProperties.getAppId());
         param.put("secret",wechatInfoProperties.getSecret());
-        String result = HttpUtil.get(wechatInfoProperties.getTokenUrl(), param);
+        LOGGER.info("get token params : {}",param);
+        LOGGER.info("get token url address : {}",wechatInfoProperties.getTokenUrl());
+        String result = HttpUtil.getHttp(wechatInfoProperties.getTokenUrl(), param);
         LOGGER.info("from wechat server remote get Token return result : {}",result);
         Map resultMap = JSON.parseObject(result, Map.class);
         LOGGER.info("from wechat server remote get Token return result swap map :{}",resultMap);

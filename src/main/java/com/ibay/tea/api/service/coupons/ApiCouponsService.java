@@ -11,4 +11,6 @@ public interface ApiCouponsService {
     TbUserCoupons findOneCouponsByOppenId(String oppenId);
 
     List<TbUserCoupons> findUserValidCoupons(String oppenId);
+
+    List<TbUserCoupons> getUserCouponsByOppenId(String oppenId);
 }

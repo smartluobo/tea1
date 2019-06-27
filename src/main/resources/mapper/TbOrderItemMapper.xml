@@ -42,13 +42,13 @@
     <insert id="insertBatch" parameterType="list">
       insert into tb_order_item (item_id, order_id,
                                  num, title, price,
-                                 total_fee, pic_path, sku_detail_ids
+                                 total_fee, pic_path, sku_detail_ids ,sku_detail_desc
       )
       VALUES
       <foreach collection="list" item="item" index="index" separator=",">
         (#{item.itemId,jdbcType=VARCHAR}, #{item.orderId,jdbcType=VARCHAR},
         #{item.num,jdbcType=INTEGER}, #{item.title,jdbcType=VARCHAR}, #{item.price,jdbcType=DECIMAL},
-        #{item.totalFee,jdbcType=DECIMAL}, #{item.picPath,jdbcType=VARCHAR}, #{item.skuDetailIds,jdbcType=VARCHAR}
+        #{item.totalFee,jdbcType=DECIMAL}, #{item.picPath,jdbcType=VARCHAR}, #{item.skuDetailIds,jdbcType=VARCHAR},#{item.skuDetailDesc,jdbcType=VARCHAR}
         )
       </foreach>
 

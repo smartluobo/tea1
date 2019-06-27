@@ -54,6 +54,8 @@ public class TbItem implements Comparable<TbItem>{
 
     private String defaultSkuDetailIds;
 
+    private String cartSkuDetailIds;
+
     public Long getId() {
         return id;
     }
@@ -86,19 +88,19 @@ public class TbItem implements Comparable<TbItem>{
         this.price = price;
     }
 
-    public Integer getNum() {
+    public int getNum() {
         return num;
     }
 
-    public void setNum(Integer num) {
+    public void setNum(int num) {
         this.num = num;
     }
 
-    public Integer getLimitNum() {
+    public int getLimitNum() {
         return limitNum;
     }
 
-    public void setLimitNum(Integer limitNum) {
+    public void setLimitNum(int limitNum) {
         this.limitNum = limitNum;
     }
 
@@ -118,11 +120,11 @@ public class TbItem implements Comparable<TbItem>{
         this.cid = cid;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -228,6 +230,14 @@ public class TbItem implements Comparable<TbItem>{
 
     public void setDefaultSkuDetailIds(String defaultSkuDetailIds) {
         this.defaultSkuDetailIds = defaultSkuDetailIds;
+    }
+
+    public String getCartSkuDetailIds() {
+        return cartSkuDetailIds;
+    }
+
+    public void setCartSkuDetailIds(String cartSkuDetailIds) {
+        this.cartSkuDetailIds = cartSkuDetailIds;
     }
 
     public TbItem copy() {

@@ -31,4 +31,9 @@ public class ApiCouponsServiceImpl implements ApiCouponsService {
     public List<TbUserCoupons> findUserValidCoupons(String oppenId) {
         return tbUserCouponsMapper.findUserValidCoupons(oppenId);
     }
+
+    @Override
+    public List<TbUserCoupons> getUserCouponsByOppenId(String oppenId) {
+        return tbUserCouponsMapper.getUserCouponsByOppenId(oppenId);
+    }
 }

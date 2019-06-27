@@ -15,6 +15,9 @@ public class TbStore {
 
     private int extraPrice;
 
+    private int orderPrinterId;
+    private int orderItemPrinterId;
+
     public Integer getId() {
         return id;
     }
@@ -61,5 +64,21 @@ public class TbStore {
 
     public void setExtraPrice(int extraPrice) {
         this.extraPrice = extraPrice;
+    }
+
+    public int getOrderPrinterId() {
+        return orderPrinterId;
+    }
+
+    public void setOrderPrinterId(int orderPrinterId) {
+        this.orderPrinterId = orderPrinterId;
+    }
+
+    public int getOrderItemPrinterId() {
+        return orderItemPrinterId;
+    }
+
+    public void setOrderItemPrinterId(int orderItemPrinterId) {
+        this.orderItemPrinterId = orderItemPrinterId;
     }
 }

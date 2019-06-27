@@ -35,6 +35,10 @@ public class TbActivity {
 
     private String winPoster;
 
+    private String extractTime;
+
+    private String showImageUrl;
+
     public Integer getId() {
         return id;
     }
@@ -153,6 +157,22 @@ public class TbActivity {
 
     public void setWinPoster(String winPoster) {
         this.winPoster = winPoster;
+    }
+
+    public String getExtractTime() {
+        return extractTime;
+    }
+
+    public void setExtractTime(String extractTime) {
+        this.extractTime = extractTime;
+    }
+
+    public String getShowImageUrl() {
+        return showImageUrl;
+    }
+
+    public void setShowImageUrl(String showImageUrl) {
+        this.showImageUrl = showImageUrl;
     }
 
     public TbActivity copy(){

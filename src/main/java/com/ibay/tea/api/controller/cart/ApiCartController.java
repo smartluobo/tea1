@@ -52,13 +52,10 @@ public class ApiCartController {
         }
         try {
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
-            TbStore store = storeCache.findStoreById(Integer.valueOf(storeId));
             List<TbItem> cartGoodsList = apiCartService.findCartGoodsListByOppenId(oppenId,Integer.valueOf(storeId));
             if (CollectionUtils.isEmpty(cartGoodsList)){
                 return ResultInfo.newEmptyResultInfo();
             }
-            TodayActivityBean todayActivityBean = activityCache.getTodayActivityBean(Integer.valueOf(storeId));
-            apiGoodsService.calculateGoodsPrice(cartGoodsList,store.getExtraPrice(),todayActivityBean);
             apiGoodsService.checkGoodsInventory(cartGoodsList,Integer.valueOf(storeId));
             resultInfo.setData(cartGoodsList);
             return resultInfo;

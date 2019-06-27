@@ -48,6 +48,10 @@ public class CategoryCache implements InitializingBean {
     public List<TbItemCat> findAll(){
         List<TbItemCat> categoryList = new ArrayList<>();
         for (Map.Entry<String,TbItemCat> entry : categoryCache.entrySet()){
+            TbItemCat category = entry.getValue();
+            if (category.getParentId() == 0){
+                continue;
+            }
             categoryList.add(entry.getValue());
         }
         return categoryList;

@@ -1,31 +1,33 @@
 package com.ibay.tea.entity;
 
 public class TbActivityCouponsRecord {
-    private Integer id;
+    private int id;
 
-    private Integer activityId;
+    private int activityId;
 
     private String activityName;
 
-    private Integer couponsId;
+    private int couponsId;
 
     private String couponsName;
 
-    private Integer couponsCount;
+    private int couponsCount;
 
-    public Integer getId() {
+    private String couponsPoster;
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getActivityId() {
+    public int getActivityId() {
         return activityId;
     }
 
-    public void setActivityId(Integer activityId) {
+    public void setActivityId(int activityId) {
         this.activityId = activityId;
     }
 
@@ -34,14 +36,14 @@ public class TbActivityCouponsRecord {
     }
 
     public void setActivityName(String activityName) {
-        this.activityName = activityName == null ? null : activityName.trim();
+        this.activityName = activityName;
     }
 
-    public Integer getCouponsId() {
+    public int getCouponsId() {
         return couponsId;
     }
 
-    public void setCouponsId(Integer couponsId) {
+    public void setCouponsId(int couponsId) {
         this.couponsId = couponsId;
     }
 
@@ -50,14 +52,22 @@ public class TbActivityCouponsRecord {
     }
 
     public void setCouponsName(String couponsName) {
-        this.couponsName = couponsName == null ? null : couponsName.trim();
+        this.couponsName = couponsName;
     }
 
-    public Integer getCouponsCount() {
+    public int getCouponsCount() {
         return couponsCount;
     }
 
-    public void setCouponsCount(Integer couponsCount) {
+    public void setCouponsCount(int couponsCount) {
         this.couponsCount = couponsCount;
+    }
+
+    public String getCouponsPoster() {
+        return couponsPoster;
+    }
+
+    public void setCouponsPoster(String couponsPoster) {
+        this.couponsPoster = couponsPoster;
     }
 }

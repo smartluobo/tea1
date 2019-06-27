@@ -23,7 +23,16 @@ public class PriceCalculateUtil {
         return multiply.doubleValue();
     }
 
+    public static double multy(double price, int count) {
+        BigDecimal multiply = new BigDecimal(price).multiply(new BigDecimal(count));
+        return multiply.doubleValue();
+    }
+
     public static int intOrderTbPrice(BigDecimal payment) {
         return payment.multiply(new BigDecimal(100)).intValue();
+    }
+
+    public static double subtract(double totalAmount,double reduceAmount){
+       return  new BigDecimal(totalAmount).subtract(new BigDecimal(reduceAmount)).doubleValue();
     }
 }

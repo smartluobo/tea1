@@ -14,10 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,6 +67,8 @@ public class ApiActivityController {
             int activityStatus = apiActivityService.checkActivityStatus(activityInfo);
             if (activityStatus == ApiConstant.ACTIVITY_STATUS_NOT_START){
                 activityInfo.setStatus(activityStatus);
+                apiActivityService.setExtractTime(activityInfo);
+                activityInfo.setShowImageUrl(activityInfo.getNoStartPoster());
                 result.put("type",1);
                 result.put("info",activityInfo);
                 resultInfo.setData(result);
@@ -77,6 +84,8 @@ public class ApiActivityController {
                 if (tbUserCoupons == null){
                     result.put("type",2);
                     activityInfo.setStatus(activityStatus);
+                    activityInfo.setShowImageUrl(activityInfo.getStartingPoster());
+                    apiActivityService.setExtractTime(activityInfo);
                     result.put("info",activityInfo);
                     resultInfo.setData(result);
                     return resultInfo;
@@ -133,6 +142,10 @@ public class ApiActivityController {
             if (record != null){
                 //将用户的优惠券存入数据库
                 TbUserCoupons tbUserCoupons = apiActivityService.buildUserCoupons(oppenId,record);
+                //设置优惠券过期时间
+                Date expireDate = DateUtil.getExpireDate(tbUserCoupons.getReceiveDate(),ApiConstant.USER_COUPONS_EXPIRE_LIMIT);
+                tbUserCoupons.setExpireDate(expireDate);
+
                 apiActivityService.saveUserCouponsToDb(tbUserCoupons);
                 resultInfo.setData(tbUserCoupons);
                 return resultInfo;
@@ -142,6 +155,25 @@ public class ApiActivityController {
             LOGGER.error("extractPrize happen exception : {} ",oppenId,e);
             return ResultInfo.newExceptionResultInfo();
         }
+    }
+
+    @RequestMapping("/getJackpotInfo")
+    public ResultInfo getJackpotInfo(@RequestBody Map<String,Integer> params){
+
+        if (params == null){
+        	return ResultInfo.newEmptyParamsResultInfo();
+        }
+
+        try {
+        	ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            int activityId = params.get("activityId");
+            List<TbActivityCouponsRecord> recordList = apiActivityService.getJackpotInfo(activityId);
+            resultInfo.setData(recordList);
+            return resultInfo;
+        }catch (Exception e){
+        	return ResultInfo.newExceptionResultInfo();
+        }
+
     }
 
 }

@@ -4,6 +4,7 @@ import com.ibay.tea.api.service.activity.ApiActivityService;
 import com.ibay.tea.cache.ActivityCache;
 import com.ibay.tea.common.constant.ApiConstant;
 import com.ibay.tea.common.utils.DateUtil;
+import com.ibay.tea.dao.TbActivityCouponsRecordMapper;
 import com.ibay.tea.dao.TbActivityMapper;
 import com.ibay.tea.dao.TbUserCouponsMapper;
 import com.ibay.tea.entity.*;
@@ -26,6 +27,9 @@ public class ApiActivityServiceImpl implements ApiActivityService {
 
     @Resource
     private TbUserCouponsMapper tbUserCouponsMapper;
+
+    @Resource
+    private TbActivityCouponsRecordMapper tbActivityCouponsRecordMapper;
 
     @Override
     public TbActivity getTodayActivity(int storeId) {
@@ -106,5 +110,15 @@ public class ApiActivityServiceImpl implements ApiActivityService {
         }
 
         return ApiConstant.ACTIVITY_STATUS_END;
+    }
+
+    @Override
+    public void setExtractTime(TbActivity activityInfo) {
+        activityInfo.setExtractTime("开抢时间: "+activityInfo.getStartHour()+":00 -- "+activityInfo.getEndHour()+":00");
+    }
+
+    @Override
+    public List<TbActivityCouponsRecord> getJackpotInfo(int activityId) {
+        return tbActivityCouponsRecordMapper.getJackpotInfo(activityId);
     }
 }

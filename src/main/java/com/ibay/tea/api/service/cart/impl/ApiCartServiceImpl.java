@@ -1,10 +1,15 @@
 package com.ibay.tea.api.service.cart.impl;
 
 import com.ibay.tea.api.service.cart.ApiCartService;
+import com.ibay.tea.api.service.goods.ApiGoodsService;
+import com.ibay.tea.cache.ActivityCache;
 import com.ibay.tea.cache.GoodsCache;
 import com.ibay.tea.cache.StoreCache;
+import com.ibay.tea.common.utils.PriceCalculateUtil;
 import com.ibay.tea.dao.TbCartMapper;
 import com.ibay.tea.entity.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,6 +20,8 @@ import java.util.List;
 @Service
 public class ApiCartServiceImpl implements ApiCartService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiCartServiceImpl.class);
+
     @Resource
     private TbCartMapper tbCartMapper;
 
@@ -24,6 +31,12 @@ public class ApiCartServiceImpl implements ApiCartService {
     @Resource
     private StoreCache storeCache;
 
+    @Resource
+    private ApiGoodsService apiGoodsService;
+
+    @Resource
+    private ActivityCache activityCache;
+
     @Override
     public List<TbItem> findCartGoodsListByOppenId(String oppenId,int storeId) {
         List<TbCart> cartGoodsList = tbCartMapper.findCartGoodsListByOppenId(oppenId);
@@ -32,6 +45,7 @@ public class ApiCartServiceImpl implements ApiCartService {
         if (cartGoodsList != null && cartGoodsList.size() > 0){
             for (TbCart tbCart : cartGoodsList) {
                 TbItem goods = buildCartGoodsInfo(tbCart,store);
+                LOGGER.info("goodsInfo view price : {}",goods.getPrice());
                 if (goods != null){
                     goods.setCartItemId(tbCart.getId());
                     goods.setSkuDetailDesc(tbCart.getSkuDetailDesc());
@@ -67,33 +81,26 @@ public class ApiCartServiceImpl implements ApiCartService {
     @Override
     public TbItem buildCartGoodsInfo(TbCart tbCart, TbStore store) {
         TbItem goodsById = goodsCache.findGoodsById(tbCart.getGoodsId());
+        TbItem goodsInfo = null;
         if (goodsById != null){
-            goodsById = goodsById.copy();
-            //实时计算价格
-            try {
-                if (goodsById.getShowActivityPrice() == 1){
-                    goodsById.setCartPrice(goodsById.getActivityPrice());
-                }else {
-                    goodsById.setCartPrice(goodsById.getPrice());
+            goodsInfo = goodsById.copy();
+            LOGGER.info("cache goods price : {}",goodsInfo.getPrice());
+            String cartSkuDetailIds = tbCart.getSkuDetailIds();
+            goodsInfo.setCartSkuDetailIds(cartSkuDetailIds);
+            apiGoodsService.calculateGoodsPrice(goodsInfo,store.getExtraPrice(),activityCache.getTodayActivityBean(store.getId()));
+            if (cartSkuDetailIds != null){
+                int skuPrice = goodsCache.calculateSkuPrice(cartSkuDetailIds);
+                if (skuPrice != 0){
+                    goodsInfo.setPrice(goodsInfo.getPrice() + skuPrice);
                 }
-            }catch (Exception e){
-
+                setSelectedSkuDetail(goodsInfo,cartSkuDetailIds);
             }
-
-            //设置从购物车点击进去后高亮显示的sku
-            String skuDetailIds = tbCart.getSkuDetailIds();
-            if (skuDetailIds != null && skuDetailIds.trim().length() > 0){
-                setSelectedSkuDetail(goodsById,tbCart.getSkuDetailIds());
-            }
-
-            //如果购物车中改商品的数量大于1，cartPrice显示了多个商品价格的总额
-            if (tbCart.getItemCount() >= 1){
-                goodsById.setCartTotalPrice(goodsById.getCartPrice()*tbCart.getItemCount());
-                goodsById.setCartItemCount(tbCart.getItemCount());
-            }
-           return goodsById;
+            goodsInfo.setCartPrice(goodsInfo.getPrice());
+            goodsInfo.setCartItemCount(tbCart.getItemCount());
+            goodsInfo.setCartTotalPrice(PriceCalculateUtil.multy(goodsInfo.getPrice(),goodsInfo.getCartItemCount()));
+            goodsInfo.setSkuDetailDesc(tbCart.getSkuDetailDesc());
         }
-        return null;
+        return goodsInfo;
     }
 
     @Override
@@ -119,10 +126,10 @@ public class ApiCartServiceImpl implements ApiCartService {
                     for (TbSkuDetail tbSkuDetail : skuShowInfo.getSkuDetails()) {
                         if (s.equals(String.valueOf(tbSkuDetail.getId()))){
                             tbSkuDetail.setIsSelected(1);
-                            //实时计算价格
-                            if (tbSkuDetail.getSkuDetailPrice() != 0){
-                                goods.setCartPrice(goods.getCartPrice() + tbSkuDetail.getSkuDetailPrice());
-                            }
+//                            //实时计算价格
+//                            if (tbSkuDetail.getSkuDetailPrice() != 0){
+//                                goods.setCartPrice(goods.getCartPrice() + tbSkuDetail.getSkuDetailPrice());
+//                            }
                         }
                     }
                 }

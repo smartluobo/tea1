@@ -1,15 +1,23 @@
 package com.ibay.tea.common.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.HttpClientUtils;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -19,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.util.*;
 
@@ -82,6 +91,7 @@ public class HttpUtil {
         RequestConfig requestConfig = getDefaultConfigure();
         try {
             url = url + stitchParameters(param);
+            logger.info("request wechat token url :{}",url);
             HttpGet httpGet = new HttpGet(url);
             httpGet.setConfig(requestConfig);
             response = httpClient.execute(httpGet);
@@ -104,6 +114,27 @@ public class HttpUtil {
     public static String post(String url){
         return post(url, null);
     }
+
+    public static String postHttp(String url,String body) throws Exception {
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(10000)
+                .setConnectionRequestTimeout(10000)
+                .setSocketTimeout(10000)
+                .build();
+        httpPost.setConfig(requestConfig);
+        httpPost.setHeader("Content-Type", "application/json;charset=UTF-8");//表示客户端发送给服务器端的数据格式
+        httpPost.setHeader("Accept", "*/*");//这样也ok,只不过服务端返回的数据不一定为json
+        httpPost.setHeader("Accept", "application/json");                    //表示服务端接口要返回给客户端的数据格式，
+        StringEntity entity = new StringEntity(body, ContentType.APPLICATION_JSON);
+        httpPost.setEntity(entity);
+        CloseableHttpResponse response = httpclient.execute(httpPost);
+        String result = EntityUtils.toString(response.getEntity(),HTTP_CHARSET);
+        logger.info("send message wechat return result: {}",result);
+        return result;
+    }
+
 
     /**
      * 发送post请求(带参数)
@@ -256,6 +287,50 @@ public class HttpUtil {
             logger.error("urlEncode error:{}",e2);
         }
         return result;
+    }
+
+    public static String getHttp(String url, Map<String, String> params) {
+        String responseStr = null;
+        List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+        if (params != null) {
+            Iterator<Map.Entry<String, String>> iter = params.entrySet().iterator();
+            while (iter.hasNext()) {
+                Map.Entry<String, String> entry = iter.next();
+                String key = entry.getKey();
+                String value = entry.getValue();
+                BasicNameValuePair basicNameValuePair = new BasicNameValuePair(key, value);
+                nameValuePairList.add(basicNameValuePair);
+            }
+        }
+
+        CloseableHttpClient httpClient = HttpClientBuilder.create()
+                .setRetryHandler(new DefaultHttpRequestRetryHandler(5, false))
+                .setDefaultRequestConfig(RequestConfig.custom().setConnectionRequestTimeout(3 * 1000)
+                        .setSocketTimeout(5 * 1000).setConnectTimeout(3 * 1000).build())
+                .build();
+
+        HttpGet httpGet = null;
+        try {
+
+            URI uri = new URIBuilder(url).setParameters(nameValuePairList).build();
+            httpGet = new HttpGet(uri);
+            CloseableHttpResponse response = httpClient.execute(httpGet);
+            if (response.getStatusLine().getStatusCode() == 200){
+                responseStr = EntityUtils.toString(response.getEntity());
+            }
+
+        }catch (Exception ex){
+
+            logger.error("HttpClient Execute error", ex);
+
+        }finally {
+
+            if (httpGet != null){
+                httpGet.releaseConnection();
+            }
+            HttpClientUtils.closeQuietly(httpClient);
+        }
+        return responseStr;
     }
 
     public static void main(String[] args) {

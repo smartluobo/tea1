@@ -7,11 +7,11 @@ import java.util.List;
 public class TbOrder {
     private String orderId;
 
-    private BigDecimal payment;
+    private double payment;
 
     private Integer paymentType;
 
-    private BigDecimal postFee;
+    private double postFee;
 
     private Integer status;
 
@@ -53,6 +53,8 @@ public class TbOrder {
 
     private String createDateStr;
 
+    private String takeCode;
+
     //订单商品数量
     private int goodsTotalCount = 1;
 
@@ -87,11 +89,11 @@ public class TbOrder {
         this.orderId = orderId == null ? null : orderId.trim();
     }
 
-    public BigDecimal getPayment() {
+    public double getPayment() {
         return payment;
     }
 
-    public void setPayment(BigDecimal payment) {
+    public void setPayment(double payment) {
         this.payment = payment;
     }
 
@@ -103,11 +105,11 @@ public class TbOrder {
         this.paymentType = paymentType;
     }
 
-    public BigDecimal getPostFee() {
+    public double getPostFee() {
         return postFee;
     }
 
-    public void setPostFee(BigDecimal postFee) {
+    public void setPostFee(double postFee) {
         this.postFee = postFee;
     }
 
@@ -341,5 +343,13 @@ public class TbOrder {
 
     public void setCreateDateStr(String createDateStr) {
         this.createDateStr = createDateStr;
+    }
+
+    public String getTakeCode() {
+        return takeCode;
+    }
+
+    public void setTakeCode(String takeCode) {
+        this.takeCode = takeCode;
     }
 }

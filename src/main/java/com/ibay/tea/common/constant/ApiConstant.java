@@ -58,6 +58,14 @@ public class ApiConstant {
 
     public static final int ORDER_CLOSE_MESSAGE_SEND = 2;
 
+    public static final int USER_COUPONS_EXPIRE_LIMIT = 7;
+
+    public static final int PRINT_TYPE_ORDER = 1;
+    public static final int PRINT_TYPE_ORDER_ITEM = 2;
+    public static final int PRINT_TYPE_ORDER_ALL = 3;
+
+
+
 
 
 

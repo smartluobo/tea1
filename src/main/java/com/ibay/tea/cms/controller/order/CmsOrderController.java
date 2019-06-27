@@ -53,9 +53,10 @@ public class CmsOrderController {
     }
 
 
-    @RequestMapping("/orderList/{storeId}/{orderId}/{orderStatus}")
+    @RequestMapping("/updateOrder/{storeId}/{orderId}/{orderStatus}")
     public ResultInfo updateOrder(@PathVariable("storeId") int storeId,@PathVariable("orderId") String orderId ,@PathVariable("orderStatus") int orderStatus){
         try {
+            LOGGER.info("update order storeId : {},orderId : {} , orderStatus : {}",storeId,orderId,orderStatus);
             if (orderStatus == ApiConstant.ORDER_STATUS_MAKE_COMPLETE || orderStatus == ApiConstant.ORDER_STATUS_CLOSED){
                 Map<String,Object> condition = new HashMap<>();
                 //执行更新操作
@@ -63,10 +64,13 @@ public class CmsOrderController {
                 condition.put("orderStatus",orderStatus);
                 condition.put("orderId",orderId);
                 tbOrderMapper.updateOrderStatusByCondition(condition);
+
                 //调用接口完成推送
                 if (orderStatus == ApiConstant.ORDER_STATUS_MAKE_COMPLETE){
+                    LOGGER.info("order make complete message send.....");
                     orderMessageSendService.orderMessageSend(orderId,ApiConstant.ORDER_MAKE_COMPLETE_MESSAGE_SEND);
                 }else {
+                    LOGGER.info("order close message send.....");
                     orderMessageSendService.orderMessageSend(orderId,ApiConstant.ORDER_CLOSE_MESSAGE_SEND);
                 }
                 return ResultInfo.newSuccessResultInfo();

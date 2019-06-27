@@ -65,13 +65,7 @@ public class ApiGoodsServiceImpl implements ApiGoodsService {
             //活动类型为全场折扣
             if (todayActivityBean.getTbActivity().getActivityType() == ApiConstant.ACTIVITY_TYPE_FULL){
                 for (TbItem tbItem : goodsListByCategoryId) {
-                    tbItem.setShowActivityPrice(1);
-                    tbItem.setPrice(tbItem.getPrice() + extraPrice);
-                    TbActivityCouponsRecord tbActivityCouponsRecord = todayActivityBean.getTbActivityCouponsRecordList().get(0);
-                    TbCoupons tbCoupons = activityCache.getTbCouponsById(tbActivityCouponsRecord.getCouponsId());
-
-                    double activityPrice = PriceCalculateUtil.multy(tbItem.getPrice(),tbCoupons.getCouponsRatio());
-                    tbItem.setActivityPrice(activityPrice);
+                    calculateActivityPrice(tbItem, extraPrice, todayActivityBean);
                 }
             }else {
                 if (extraPrice != 0 && !CollectionUtils.isEmpty(goodsListByCategoryId)){
@@ -103,6 +97,37 @@ public class ApiGoodsServiceImpl implements ApiGoodsService {
                 }
             }
         }
+    }
+
+    @Override
+    public void calculateGoodsPrice(TbItem goodsInfo, int extraPrice, TodayActivityBean todayActivityBean) {
+        if (goodsInfo == null){
+            return ;
+        }
+        if (extraPrice == 0 && todayActivityBean == null){
+            return;
+        }
+        if (todayActivityBean != null){
+            //活动类型为全场折扣
+            if (todayActivityBean.getTbActivity().getActivityType() == ApiConstant.ACTIVITY_TYPE_FULL){
+                calculateActivityPrice(goodsInfo, extraPrice, todayActivityBean);
+            }else {
+                if (extraPrice != 0){
+                    goodsInfo.setPrice(goodsInfo.getPrice() + extraPrice);
+                }
+            }
+        }else {
+            goodsInfo.setPrice(goodsInfo.getPrice() + extraPrice);
+        }
+    }
+
+    private void calculateActivityPrice(TbItem goodsInfo, int extraPrice, TodayActivityBean todayActivityBean) {
+        goodsInfo.setShowActivityPrice(1);
+        goodsInfo.setPrice(goodsInfo.getPrice() + extraPrice);
+        TbActivityCouponsRecord tbActivityCouponsRecord = todayActivityBean.getTbActivityCouponsRecordList().get(0);
+        TbCoupons tbCoupons = activityCache.getTbCouponsById(tbActivityCouponsRecord.getCouponsId());
+        double activityPrice = PriceCalculateUtil.multy(goodsInfo.getPrice(),tbCoupons.getCouponsRatio());
+        goodsInfo.setActivityPrice(activityPrice);
     }
 
 

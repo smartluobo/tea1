@@ -76,7 +76,7 @@ public class ApiOrderController {
             if (!flag){
                 return ResultInfo.newParameterErrorResultInfo();
             }
-            Map<String, Object> payMap = apiOrderService.createOrderByCart(oppenId, cartItemIds, userCouponsId, addressId, selfGet, tbStore);
+            Map<String, Object> payMap = apiOrderService.createOrderByCart(cartOrderParamVo);
             resultInfo.setData(payMap);
             return resultInfo;
         }catch (Exception e){
@@ -124,7 +124,7 @@ public class ApiOrderController {
             }
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
 
-            Map<String, Object> payMap = apiOrderService.createOrderByGoodsId(oppenId, goodsId, skuDetailIds, userCouponsId, addressId, selfGet, goodsCount, tbStore, goodsOrderParamVo);
+            Map<String, Object> payMap = apiOrderService.createOrderByGoodsId(goodsOrderParamVo);
             resultInfo.setData(payMap);
             return resultInfo;
         }catch (Exception e){
@@ -178,8 +178,10 @@ public class ApiOrderController {
         }
 
         try {
+            LOGGER.info("calculateCartOrderPrice CartOrderParamVo : {}",paramVo);
         	ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
-            CalculateReturnVo calculateReturnVo = apiOrderService.calculateCartOrderPrice(paramVo);
+            CalculateReturnVo calculateReturnVo = apiOrderService.calculateCartOrderPrice(paramVo,false);
+            LOGGER.info(" cart calculate price calculateReturnVo : {}",calculateReturnVo);
             resultInfo.setData(calculateReturnVo);
             return resultInfo;
         }catch (Exception e){
@@ -197,7 +199,7 @@ public class ApiOrderController {
 
         try {
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
-            CalculateReturnVo calculateReturnVo = apiOrderService.calculateGoodsOrderPrice(paramVo);
+            CalculateReturnVo calculateReturnVo = apiOrderService.calculateGoodsOrderPrice(paramVo,false);
             resultInfo.setData(calculateReturnVo);
             return resultInfo;
         }catch (Exception e){

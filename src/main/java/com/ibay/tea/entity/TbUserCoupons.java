@@ -1,5 +1,7 @@
 package com.ibay.tea.entity;
 
+import com.ibay.tea.common.utils.DateUtil;
+
 import java.util.Date;
 
 public class TbUserCoupons {
@@ -19,6 +21,10 @@ public class TbUserCoupons {
     private Integer status;
 
     private String couponsPoster;
+
+    private Date expireDate;
+
+    private String expireDateStr;
 
     public Integer getId() {
         return id;
@@ -82,5 +88,26 @@ public class TbUserCoupons {
 
     public void setCouponsPoster(String couponsPoster) {
         this.couponsPoster = couponsPoster;
+    }
+
+    public Date getExpireDate() {
+        return expireDate;
+    }
+
+    public void setExpireDate(Date expireDate) {
+        if (expireDate != null){
+            this.expireDateStr = DateUtil.formatExpireDate(expireDate);
+        }
+        this.expireDate = expireDate;
+    }
+
+    public String getExpireDateStr() {
+        return expireDateStr;
+    }
+
+    public void setExpireDateStr(String expireDateStr) {
+        if (this.expireDateStr == null){
+            this.expireDateStr = expireDateStr;
+        }
     }
 }

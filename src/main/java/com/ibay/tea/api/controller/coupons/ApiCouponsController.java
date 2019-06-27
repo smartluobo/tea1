@@ -37,4 +37,23 @@ public class ApiCouponsController {
 
     }
 
+    @RequestMapping("/getUserCouponsByOppenId")
+    public ResultInfo getUserCouponsByOppenId (@RequestBody Map<String,String> params){
+
+        if (params == null){
+        	return ResultInfo.newEmptyParamsResultInfo();
+        }
+
+        try {
+        	ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+        	String oppenId = params.get("oppenId");
+            List<TbUserCoupons> userCouponsList = apiCouponsService.getUserCouponsByOppenId(oppenId);
+            resultInfo.setData(userCouponsList);
+        	return resultInfo;
+        }catch (Exception e){
+        	return ResultInfo.newExceptionResultInfo();
+        }
+
+    }
+
 }

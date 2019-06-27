@@ -14,4 +14,6 @@ public interface ApiGoodsService {
     void calculateGoodsPrice(List<TbItem> goodsListByCategoryId, int extraPrice, TodayActivityBean todayActivityBean);
 
     void checkGoodsInventory(List<TbItem> goodsList, int integer);
+
+    void calculateGoodsPrice(TbItem goodsInfo, int extraPrice, TodayActivityBean todayActivityBean);
 }

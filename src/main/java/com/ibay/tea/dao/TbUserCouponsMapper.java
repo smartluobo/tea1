@@ -26,4 +26,6 @@ public interface TbUserCouponsMapper {
     TbUserCoupons selectValidUserCoupons(@Param("oppenId") String oppenId,@Param("id") int id);
 
     List<TbUserCoupons> findUserValidCoupons(String oppenId);
+
+    List<TbUserCoupons> getUserCouponsByOppenId(String oppenId);
 }

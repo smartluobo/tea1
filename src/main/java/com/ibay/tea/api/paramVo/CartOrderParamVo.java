@@ -1,5 +1,9 @@
 package com.ibay.tea.api.paramVo;
 
+import com.ibay.tea.entity.TbItem;
+
+import java.util.List;
+
 public class CartOrderParamVo {
 
    private String oppenId;
@@ -64,5 +68,18 @@ public class CartOrderParamVo {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    @Override
+    public String toString() {
+        return "CartOrderParamVo{" +
+                "oppenId='" + oppenId + '\'' +
+                ", cartItemIds='" + cartItemIds + '\'' +
+                ", userCouponsId=" + userCouponsId +
+                ", addressId=" + addressId +
+                ", selfGet=" + selfGet +
+                ", storeId=" + storeId +
+                ", orderId='" + orderId + '\'' +
+                '}';
     }
 }
