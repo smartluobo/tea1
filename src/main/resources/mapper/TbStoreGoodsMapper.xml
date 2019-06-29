@@ -31,16 +31,48 @@
 
   </select>
 
+  <select id="findAllByStoreId" resultMap="BaseResultMap" parameterType="int">
+    select <include refid="Base_Column_List" /> from tb_store_goods where store_id = #{storeId,jdbcType=INTEGER}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_store_goods where id = #{id,jdbcType=INTEGER}
   </delete>
+
+  <delete id="deleteByStoreId" parameterType="int">
+    DELETE  FROM tb_store_goods WHERE store_id = #{storeId}
+  </delete>
+
   <insert id="insert" parameterType="com.ibay.tea.entity.TbStoreGoods">
-    insert into tb_store_goods (id, goods_id, goods_name, 
+    insert into tb_store_goods (goods_id, goods_name,
       goods_inventory, create_time, update_time, 
       store_id, store_name)
-    values (#{id,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}, 
+    values (#{goodsId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR},
       #{goodsInventory,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{storeId,jdbcType=INTEGER}, #{storeName,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="saveUpdateMenu" parameterType="com.ibay.tea.entity.TbStoreGoods">
+    insert into tb_store_goods (id, goods_id, goods_name,
+                                goods_inventory, create_time, update_time,
+                                store_id, store_name)
+    values (#{id,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR},
+            #{goodsInventory,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+            #{storeId,jdbcType=INTEGER}, #{storeName,jdbcType=VARCHAR})
+  </insert>
+
+
+  <insert id="insertBatch" parameterType="list">
+    insert into tb_store_goods (goods_id, goods_name,
+    goods_inventory, create_time, update_time,
+    store_id, store_name)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.goodsId,jdbcType=INTEGER}, #{item.goodsName,jdbcType=VARCHAR},
+      #{item.goodsInventory,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateTime,jdbcType=TIMESTAMP},
+      #{item.storeId,jdbcType=INTEGER}, #{item.storeName,jdbcType=VARCHAR}
+      )
+    </foreach>
   </insert>
 
   <update id="updateInventory" parameterType="map">

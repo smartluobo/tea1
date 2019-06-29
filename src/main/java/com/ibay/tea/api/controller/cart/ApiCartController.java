@@ -121,5 +121,24 @@ public class ApiCartController {
         }
     }
 
+    @RequestMapping("/getCartItemCount")
+    public ResultInfo getCartItemCount(@RequestBody Map<String,String> params){
+
+        if (params == null){
+        	return ResultInfo.newEmptyParamsResultInfo();
+        }
+
+        try {
+            String oppenId = params.get("oppenId");
+            ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+        	int cartItemCount = apiCartService.getCartItemCountByOppenId(oppenId);
+        	resultInfo.setData(cartItemCount);
+        	return resultInfo;
+        }catch (Exception e){
+        	return ResultInfo.newExceptionResultInfo();
+        }
+
+    }
+
 
 }

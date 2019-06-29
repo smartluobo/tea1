@@ -1,5 +1,6 @@
 package com.ibay.tea.cms.interceptor;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ibay.tea.api.response.ResultInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         Object user = request.getSession().getAttribute("user");
         LOGGER.info(" session interceptor preHandle...");
         if (user == null){
-            response.getWriter().print(ResultInfo.newNoLoginResultInfo());
+            LOGGER.info("no login be interceptor");
+            response.getWriter().print(JSONObject.toJSONString(ResultInfo.newNoLoginResultInfo()));
             return false;
         }else {
             return super.preHandle(request, response, handler);

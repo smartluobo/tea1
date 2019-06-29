@@ -16,7 +16,14 @@ public class TbStore {
     private int extraPrice;
 
     private int orderPrinterId;
+
     private int orderItemPrinterId;
+
+    private String longitude;
+
+    private String latitude;
+
+    private String distance;
 
     public Integer getId() {
         return id;
@@ -80,5 +87,29 @@ public class TbStore {
 
     public void setOrderItemPrinterId(int orderItemPrinterId) {
         this.orderItemPrinterId = orderItemPrinterId;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
     }
 }

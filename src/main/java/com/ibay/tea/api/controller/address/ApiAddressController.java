@@ -2,6 +2,8 @@ package com.ibay.tea.api.controller.address;
 
 import com.ibay.tea.api.response.ResultInfo;
 import com.ibay.tea.api.service.address.ApiAddressService;
+import com.ibay.tea.api.service.map.ApiMapService;
+import com.ibay.tea.common.service.SendSmsService;
 import com.ibay.tea.entity.TbApiUserAddress;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
@@ -20,6 +22,12 @@ public class ApiAddressController {
 
     @Resource
     private ApiAddressService apiAddressService;
+
+    @Resource
+    private SendSmsService sendSmsService;
+
+    @Resource
+    private ApiMapService apiMapService;
 
     @RequestMapping("/findListByOppenId")
     public ResultInfo findUserAddressByOppenId(@RequestBody Map<String,String> params){
@@ -69,6 +77,13 @@ public class ApiAddressController {
            if (tbApiUserAddress == null){
                return ResultInfo.newEmptyParamsResultInfo();
            }
+           if (tbApiUserAddress.getVerificationCode() == null){
+               return ResultInfo.newEmptyParamsResultInfo();
+           }
+           boolean flag = sendSmsService.checkVerificationCode(tbApiUserAddress.getPhoneNum(), tbApiUserAddress.getVerificationCode());
+           if (!flag){
+               return ResultInfo.newFailResultInfo("验证码不正确");
+           }
            apiAddressService.insertApiUserAddress(tbApiUserAddress);
            return ResultInfo.newSuccessResultInfo();
        }catch (Exception e){
@@ -89,6 +104,25 @@ public class ApiAddressController {
         }catch (Exception e){
             return ResultInfo.newExceptionResultInfo();
         }
+    }
+
+    @RequestMapping("/getAddressList")
+    public ResultInfo getAddressList(@RequestBody Map<String,String> params){
+
+        if (params == null){
+        	return ResultInfo.newEmptyParamsResultInfo();
+        }
+
+        try {
+        	ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            List<Object> address = apiMapService.getAddressList(params);
+            resultInfo.setData(address);
+        	return resultInfo;
+        }catch (Exception e){
+        	return ResultInfo.newExceptionResultInfo();
+        }
+
+
     }
 
 

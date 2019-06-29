@@ -75,11 +75,25 @@ public class ResultInfo {
         return resultInfo;
     }
 
-    public static String newNoLoginResultInfo() {
+    public static ResultInfo newNoLoginResultInfo() {
         ResultInfo resultInfo = new ResultInfo();
         resultInfo.setCode(601);
         resultInfo.setMsg("no login");
-        return JSONObject.toJSONString(resultInfo);
+        return resultInfo;
+    }
+
+    public static ResultInfo newFailResultInfo(){
+        ResultInfo resultInfo = new ResultInfo();
+        resultInfo.setCode(602);
+        resultInfo.setMsg("fail");
+        return resultInfo;
+    }
+
+    public static ResultInfo newFailResultInfo(String msg){
+        ResultInfo resultInfo = new ResultInfo();
+        resultInfo.setCode(602);
+        resultInfo.setMsg(msg);
+        return resultInfo;
     }
 
 }

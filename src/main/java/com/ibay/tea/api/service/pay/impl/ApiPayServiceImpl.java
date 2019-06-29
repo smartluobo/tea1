@@ -6,6 +6,7 @@ import com.ibay.tea.api.request.WechatCreateOrderRequest;
 import com.ibay.tea.api.service.pay.ApiPayService;
 import com.ibay.tea.api.service.wechat.WechatSendService;
 import com.ibay.tea.cache.StoreCache;
+import com.ibay.tea.common.constant.ApiConstant;
 import com.ibay.tea.common.service.PrintService;
 import com.ibay.tea.common.utils.*;
 import com.ibay.tea.dao.TbOrderItemMapper;
@@ -151,7 +152,7 @@ public class ApiPayServiceImpl implements ApiPayService {
                 tbUserPayRecordMapper.updatePayStatus(updateMap);
                 //异步调用订单打印
                 TbStore store = storeCache.findStoreById(tbOrder.getStoreId());
-                sendExecutorService.submit(() -> printService.printOrder(tbOrder, store));
+                sendExecutorService.submit(() -> printService.printOrder(tbOrder, store, ApiConstant.PRINT_TYPE_ORDER_ALL));
             } else {
                 //支付失败更新
                 //更新支付记录状态，库存和订单状态不用修改

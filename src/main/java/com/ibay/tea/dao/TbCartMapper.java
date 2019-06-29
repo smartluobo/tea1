@@ -21,4 +21,6 @@ public interface TbCartMapper {
     void cartGoodsDelete(@Param("oppenId") String oppenId, @Param("id") int cartItemId);
 
     void deleteCartItemByIds(List<String> strings);
+
+    int getCartItemCountByOppenId(String oppenId);
 }

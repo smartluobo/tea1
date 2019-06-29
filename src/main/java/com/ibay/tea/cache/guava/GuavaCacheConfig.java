@@ -1,5 +1,6 @@
 package com.ibay.tea.cache.guava;
 
+import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -35,7 +36,12 @@ public class GuavaCacheConfig {
                         return Futures.immediateFuture(wechatTokenService.getToken());
                     }
                 });
-
         return wechatTokenGuavaCache;
+    }
+
+
+    @Bean
+    public Cache<String,String> verificationCodeCache(){
+        return CacheBuilder.newBuilder() .maximumSize(100)  .expireAfterAccess(5, TimeUnit.MINUTES).build();
     }
 }

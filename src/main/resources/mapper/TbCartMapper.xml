@@ -36,7 +36,11 @@
     </foreach>
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="getCartItemCountByOppenId" resultType="java.lang.Integer" parameterType="string">
+      SELECT count(1) FROM tb_cart where oppen_id = #{oppenId}
+  </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_cart where id = #{id,jdbcType=INTEGER}
   </delete>
 

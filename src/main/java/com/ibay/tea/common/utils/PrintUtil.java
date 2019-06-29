@@ -29,6 +29,7 @@ public class PrintUtil {
     //**********测试时，打开下面注释掉方法的即可,更多接口文档信息,请访问官网开放平台查看**********
     public static void main(String[] args) throws Exception{
 
+
         //==================添加打印机接口（支持批量）==================
         //***返回值JSON字符串***
         //正确例子：{"msg":"ok","ret":0,"data":{"ok":["sn#key#remark#carnum","316500011#abcdefgh#快餐前台"],"no":["316500012#abcdefgh#快餐前台#13688889999  （错误：识别码不正确）"]},"serverExecutedTime":3}

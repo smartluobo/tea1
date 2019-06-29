@@ -19,4 +19,6 @@ public interface ApiCartService {
     void cartGoodsDelete(String oppenId, int cartItemId);
 
     void checkGoodsInventory(List<TbItem> cartGoodsList, Integer integer);
+
+    int getCartItemCountByOppenId(String oppenId);
 }

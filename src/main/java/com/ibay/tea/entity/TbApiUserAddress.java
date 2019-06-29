@@ -21,6 +21,8 @@ public class TbApiUserAddress {
 
     private int isDefault;
 
+    private String verificationCode;
+
     public Integer getId() {
         return id;
     }
@@ -99,5 +101,13 @@ public class TbApiUserAddress {
 
     public void setIsDefault(int isDefault) {
         this.isDefault = isDefault;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 }

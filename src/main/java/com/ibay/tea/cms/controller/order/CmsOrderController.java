@@ -2,9 +2,14 @@ package com.ibay.tea.cms.controller.order;
 
 import com.ibay.tea.api.response.ResultInfo;
 import com.ibay.tea.api.service.sendMsg.OrderMessageSendService;
+import com.ibay.tea.cache.StoreCache;
+import com.ibay.tea.cms.service.order.CmsOrderService;
 import com.ibay.tea.common.constant.ApiConstant;
+import com.ibay.tea.common.service.PrintService;
 import com.ibay.tea.dao.TbOrderMapper;
 import com.ibay.tea.entity.TbOrder;
+import com.ibay.tea.entity.TbOrderItem;
+import com.ibay.tea.entity.TbStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,7 +33,16 @@ public class CmsOrderController {
     private TbOrderMapper tbOrderMapper;
 
     @Resource
+    private CmsOrderService cmsOrderService;
+
+    @Resource
     private OrderMessageSendService orderMessageSendService;
+
+    @Resource
+    private PrintService printService;
+
+    @Resource
+    private StoreCache storeCache;
 
     @RequestMapping("/orderList/{storeId}/{orderStatus}/{pageSize}/{pageNum}")
     public ResultInfo orderList(@PathVariable("storeId") int storeId,
@@ -81,5 +95,58 @@ public class CmsOrderController {
             LOGGER.error("updateOrder happen exception orderId : {} orderStatus : {} storeId : {}",orderId,orderStatus,storeId,e);
             return ResultInfo.newExceptionResultInfo();
         }
+    }
+
+    @RequestMapping("/findOrderDetail/{orderId}")
+    public ResultInfo findOrderDetail(@PathVariable("orderId") String orderId){
+
+        if (orderId == null){
+        	return ResultInfo.newEmptyParamsResultInfo();
+        }
+
+        try {
+        	ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            List<TbOrderItem> orderItemList = cmsOrderService.findOrderDetail(orderId);
+            resultInfo.setData(orderItemList);
+        	return resultInfo;
+        }catch (Exception e){
+        	return ResultInfo.newExceptionResultInfo();
+        }
+    }
+
+    @RequestMapping("/orderPrint/{orderId}")
+    public ResultInfo orderPrint(@PathVariable("orderId") String orderId){
+
+        if (orderId == null){
+        	return ResultInfo.newEmptyParamsResultInfo();
+        }
+
+        try {
+        	ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(orderId);
+            TbStore store = storeCache.findStoreById(tbOrder.getStoreId());
+            printService.printOrder(tbOrder,store,ApiConstant.PRINT_TYPE_ORDER);
+        	return resultInfo;
+        }catch (Exception e){
+        	return ResultInfo.newExceptionResultInfo();
+        }
+
+    }
+
+    @RequestMapping("/orderItemPrint/{orderId}/{itemId}")
+    public ResultInfo orderItemPrint(@PathVariable("orderId") String orderId,@PathVariable("itemId") int itemId){
+
+        if (orderId == null){
+            return ResultInfo.newEmptyParamsResultInfo();
+        }
+
+        try {
+            ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            cmsOrderService.orderItemPrint(orderId,itemId);
+            return resultInfo;
+        }catch (Exception e){
+            return ResultInfo.newExceptionResultInfo();
+        }
+
     }
 }

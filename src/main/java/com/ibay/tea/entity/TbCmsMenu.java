@@ -1,25 +1,28 @@
 package com.ibay.tea.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class TbCmsMenu {
-    private Integer id;
+    private int id;
 
     private String menuName;
 
-    private Integer isParent;
+    private int isParent;
 
-    private Integer parentId;
+    private int parentId;
 
     private Date createTime;
 
     private String menuUrl;
 
-    public Integer getId() {
+    private List<TbCmsMenu> subMenu;
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -28,22 +31,22 @@ public class TbCmsMenu {
     }
 
     public void setMenuName(String menuName) {
-        this.menuName = menuName == null ? null : menuName.trim();
+        this.menuName = menuName;
     }
 
-    public Integer getIsParent() {
+    public int getIsParent() {
         return isParent;
     }
 
-    public void setIsParent(Integer isParent) {
+    public void setIsParent(int isParent) {
         this.isParent = isParent;
     }
 
-    public Integer getParentId() {
+    public int getParentId() {
         return parentId;
     }
 
-    public void setParentId(Integer parentId) {
+    public void setParentId(int parentId) {
         this.parentId = parentId;
     }
 
@@ -60,6 +63,14 @@ public class TbCmsMenu {
     }
 
     public void setMenuUrl(String menuUrl) {
-        this.menuUrl = menuUrl == null ? null : menuUrl.trim();
+        this.menuUrl = menuUrl;
+    }
+
+    public List<TbCmsMenu> getSubMenu() {
+        return subMenu;
+    }
+
+    public void setSubMenu(List<TbCmsMenu> subMenu) {
+        this.subMenu = subMenu;
     }
 }

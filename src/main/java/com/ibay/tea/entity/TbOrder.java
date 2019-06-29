@@ -1,5 +1,8 @@
 package com.ibay.tea.entity;
 
+import com.ibay.tea.common.utils.DateUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -126,6 +129,9 @@ public class TbOrder {
     }
 
     public void setCreateTime(Date createTime) {
+        if (createTime != null){
+            this.createDateStr = DateUtil.viewDateFormat(createTime);
+        }
         this.createTime = createTime;
     }
 
@@ -342,7 +348,9 @@ public class TbOrder {
     }
 
     public void setCreateDateStr(String createDateStr) {
-        this.createDateStr = createDateStr;
+        if (StringUtils.isNotEmpty(createDateStr)){
+            this.createDateStr = createDateStr;
+        }
     }
 
     public String getTakeCode() {

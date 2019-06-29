@@ -18,4 +18,13 @@ public interface TbStoreGoodsMapper {
     List<TbStoreGoods> findRecordByCondition(Map<String, Object> condition);
 
     void updateInventory(@Param("goodsId") long itemId, @Param("storeId") int storeId, @Param("num") int num);
+
+    List<TbStoreGoods> findAllByStoreId(int storeId);
+
+    void saveUpdateMenu(TbStoreGoods storeGoods);
+
+    void insertBatch(List<TbStoreGoods> storeGoodsList);
+
+    void deleteByStoreId(int storeId);
+
 }

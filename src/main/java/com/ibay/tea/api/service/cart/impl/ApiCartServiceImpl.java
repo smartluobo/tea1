@@ -113,6 +113,11 @@ public class ApiCartServiceImpl implements ApiCartService {
 
     }
 
+    @Override
+    public int getCartItemCountByOppenId(String oppenId) {
+        return tbCartMapper.getCartItemCountByOppenId(oppenId);
+    }
+
 
     private void setSelectedSkuDetail(TbItem goods,String skuDetailIds) {
         List<TbSkuType> skuShowInfos = goods.getSkuShowInfos();
