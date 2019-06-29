@@ -1,6 +1,7 @@
 package com.ibay.tea.api.controller.address;
 
 import com.ibay.tea.api.response.ResultInfo;
+import com.ibay.tea.api.responseVo.ApiAddressVo;
 import com.ibay.tea.api.service.address.ApiAddressService;
 import com.ibay.tea.api.service.map.ApiMapService;
 import com.ibay.tea.common.service.SendSmsService;
@@ -115,7 +116,7 @@ public class ApiAddressController {
 
         try {
         	ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
-            List<Object> address = apiMapService.getAddressList(params);
+            List<ApiAddressVo> address = apiMapService.getAddressList(params);
             resultInfo.setData(address);
         	return resultInfo;
         }catch (Exception e){

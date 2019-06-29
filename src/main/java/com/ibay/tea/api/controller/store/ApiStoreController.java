@@ -50,8 +50,9 @@ public class ApiStoreController {
      try {
      	ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
          List<TbStore> storeList = storeCache.getStoreList();
-         apiMapService.selectStore(storeList,params);
-     	return resultInfo;
+         TbStore store = apiMapService.selectStore(storeList, params);
+         resultInfo.setData(store);
+         return resultInfo;
      }catch (Exception e){
      	return ResultInfo.newExceptionResultInfo();
      }

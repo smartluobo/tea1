@@ -3,35 +3,26 @@ package com.ibay.tea.common.utils;
 public class PointToDistance {
   
     public static void main(String[] args) {  
-        getDistanceFromTwoPoints(23.5539530, 114.8903920, 23.5554550, 114.8868890);  
+        getDistanceFromTwoPoints(22.53777, 113.94523, 22.611718, 114.040109);
           
-        distanceOfTwoPoints(23.5539530, 114.8903920, 23.5554550, 114.8868890);  
+        distanceOfTwoPoints(22.53777, 113.94523, 22.611718, 114.040109);
     }  
       
     private static final Double PI = Math.PI;  
   
     private static final Double PK = 180 / PI;  
       
-    /** 
-     * @Description: 第一种方法 
-     * @param lat_a 
-     * @param lng_a 
-     * @param lat_b 
-     * @param lng_b 
-     * @param @return    
-     * @return double 
-     * @author 钟志铖 
-     * @date 2014-9-7 上午10:11:35 
-     */  
-    public static double getDistanceFromTwoPoints(double lat_a, double lng_a, double lat_b, double lng_b) {  
-        double t1 = Math.cos(lat_a / PK) * Math.cos(lng_a / PK) * Math.cos(lat_b / PK) * Math.cos(lng_b / PK);  
-        double t2 = Math.cos(lat_a / PK) * Math.sin(lng_a / PK) * Math.cos(lat_b / PK) * Math.sin(lng_b / PK);  
-        double t3 = Math.sin(lat_a / PK) * Math.sin(lat_b / PK);  
-  
-        double tt = Math.acos(t1 + t2 + t3);  
-  
-        System.out.println("两点间的距离：" + 6366000 * tt + " 米");  
-        return 6366000 * tt;  
+
+    public static int getDistanceFromTwoPoints(double startLat, double startLng, double endLat, double endLng) {
+//        double t1 = Math.cos(startLat / PK) * Math.cos(startLng / PK) * Math.cos(endLat / PK) * Math.cos(endLng / PK);
+//        double t2 = Math.cos(startLat / PK) * Math.sin(startLng / PK) * Math.cos(endLat / PK) * Math.sin(endLng / PK);
+//        double t3 = Math.sin(startLat / PK) * Math.sin(endLat / PK);
+//
+//        double tt = Math.acos(t1 + t2 + t3);
+//        int distance = (int) (6366000 * tt);
+//        System.out.println("两点间的距离：" + distance + " 米");
+//        return (int)(6366000 * tt);
+        return 0;
     }  
   
       

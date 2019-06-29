@@ -6,6 +6,11 @@ public class EecupMapCalculateUtil {
 
     private static final double EARTH_RADIUS = 6378.137;//地球半径,单位千米
 
+    private static final Double PI = Math.PI;
+
+    private static final Double PK = 180 / PI;
+
+
     private static double rad(double d) {
         return d * Math.PI / 180.0;
     }
@@ -30,6 +35,18 @@ public class EecupMapCalculateUtil {
         s = Math.round(s * 10000);
 
         return (int)s;
+    }
+
+
+    public static int getDistanceFromTwoPoints(double startLat, double startLng, double endLat, double endLng) {
+        double t1 = Math.cos(startLat / PK) * Math.cos(startLng / PK) * Math.cos(endLat / PK) * Math.cos(endLng / PK);
+        double t2 = Math.cos(startLat / PK) * Math.sin(startLng / PK) * Math.cos(endLat / PK) * Math.sin(endLng / PK);
+        double t3 = Math.sin(startLat / PK) * Math.sin(endLat / PK);
+
+        double tt = Math.acos(t1 + t2 + t3);
+        int distance = (int) (6366000 * tt);
+        System.out.println("两点间的距离：" + distance + " 米");
+        return (int)(6366000 * tt);
     }
 
     public static void main(String[] args) {

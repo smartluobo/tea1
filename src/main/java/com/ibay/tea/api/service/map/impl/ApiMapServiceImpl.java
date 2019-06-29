@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,9 +40,16 @@ public class ApiMapServiceImpl implements ApiMapService {
 
         String longitude = params.get("longitude");
         String latitude = params.get("latitude");
+        double endLng = new BigDecimal(longitude).doubleValue();
+        double endLat = new BigDecimal(latitude).doubleValue();
+
         //本地计算距离 调用接口选择最近的店铺进行路劲规划
+
         for (TbStore store : storeList) {
-            int storeDistance = EecupMapCalculateUtil.calculateDistance(store.getLongitude(), store.getLatitude(), longitude, latitude);
+            double startLng = new BigDecimal(store.getLongitude()).doubleValue();
+            double startLat = new BigDecimal(store.getLatitude()).doubleValue();
+            int storeDistance = EecupMapCalculateUtil.getDistanceFromTwoPoints(startLat, startLng, endLat, endLng);
+            LOGGER.info("当前用户与店铺"+store.getStoreName()+"相距"+storeDistance+"米");
             if (storeDistance < minDistance){
                 minDistance = storeDistance;
                 targetStore = store;
@@ -49,23 +57,43 @@ public class ApiMapServiceImpl implements ApiMapService {
         }
         //获取到目标店铺后计算骑行距离
         if (targetStore != null){
+            LOGGER.info("当前用户最终选择店铺"+targetStore.getStoreName()+"相距"+minDistance+"米");
+            targetStore.setDistance(String.valueOf(minDistance));
+            String origin = targetStore.getLongitude()+","+targetStore.getLatitude();
+            String destination = longitude+","+latitude;
 
+            String url = mapSysProperties.getStoreDistanceUrl()+mapSysProperties.getKey()
+                    +"&origin="+origin+"&destination="+destination;
+            String result = HttpUtil.get(url);
+            Map map = JSON.parseObject(result, Map.class);
+            if ("0".equals(String.valueOf(map.get("errcode")))){
+                Map<String,Object> dataMap = (Map<String, Object>) map.get("data");
+                if (dataMap != null){
+                    List<Map<String,Object>> dataList = (List<Map<String, Object>>) dataMap.get("paths");
+                    if (dataList != null){
+                        Map<String, Object> detailMap = dataList.get(0);
+                        Object distance = detailMap.get("distance");
+                        if (distance != null){
+                            int distanceInt = Integer.parseInt(String.valueOf(distance));
+                            if (distanceInt > 0){
+                                targetStore.setDistance(String.valueOf(distance));
+                            }
+                        }
+                    }
+                }
+            }
         }
-
-
-
-
-        return null;
+        return targetStore;
     }
 
     @Override
-    public List<Object> getAddressList(Map<String, String> params) {
+    public List<ApiAddressVo> getAddressList(Map<String, String> params) {
         String cityId = params.get("cityId");
         String longitude = params.get("longitude");
         String latitude = params.get("latitude");
         String location = longitude+","+latitude;
         String keywords = params.get("keywords");
-        String url = null;
+        String url;
         if (StringUtils.isEmpty(keywords)){
             url = mapSysProperties.getMapAroundUrl()+mapSysProperties.getKey()+"&location="+location+"&keywords=&types=&offset=20&page=1&extensions=all";
         }else {
@@ -75,20 +103,38 @@ public class ApiMapServiceImpl implements ApiMapService {
         String result = HttpUtil.get(url);
         Map map = JSON.parseObject(result, Map.class);
         if ("OK".equals(map.get("info"))){
-            List<Map<String ,Object>> poisList = (List<Map<String, Object>>) map.get("pois");
-            if (CollectionUtils.isEmpty(poisList)){
-                return null;
+            List<Map<String ,Object>> poisList = null;
+            if (StringUtils.isEmpty(keywords)){
+                poisList = (List<Map<String, Object>>) map.get("pois");
+                if (CollectionUtils.isEmpty(poisList)){
+                    return null;
+                }
+                List<ApiAddressVo> apiAddressVoList = new ArrayList<>();
+                for (Map<String, Object> itemMap : poisList) {
+                    ApiAddressVo apiAddressVo = new ApiAddressVo();
+                    apiAddressVo.setAddress(String.valueOf(itemMap.get("address")));
+                    apiAddressVo.setAdname(String.valueOf(itemMap.get("adname")));
+                    apiAddressVo.setName(String.valueOf(itemMap.get("name")));
+                    apiAddressVo.setLocation(String.valueOf(itemMap.get("location")));
+                    apiAddressVoList.add(apiAddressVo);
+                }
+                return apiAddressVoList;
+            }else {
+                poisList = (List<Map<String, Object>>) map.get("tips");
+                if (CollectionUtils.isEmpty(poisList)){
+                    return null;
+                }
+                List<ApiAddressVo> apiAddressVoList = new ArrayList<>();
+                for (Map<String, Object> itemMap : poisList) {
+                    ApiAddressVo apiAddressVo = new ApiAddressVo();
+                    apiAddressVo.setAddress(String.valueOf(itemMap.get("address")));
+                    apiAddressVo.setAdname(String.valueOf(itemMap.get("district")));
+                    apiAddressVo.setName(String.valueOf(itemMap.get("name")));
+                    apiAddressVo.setLocation(String.valueOf(itemMap.get("location")));
+                    apiAddressVoList.add(apiAddressVo);
+                }
+                return apiAddressVoList;
             }
-            List<ApiAddressVo> apiAddressVoList = new ArrayList<>();
-            for (Map<String, Object> itemMap : poisList) {
-                ApiAddressVo apiAddressVo = new ApiAddressVo();
-                apiAddressVo.setAddress(String.valueOf(itemMap.get("address")));
-                apiAddressVo.setAdname(String.valueOf(itemMap.get("adname")));
-                apiAddressVo.setName(String.valueOf(itemMap.get("name")));
-                apiAddressVo.setLocation(String.valueOf(itemMap.get("location")));
-                apiAddressVoList.add(apiAddressVo);
-            }
-
         }
         return null;
     }
