@@ -19,7 +19,7 @@ public class CmsGoodsServiceImpl implements CmsGoodsService {
     private TbItemMapper tbItemMapper;
     @Override
     public List<TbItem> findGoodsListByPage(Integer pageNum, Integer pageSize) {
-        int startIndex = pageNum * pageSize;
+        int startIndex = (pageNum-1) * pageSize;
         return tbItemMapper.findGoodsListByPage(startIndex,pageSize);
     }
 

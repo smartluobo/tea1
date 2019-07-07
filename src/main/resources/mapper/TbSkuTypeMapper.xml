@@ -22,11 +22,18 @@
     delete from tb_sku_type where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.ibay.tea.entity.TbSkuType">
+  <insert id="addSkuType" parameterType="com.ibay.tea.entity.TbSkuType">
     insert into tb_sku_type (sku_type_name, create_time
       )
     values (#{skuTypeName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
       )
+  </insert>
+
+  <insert id="saveUpdateSkuType" parameterType="com.ibay.tea.entity.TbSkuType">
+    insert into tb_sku_type (id,sku_type_name, create_time
+    )
+    values (#{id},#{skuTypeName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+    )
   </insert>
 
 </mapper>

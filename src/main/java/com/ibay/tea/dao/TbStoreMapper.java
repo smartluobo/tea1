@@ -12,4 +12,12 @@ public interface TbStoreMapper {
 
     List<TbStore> findAll();
 
+    void addStore(TbStore tbStore);
+
+    void deleteStore(int id);
+
+    void saveUpdateStore(TbStore tbStore);
+
+    List<TbStore> findByIds(List<String> strings);
+
 }

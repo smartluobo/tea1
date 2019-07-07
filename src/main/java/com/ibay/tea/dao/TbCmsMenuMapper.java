@@ -1,17 +1,22 @@
 package com.ibay.tea.dao;
 
 import com.ibay.tea.entity.TbCmsMenu;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface TbCmsMenuMapper {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(TbCmsMenu record);
-
-    int insertSelective(TbCmsMenu record);
 
     TbCmsMenu selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(TbCmsMenu record);
+    List<TbCmsMenu> findAll();
 
-    int updateByPrimaryKey(TbCmsMenu record);
+    void addMenu(TbCmsMenu tbCmsMenu);
+
+    void deleteMenu(int id);
+
+    void saveUpdateMenu(TbCmsMenu tbCmsMenu);
+
+    List<TbCmsMenu> findByIds(List<String> strings);
 }

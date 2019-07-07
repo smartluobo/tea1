@@ -18,6 +18,10 @@
     select <include refid="Base_Column_List" /> from tb_cms_user where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="findAll" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from tb_cms_user
+  </select>
+
   <select id="findUserByLoginName" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from tb_cms_user where login_name = #{loginName}
   </select>
@@ -26,13 +30,22 @@
     delete from tb_cms_user where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.ibay.tea.entity.TbCmsUser">
+  <insert id="addCmsUser" parameterType="com.ibay.tea.entity.TbCmsUser">
     insert into tb_cms_user (user_name, login_name,
       password, store_ids, menu_ids,
       create_time)
     values (#{userName,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR},
       #{password,jdbcType=VARCHAR}, #{storeIds,jdbcType=VARCHAR}, #{menuIds,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="saveUpdateCmsUser" parameterType="com.ibay.tea.entity.TbCmsUser">
+    insert into tb_cms_user (id,user_name, login_name,
+    password, store_ids, menu_ids,
+    create_time)
+    values (#{id},#{userName,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR},
+    #{password,jdbcType=VARCHAR}, #{storeIds,jdbcType=VARCHAR}, #{menuIds,jdbcType=VARCHAR},
+    #{createTime,jdbcType=TIMESTAMP})
   </insert>
 
 </mapper>

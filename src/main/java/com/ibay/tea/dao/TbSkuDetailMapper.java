@@ -9,9 +9,11 @@ import java.util.List;
 public interface TbSkuDetailMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(TbSkuDetail record);
-
     TbSkuDetail selectByPrimaryKey(Integer id);
 
     List<TbSkuDetail> findAll();
+
+    void addSkuDetail(TbSkuDetail tbSkuDetail);
+
+    void saveUpdateSkuDetail(TbSkuDetail tbSkuDetail);
 }

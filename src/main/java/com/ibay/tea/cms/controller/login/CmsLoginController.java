@@ -1,21 +1,18 @@
 package com.ibay.tea.cms.controller.login;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ibay.tea.api.response.ResultInfo;
 import com.ibay.tea.cms.service.login.CmsLoginService;
 import com.ibay.tea.entity.TbCmsUser;
-import org.apache.ibatis.annotations.ResultType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-@Controller
-@CrossOrigin
+@RestController
+@CrossOrigin()
 @RequestMapping("cms/login")
 public class CmsLoginController {
 
@@ -50,6 +47,46 @@ public class CmsLoginController {
             return ResultInfo.newExceptionResultInfo();
         }
 
+    }
+
+    @PostMapping(value = "/loginOut")
+    @ResponseBody
+    public ResultInfo login(HttpServletRequest request){
+        try {
+            ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            request.getSession().removeAttribute("user");
+            LOGGER.info("login success ....");
+            return resultInfo;
+        }catch (Exception e){
+            LOGGER.error("cms user login out happen Exception",e);
+            return ResultInfo.newExceptionResultInfo();
+        }
+    }
+
+    @PostMapping(value = "/isLogin")
+    @ResponseBody
+    public ResultInfo isLogin(HttpServletRequest request){
+        try {
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null){
+                for (Cookie cookie : cookies) {
+                    LOGGER.info("cookie : {}",cookie);
+                }
+            }
+
+            ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            Object user = request.getSession().getAttribute("user");
+            if (user == null){
+                return ResultInfo.newNoLoginResultInfo();
+            }else {
+                resultInfo.setData(user);
+                LOGGER.info("request ready login...");
+                return resultInfo;
+            }
+        }catch (Exception e){
+            LOGGER.error("cms user login out happen Exception",e);
+            return ResultInfo.newExceptionResultInfo();
+        }
     }
 
     @PostMapping(value = "/test")

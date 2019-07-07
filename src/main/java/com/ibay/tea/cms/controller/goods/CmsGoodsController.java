@@ -2,16 +2,14 @@ package com.ibay.tea.cms.controller.goods;
 
 import com.ibay.tea.api.response.ResultInfo;
 import com.ibay.tea.cms.service.goods.CmsGoodsService;
-import com.ibay.tea.common.cms.response.DefaultJsonResponse;
-import com.ibay.tea.common.utils.DataTableUtil;
-import com.ibay.tea.common.utils.PageUtil;
-import com.ibay.tea.entity.Goods;
 import com.ibay.tea.entity.TbItem;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -21,11 +19,17 @@ public class CmsGoodsController {
     @Resource
     private CmsGoodsService cmsGoodsService;
 
-    @RequestMapping("/list/{pageSize}/{pageNum}")
-    public ResultInfo listByPage(@PathVariable("pageSize") int pageSize, @PathVariable("pageNum") int pageNum){
+    @PostMapping("/list")
+    @ResponseBody
+    public ResultInfo listByPage(@RequestBody Map<String,Integer> params){
        try {
+           if (CollectionUtils.isEmpty(params)){
+               return ResultInfo.newEmptyParamsResultInfo();
+           }
        	ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
            long total = cmsGoodsService.countGoodsByCondition(new HashMap<>());
+           int pageNum = params.get("pageNum");
+           int pageSize = params.get("pageSize");
            List<TbItem> goodsList = cmsGoodsService.findGoodsListByPage(pageNum,pageSize);
            resultInfo.setTotal(total);
            resultInfo.setData(goodsList);

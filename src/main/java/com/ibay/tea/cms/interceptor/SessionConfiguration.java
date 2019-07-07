@@ -10,6 +10,6 @@ public class SessionConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 //        registry.addInterceptor(new CrossOriginInterceptor()).addPathPatterns("/cms/**");
-        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/cms/**").excludePathPatterns("/cms/login/**");
+//        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/cms/**").excludePathPatterns("/cms/login/**");
     }
 }
