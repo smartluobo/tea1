@@ -44,17 +44,19 @@ public class CmsOrderController {
     @Resource
     private StoreCache storeCache;
 
-    @RequestMapping("/orderList/{storeId}/{orderStatus}/{pageSize}/{pageNum}")
+    @RequestMapping("/orderList/{storeId}/{orderStatus}/{pageSize}/{pageNum}/{takeCode}")
     public ResultInfo orderList(@PathVariable("storeId") int storeId,
                                 @PathVariable("orderStatus") int orderStatus,
                                 @PathVariable("pageSize") int pageSize,
-                                @PathVariable("pageNum") int pageNum){
+                                @PathVariable("pageNum") int pageNum,
+                                @PathVariable("takeCode") String takeCode){
         try {
             Map<String,Object> condition = new HashMap<>();
             condition.put("storeId",storeId);
             condition.put("orderStatus",orderStatus);
             condition.put("pageSize",pageSize);
             condition.put("startIndex",(pageNum-1)*pageSize);
+            condition.put("takeCode",takeCode);
             long total = tbOrderMapper.countByCondition(condition);
             List<TbOrder> orderList = tbOrderMapper.findOrderListByCondition(condition);
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();

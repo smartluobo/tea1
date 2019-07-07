@@ -46,6 +46,7 @@ public class CmsPrinterController {
             cmsPrinterService.addPrinter(printer);
             return resultInfo;
         }catch (Exception e){
+            LOGGER.error("cms printer add happen exception ",e);
             return ResultInfo.newExceptionResultInfo();
         }
 
@@ -59,6 +60,7 @@ public class CmsPrinterController {
             cmsPrinterService.deletePrinter(id);
             return resultInfo;
         }catch (Exception e){
+            LOGGER.error("cms printer delete id : {} happen exception ",id,e);
             return ResultInfo.newExceptionResultInfo();
         }
 
@@ -76,6 +78,7 @@ public class CmsPrinterController {
             cmsPrinterService.updatePrinter(printer);
             return resultInfo;
         }catch (Exception e){
+            LOGGER.error("cms printer update happen exception ",e);
             return ResultInfo.newExceptionResultInfo();
         }
 

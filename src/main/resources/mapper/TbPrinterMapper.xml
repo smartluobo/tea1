@@ -20,7 +20,7 @@
       printer_remark, printer_carnum, create_time,
       printer_type)
     values (#{printerSn,jdbcType=VARCHAR}, #{printerKey,jdbcType=VARCHAR},
-      #{printerRemark,jdbcType=VARCHAR}, #{printerCarnum1,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{printerRemark,jdbcType=VARCHAR}, #{printerCarnum,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
       #{printerType,jdbcType=INTEGER})
   </insert>
 
@@ -29,7 +29,7 @@
                             printer_remark, printer_carnum, create_time,
                             printer_type)
     values (#{id},#{printerSn,jdbcType=VARCHAR}, #{printerKey,jdbcType=VARCHAR},
-            #{printerRemark,jdbcType=VARCHAR}, #{printerCarnum1,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+            #{printerRemark,jdbcType=VARCHAR}, #{printerCarnum,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
             #{printerType,jdbcType=INTEGER})
   </insert>
 

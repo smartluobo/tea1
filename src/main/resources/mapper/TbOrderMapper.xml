@@ -62,14 +62,20 @@
   <select id="findOrderListByCondition" resultMap="BaseResultMap" parameterType="map">
     SELECT <include refid="Base_Column_List" /> from tb_order where store_id = #{storeId}
     <if test="orderStatus != -1">
-      AND orderStatus = #{orderStatus}
+      AND status = #{orderStatus}
+    </if>
+    <if test="takeCode != -1">
+      AND take_code = #{takeCode}
     </if>
     limit #{startIndex},#{pageSize}
   </select>
     <select id="countByCondition" resultType="java.lang.Long">
       SELECT count(1) from tb_order where store_id = #{storeId}
       <if test="orderStatus != -1">
-        AND orderStatus = #{orderStatus}
+        AND status = #{orderStatus}
+      </if>
+      <if test="takeCode != -1">
+        AND take_code = #{takeCode}
       </if>
     </select>
   <select id="findOrderByOppenId" resultMap="BaseResultMap">

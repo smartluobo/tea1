@@ -59,24 +59,26 @@ public class ApiMapServiceImpl implements ApiMapService {
         if (targetStore != null){
             LOGGER.info("当前用户最终选择店铺"+targetStore.getStoreName()+"相距"+minDistance+"米");
             targetStore.setDistance(String.valueOf(minDistance));
-            String origin = targetStore.getLongitude()+","+targetStore.getLatitude();
-            String destination = longitude+","+latitude;
+            if (minDistance < 5000){
+                String origin = targetStore.getLongitude()+","+targetStore.getLatitude();
+                String destination = longitude+","+latitude;
 
-            String url = mapSysProperties.getStoreDistanceUrl()+mapSysProperties.getKey()
-                    +"&origin="+origin+"&destination="+destination;
-            String result = HttpUtil.get(url);
-            Map map = JSON.parseObject(result, Map.class);
-            if ("0".equals(String.valueOf(map.get("errcode")))){
-                Map<String,Object> dataMap = (Map<String, Object>) map.get("data");
-                if (dataMap != null){
-                    List<Map<String,Object>> dataList = (List<Map<String, Object>>) dataMap.get("paths");
-                    if (dataList != null){
-                        Map<String, Object> detailMap = dataList.get(0);
-                        Object distance = detailMap.get("distance");
-                        if (distance != null){
-                            int distanceInt = Integer.parseInt(String.valueOf(distance));
-                            if (distanceInt > 0){
-                                targetStore.setDistance(String.valueOf(distance));
+                String url = mapSysProperties.getStoreDistanceUrl()+mapSysProperties.getKey()
+                        +"&origin="+origin+"&destination="+destination;
+                String result = HttpUtil.get(url);
+                Map map = JSON.parseObject(result, Map.class);
+                if ("0".equals(String.valueOf(map.get("errcode")))){
+                    Map<String,Object> dataMap = (Map<String, Object>) map.get("data");
+                    if (dataMap != null){
+                        List<Map<String,Object>> dataList = (List<Map<String, Object>>) dataMap.get("paths");
+                        if (dataList != null){
+                            Map<String, Object> detailMap = dataList.get(0);
+                            Object distance = detailMap.get("distance");
+                            if (distance != null){
+                                int distanceInt = Integer.parseInt(String.valueOf(distance));
+                                if (distanceInt > 0){
+                                    targetStore.setDistance(String.valueOf(distance));
+                                }
                             }
                         }
                     }

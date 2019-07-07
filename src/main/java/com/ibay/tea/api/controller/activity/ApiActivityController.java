@@ -61,8 +61,15 @@ public class ApiActivityController {
             }
             Map<String,Object> result = new HashMap<>();
             TbActivity activityInfo = apiActivityService.getTodayActivity(Integer.valueOf(storeId));
-            if (activityInfo == null || activityInfo.getActivityType() == ApiConstant.ACTIVITY_TYPE_FULL){
+            if (activityInfo == null ){
                 return ResultInfo.newEmptyResultInfo();
+            }
+            if (activityInfo.getActivityType() == ApiConstant.ACTIVITY_TYPE_FULL){
+                activityInfo.setShowImageUrl(activityInfo.getStartingPoster());
+                result.put("type",5);
+                result.put("info",activityInfo);
+                resultInfo.setData(result);
+                return resultInfo;
             }
             int activityStatus = apiActivityService.checkActivityStatus(activityInfo);
             if (activityStatus == ApiConstant.ACTIVITY_STATUS_NOT_START){

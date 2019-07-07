@@ -371,6 +371,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
                     orderTotalPrice += tbItem.getCartTotalPrice();
                     goodsList.add(tbItem);
                 }
+                LOGGER.info("info :title:{},price:{},cartPrice:{},cartTotalPrice:{},itemCount:{},skuDesc:{}",tbItem.getTitle(),tbItem.getPrice(),tbItem.getCartPrice(),tbItem.getCartTotalPrice(),tbItem.getCartItemCount(),tbItem.getSkuDetailDesc());
             }
             String groupGiveName = null;
             String fullReduceName = null;

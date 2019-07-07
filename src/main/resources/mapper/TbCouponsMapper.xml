@@ -13,26 +13,28 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="coupons_poster" jdbcType="VARCHAR" property="couponsPoster" />
+    <result column="use_rules" jdbcType="VARCHAR" property="useRules" />
+    <result column="use_scope" jdbcType="VARCHAR" property="useScope" />
 
   </resultMap>
   <sql id="Base_Column_List">
     id, coupons_type, coupons_name, coupons_ratio, consume_amount, reduce_amount, consume_count, 
-    give_count, create_time, update_time,coupons_poster
+    give_count, create_time, update_time,coupons_poster,use_rules,use_scope
   </sql>
 
   <insert id="addCoupons" parameterType="com.ibay.tea.entity.TbCoupons">
       INSERT INTO tb_coupons (coupons_type, coupons_name, coupons_ratio, consume_amount, reduce_amount,
-                              consume_count, give_count, create_time, update_time,coupons_poster)
+                              consume_count, give_count, create_time, update_time,coupons_poster,use_rules,use_scope)
       VALUES (#{couponsType},#{couponsName},#{couponsRatio},#{consumeAmount},#{reduceAmount},
-          #{consumeCount},#{giveCount},#{createTime},#{updateTime},#{couponsPoster}
+          #{consumeCount},#{giveCount},#{createTime},#{updateTime},#{couponsPoster},#{useRules},#{useScope}
       )
   </insert>
 
   <insert id="saveUpdateCoupons" parameterType="com.ibay.tea.entity.TbCoupons">
     INSERT INTO tb_coupons (id,coupons_type, coupons_name, coupons_ratio, consume_amount, reduce_amount,
-    consume_count, give_count, create_time, update_time,coupons_poster)
+    consume_count, give_count, create_time, update_time,coupons_poster,use_rules,use_scope)
     VALUES (#{id},#{couponsType},#{couponsName},#{couponsRatio},#{consumeAmount},#{reduceAmount},
-    #{consumeCount},#{giveCount},#{createTime},#{updateTime},#{couponsPoster}
+    #{consumeCount},#{giveCount},#{createTime},#{updateTime},#{couponsPoster},#{useRules},#{useScope}
     )
   </insert>
 

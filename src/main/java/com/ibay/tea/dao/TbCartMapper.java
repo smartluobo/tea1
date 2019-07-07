@@ -22,5 +22,7 @@ public interface TbCartMapper {
 
     void deleteCartItemByIds(List<String> strings);
 
-    int getCartItemCountByOppenId(String oppenId);
+    Integer getCartItemCountByOppenId(String oppenId);
+
+    void updateCartItemCount(@Param("oppenId") String oppenId, @Param("id") int id, @Param("count") int count);
 }

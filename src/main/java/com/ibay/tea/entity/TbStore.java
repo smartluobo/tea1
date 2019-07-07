@@ -25,6 +25,8 @@ public class TbStore {
 
     private String distance;
 
+    private int distributionDistance;
+
     public Integer getId() {
         return id;
     }
@@ -111,5 +113,13 @@ public class TbStore {
 
     public void setDistance(String distance) {
         this.distance = distance;
+    }
+
+    public int getDistributionDistance() {
+        return distributionDistance;
+    }
+
+    public void setDistributionDistance(int distributionDistance) {
+        this.distributionDistance = distributionDistance;
     }
 }

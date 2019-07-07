@@ -45,7 +45,7 @@ public class ApiRecommendServiceImpl implements ApiRecommendService {
         for (Long goodsId : goodsIds) {
             TbItem goodsById = goodsCache.findGoodsById(goodsId);
             if (goodsById != null){
-                goodsList.add(goodsById);
+                goodsList.add(goodsById.copy());
             }
         }
         Integer storeIdInt = Integer.valueOf(storeId);

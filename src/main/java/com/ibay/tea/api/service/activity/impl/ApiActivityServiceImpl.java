@@ -8,7 +8,10 @@ import com.ibay.tea.dao.TbActivityCouponsRecordMapper;
 import com.ibay.tea.dao.TbActivityMapper;
 import com.ibay.tea.dao.TbUserCouponsMapper;
 import com.ibay.tea.entity.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -16,6 +19,8 @@ import java.util.List;
 
 @Service
 public class ApiActivityServiceImpl implements ApiActivityService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiActivityServiceImpl.class);
 
     private static final String LOCK_STRING = "LOCK_STRING";
 
@@ -61,6 +66,7 @@ public class ApiActivityServiceImpl implements ApiActivityService {
             //表示已经抽取到优惠券
             return record;
         }else{
+            LOGGER.error("current day activity coupons already grab starting extract general coupons ");
             //查看是否定义了通用券，如果又直接返回通用券
             TbCoupons generalCoupons = activityCache.getGeneralCoupons();
             if (generalCoupons != null){
@@ -77,12 +83,15 @@ public class ApiActivityServiceImpl implements ApiActivityService {
 
     @Override
     public TbUserCoupons buildUserCoupons(String oppenId, TbActivityCouponsRecord record) {
+        int couponsId = record.getCouponsId();
+        TbCoupons tbCoupons = activityCache.getTbCouponsById((long) couponsId);
         TbUserCoupons tbUserCoupons = new TbUserCoupons();
         tbUserCoupons.setOppenId(oppenId);
-        tbUserCoupons.setCouponsId(record.getCouponsId());
+        tbUserCoupons.setCouponsId(couponsId);
         tbUserCoupons.setCouponsName(record.getCouponsName());
         tbUserCoupons.setCreateTime(new Date());
         tbUserCoupons.setReceiveDate(Integer.valueOf(DateUtil.getDateYyyyMMdd()));
+        tbUserCoupons.setCouponsPoster(tbCoupons.getCouponsPoster());
         tbUserCoupons.setStatus(0);
         return tbUserCoupons;
     }
@@ -104,12 +113,12 @@ public class ApiActivityServiceImpl implements ApiActivityService {
             //活动未开始
             return ApiConstant.ACTIVITY_STATUS_NOT_START;
         }
-        if (tbActivity.getStartHour() <= hour && tbActivity.getEndHour() >= hour){
+        if (tbActivity.getStartHour() <= hour && tbActivity.getEndHour() > hour){
             //活动正在进行中
             return ApiConstant.ACTIVITY_STATUS_STARTING;
         }
 
-        return ApiConstant.ACTIVITY_STATUS_END;
+        return ApiConstant.ACTIVITY_STATUS_NOT_START;
     }
 
     @Override
@@ -119,6 +128,29 @@ public class ApiActivityServiceImpl implements ApiActivityService {
 
     @Override
     public List<TbActivityCouponsRecord> getJackpotInfo(int activityId) {
-        return tbActivityCouponsRecordMapper.getJackpotInfo(activityId);
+        List<TbActivityCouponsRecord> couponsRecords = tbActivityCouponsRecordMapper.getJackpotInfo(activityId);
+        if (CollectionUtils.isEmpty(couponsRecords)){
+            return null;
+        }
+        for (TbActivityCouponsRecord couponsRecord : couponsRecords) {
+            TbCoupons tbCouponsById = activityCache.getTbCouponsById((long) couponsRecord.getCouponsId());
+            couponsRecord.setUseRules(tbCouponsById.getUseRules());
+            couponsRecord.setUseScope(tbCouponsById.getUseScope());
+            if (ApiConstant.USER_COUPONS_TYPE_RATIO == tbCouponsById.getCouponsType() || ApiConstant.USER_COUPONS_TYPE_GENERAL == tbCouponsById.getCouponsType()){
+                couponsRecord.setCouponsType(ApiConstant.USER_COUPONS_TYPE_RATIO);
+                String couponsRatio = tbCouponsById.getCouponsRatio();
+                int index = couponsRatio.indexOf(".");
+                String bigNumStr = couponsRatio.substring(index+1, index + 2);
+                String smallNumStr = "0";
+                if (couponsRatio.length() == 4){
+                    smallNumStr = couponsRatio.substring(index+2, index + 3);
+                }
+                couponsRecord.setBigNum(Integer.valueOf(bigNumStr));
+                couponsRecord.setSmallNum(Integer.valueOf(smallNumStr));
+            }else if (ApiConstant.USER_COUPONS_TYPE_FREE == tbCouponsById.getCouponsType()){
+                couponsRecord.setCouponsType(ApiConstant.USER_COUPONS_TYPE_FREE);
+            }
+        }
+        return couponsRecords;
     }
 }

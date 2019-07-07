@@ -25,6 +25,10 @@ public class TbCoupons {
 
     private String couponsPoster;
 
+    private String useRules;
+
+    private String useScope;
+
     public Integer getId() {
         return id;
     }
@@ -111,5 +115,21 @@ public class TbCoupons {
 
     public void setCouponsPoster(String couponsPoster) {
         this.couponsPoster = couponsPoster;
+    }
+
+    public String getUseRules() {
+        return useRules;
+    }
+
+    public void setUseRules(String useRules) {
+        this.useRules = useRules;
+    }
+
+    public String getUseScope() {
+        return useScope;
+    }
+
+    public void setUseScope(String useScope) {
+        this.useScope = useScope;
     }
 }

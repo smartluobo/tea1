@@ -26,6 +26,16 @@ public class TbUserCoupons {
 
     private String expireDateStr;
 
+    private int bigNum;
+
+    private int smallNum;
+
+    private int couponsType;
+
+    private String useRules;
+
+    private String useScope;
+
     public Integer getId() {
         return id;
     }
@@ -109,5 +119,45 @@ public class TbUserCoupons {
         if (this.expireDateStr == null){
             this.expireDateStr = expireDateStr;
         }
+    }
+
+    public int getBigNum() {
+        return bigNum;
+    }
+
+    public void setBigNum(int bigNum) {
+        this.bigNum = bigNum;
+    }
+
+    public int getSmallNum() {
+        return smallNum;
+    }
+
+    public void setSmallNum(int smallNum) {
+        this.smallNum = smallNum;
+    }
+
+    public int getCouponsType() {
+        return couponsType;
+    }
+
+    public void setCouponsType(int couponsType) {
+        this.couponsType = couponsType;
+    }
+
+    public String getUseRules() {
+        return useRules;
+    }
+
+    public void setUseRules(String useRules) {
+        this.useRules = useRules;
+    }
+
+    public String getUseScope() {
+        return useScope;
+    }
+
+    public void setUseScope(String useScope) {
+        this.useScope = useScope;
     }
 }

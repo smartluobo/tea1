@@ -34,12 +34,6 @@ public class ApiCartController {
     @Resource
     private ApiGoodsService apiGoodsService;
 
-    @Resource
-    private StoreCache storeCache;
-
-    @Resource
-    private ActivityCache activityCache;
-
     @RequestMapping("cartGoodsList")
     public ResultInfo getCartList(@RequestBody Map<String,String> params){
         if (CollectionUtils.isEmpty(params)){
@@ -131,11 +125,33 @@ public class ApiCartController {
         try {
             String oppenId = params.get("oppenId");
             ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
-        	int cartItemCount = apiCartService.getCartItemCountByOppenId(oppenId);
+        	Integer cartItemCount = apiCartService.getCartItemCountByOppenId(oppenId);
         	resultInfo.setData(cartItemCount);
         	return resultInfo;
         }catch (Exception e){
+            LOGGER.error("api cart getCartItemCount happen exception",e);
         	return ResultInfo.newExceptionResultInfo();
+        }
+
+    }
+
+    @RequestMapping("/updateCartItemCount")
+    public ResultInfo updateCartItemCount(@RequestBody Map<String,String> params){
+
+        if (params == null){
+            return ResultInfo.newEmptyParamsResultInfo();
+        }
+
+        try {
+            String oppenId = params.get("oppenId");
+            int id = Integer.parseInt(String.valueOf(params.get("id")));
+            int count = Integer.parseInt(String.valueOf(params.get("count")));
+            ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            apiCartService.updateCartItemCount(oppenId,id,count);
+            return resultInfo;
+        }catch (Exception e){
+            LOGGER.error("api cart updateCartItemCount happen exception",e);
+            return ResultInfo.newExceptionResultInfo();
         }
 
     }

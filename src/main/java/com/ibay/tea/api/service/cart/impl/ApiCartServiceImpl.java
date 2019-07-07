@@ -8,6 +8,7 @@ import com.ibay.tea.cache.StoreCache;
 import com.ibay.tea.common.utils.PriceCalculateUtil;
 import com.ibay.tea.dao.TbCartMapper;
 import com.ibay.tea.entity.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -88,7 +89,7 @@ public class ApiCartServiceImpl implements ApiCartService {
             String cartSkuDetailIds = tbCart.getSkuDetailIds();
             goodsInfo.setCartSkuDetailIds(cartSkuDetailIds);
             apiGoodsService.calculateGoodsPrice(goodsInfo,store.getExtraPrice(),activityCache.getTodayActivityBean(store.getId()));
-            if (cartSkuDetailIds != null){
+            if (StringUtils.isNotBlank(cartSkuDetailIds)){
                 int skuPrice = goodsCache.calculateSkuPrice(cartSkuDetailIds);
                 if (skuPrice != 0){
                     goodsInfo.setPrice(goodsInfo.getPrice() + skuPrice);
@@ -115,7 +116,16 @@ public class ApiCartServiceImpl implements ApiCartService {
 
     @Override
     public int getCartItemCountByOppenId(String oppenId) {
-        return tbCartMapper.getCartItemCountByOppenId(oppenId);
+        Integer cartItemCount = tbCartMapper.getCartItemCountByOppenId(oppenId);
+        if (cartItemCount == null){
+            return 0;
+        }
+        return cartItemCount;
+    }
+
+    @Override
+    public void updateCartItemCount(String oppenId, int id, int count) {
+        tbCartMapper.updateCartItemCount(oppenId,id,count);
     }
 
 
