@@ -16,24 +16,25 @@
     <result column="created" jdbcType="TIMESTAMP" property="created" />
     <result column="updated" jdbcType="TIMESTAMP" property="updated" />
     <result column="default_sku_detail_ids" jdbcType="VARCHAR" property="defaultSkuDetailIds" />
+    <result column="poster_image" jdbcType="VARCHAR" property="posterImage" />
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, title, sku_type_ids, simple_desc,sell_point, price, num, limit_num, image, cid, `status`, created, updated,default_sku_detail_ids
+    id, title, sku_type_ids, simple_desc,sell_point, price, num, limit_num, image, cid, `status`, created, updated,default_sku_detail_ids,poster_image
   </sql>
   <insert id="addGoods" parameterType="com.ibay.tea.entity.TbItem">
     INSERT INTO tb_item (title, sell_point, price, num, limit_num, image, cid, `status`,
-                         created, sku_type_ids, simple_desc,default_sku_detail_ids)
+                         created, sku_type_ids, simple_desc,default_sku_detail_ids,poster_image)
     VALUES (#{title},#{sellPoint},#{price},#{num},#{limitNum},#{image},#{cid},#{status},
-      #{created},#{skuTypeIds},#{simpleDesc},#{defaultSkuDetailIds}
+      #{created},#{skuTypeIds},#{simpleDesc},#{defaultSkuDetailIds},#{posterImage}
     )
   </insert>
 
   <insert id="saveUpdateGoods" parameterType="com.ibay.tea.entity.TbItem">
     INSERT INTO tb_item (id,title, sell_point, price, num, limit_num, image, cid, `status`,
-                         created, sku_type_ids, simple_desc,default_sku_detail_ids)
+                         created, sku_type_ids, simple_desc,default_sku_detail_ids,poster_image)
     VALUES (#{id},#{title},#{sellPoint},#{price},#{num},#{limitNum},#{image},#{cid},#{status},
-                     #{created},#{skuTypeIds},#{simpleDesc},#{defaultSkuDetailIds}
+                     #{created},#{skuTypeIds},#{simpleDesc},#{defaultSkuDetailIds},#{posterImage}
     )
   </insert>
 
@@ -46,7 +47,7 @@
     </select>
 
   <select id="findAll" resultMap="BaseResultMap">
-    SELECT <include refid="Base_Column_List" /> from tb_item
+    SELECT <include refid="Base_Column_List" /> from tb_item WHERE `status` = 1
   </select>
   <select id="findGoodsListByPage" resultMap="BaseResultMap" parameterType="int">
       SELECT <include refid="Base_Column_List" /> FROM tb_item LIMIT #{startIndex} , #{pageSize}

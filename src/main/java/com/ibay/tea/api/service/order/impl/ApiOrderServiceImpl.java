@@ -128,8 +128,10 @@ public class ApiOrderServiceImpl implements ApiOrderService {
         tbOrder.setStoreName(store.getStoreName());
         tbOrder.setGoodsName(goodsList.get(0).getTitle());
         tbOrder.setGoodsTotalCount(totalGoodsCount);
-
-
+        if (calculateReturnVo.getCouponsType() == 3){
+            tbOrder.setUserCouponsId(calculateReturnVo.getUserCouponsId());
+            tbOrder.setUserCouponsName(calculateReturnVo.getUserCouponsName());
+        }
         //订单实际金额
         tbOrder.setOrderPayment(calculateReturnVo.getOrderTotalAmount());
         //用户支付金额
@@ -373,6 +375,21 @@ public class ApiOrderServiceImpl implements ApiOrderService {
                 }
                 LOGGER.info("info :title:{},price:{},cartPrice:{},cartTotalPrice:{},itemCount:{},skuDesc:{}",tbItem.getTitle(),tbItem.getPrice(),tbItem.getCartPrice(),tbItem.getCartTotalPrice(),tbItem.getCartItemCount(),tbItem.getSkuDetailDesc());
             }
+            TodayActivityBean todayActivityBean = activityCache.getTodayActivityBean(cartOrderParamVo.getStoreId());
+            if (todayActivityBean != null && todayActivityBean.getTbActivity() != null){
+                if (ApiConstant.ACTIVITY_TYPE_FULL == todayActivityBean.getTbActivity().getActivityType()){
+                    //全场折扣下所有商品不在重新计算优惠
+                    orderTotalPrice += sendPrice;
+                    CalculateReturnVo calculateReturnVo = new CalculateReturnVo();
+                    calculateReturnVo.setCouponsName("全场折扣下，不使用其他优惠");
+                    calculateReturnVo.setOrderReduceAmount(0);
+                    calculateReturnVo.setOrderPayAmount(orderTotalPrice);
+                    calculateReturnVo.setOrderPayAmount(orderTotalPrice);
+                    return calculateReturnVo;
+
+                }
+            }
+
             String groupGiveName = null;
             String fullReduceName = null;
             String couponsName = null;
@@ -424,6 +441,10 @@ public class ApiOrderServiceImpl implements ApiOrderService {
                 orderTotalPrice += sendPrice;
             }
             CalculateReturnVo calculateReturnVo = getCalculateReturnVo(orderTotalPrice, couponsReduceAmount, couponsName, groupGiveAmount, groupGiveName, fullReduceAmount, fullReduceName);
+            if (calculateReturnVo.getCouponsType() == 3){
+                calculateReturnVo.setUserCouponsId(tbUserCoupons.getId());
+                calculateReturnVo.setUserCouponsName(tbUserCoupons.getCouponsName());
+            }
             if (isCreateOrder){
                 calculateReturnVo.setGoodsList(goodsList);
             }

@@ -56,6 +56,8 @@ public class TbItem implements Comparable<TbItem>{
 
     private String cartSkuDetailIds;
 
+    private String posterImage;
+
     public Long getId() {
         return id;
     }
@@ -248,5 +250,13 @@ public class TbItem implements Comparable<TbItem>{
     @Override
     public int compareTo(TbItem o) {
         return Double.compare(this.getCartPrice(),o.getCartPrice());
+    }
+
+    public String getPosterImage() {
+        return posterImage;
+    }
+
+    public void setPosterImage(String posterImage) {
+        this.posterImage = posterImage;
     }
 }

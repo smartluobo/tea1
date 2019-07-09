@@ -14,4 +14,9 @@ public interface TbActivityCouponsRecordMapper {
     List<TbActivityCouponsRecord> findAll();
 
     List<TbActivityCouponsRecord> getJackpotInfo(int activityId);
+
+    List<TbActivityCouponsRecord> findCouponsByActivityId(int activityId);
+
+    void insert(TbActivityCouponsRecord tbActivityCouponsRecord);
+
 }

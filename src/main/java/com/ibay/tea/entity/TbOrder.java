@@ -64,9 +64,6 @@ public class TbOrder {
     //订单支付金额
     private double orderPayment;
 
-    //使用的优惠券id
-    private long userCouponsId;
-
     //优惠券减少金额
     private double couponsReduceAmount;
 
@@ -83,6 +80,10 @@ public class TbOrder {
     private String storeName;
 
     private String goodsName;
+
+    private int userCouponsId;
+
+    private String userCouponsName = "无优惠";
 
     public String getOrderId() {
         return orderId;
@@ -279,14 +280,6 @@ public class TbOrder {
         this.orderPayment = orderPayment;
     }
 
-    public long getUserCouponsId() {
-        return userCouponsId;
-    }
-
-    public void setUserCouponsId(long userCouponsId) {
-        this.userCouponsId = userCouponsId;
-    }
-
     public double getCouponsReduceAmount() {
         return couponsReduceAmount;
     }
@@ -359,5 +352,21 @@ public class TbOrder {
 
     public void setTakeCode(String takeCode) {
         this.takeCode = takeCode;
+    }
+
+    public int getUserCouponsId() {
+        return userCouponsId;
+    }
+
+    public void setUserCouponsId(int userCouponsId) {
+        this.userCouponsId = userCouponsId;
+    }
+
+    public String getUserCouponsName() {
+        return userCouponsName;
+    }
+
+    public void setUserCouponsName(String userCouponsName) {
+        this.userCouponsName = userCouponsName;
     }
 }

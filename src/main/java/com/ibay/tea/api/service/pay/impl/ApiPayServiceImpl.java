@@ -9,10 +9,7 @@ import com.ibay.tea.cache.StoreCache;
 import com.ibay.tea.common.constant.ApiConstant;
 import com.ibay.tea.common.service.PrintService;
 import com.ibay.tea.common.utils.*;
-import com.ibay.tea.dao.TbOrderItemMapper;
-import com.ibay.tea.dao.TbOrderMapper;
-import com.ibay.tea.dao.TbStoreGoodsMapper;
-import com.ibay.tea.dao.TbUserPayRecordMapper;
+import com.ibay.tea.dao.*;
 import com.ibay.tea.entity.TbOrder;
 import com.ibay.tea.entity.TbOrderItem;
 import com.ibay.tea.entity.TbStore;
@@ -62,6 +59,8 @@ public class ApiPayServiceImpl implements ApiPayService {
 
     @Resource
     private StoreCache storeCache;
+
+    private TbUserCouponsMapper tbUserCouponsMapper;
 
     @Override
     public Map<String, Object> createPayOrderToWechat(TbOrder tbOrder) throws Exception{
@@ -150,6 +149,10 @@ public class ApiPayServiceImpl implements ApiPayService {
                 //3更新支付记录状态
                 updateMap.put("payStatus",1);
                 tbUserPayRecordMapper.updatePayStatus(updateMap);
+                //如果订单使用优惠券 将优惠券的修改为已经使用
+                if (tbOrder.getUserCouponsId() != 0){
+                    tbUserCouponsMapper.updateStatusById(tbOrder.getUserCouponsId(),ApiConstant.USER_COUPONS_STATUS_USED);
+                }
                 //异步调用订单打印
                 TbStore store = storeCache.findStoreById(tbOrder.getStoreId());
                 sendExecutorService.submit(() -> printService.printOrder(tbOrder, store, ApiConstant.PRINT_TYPE_ORDER_ALL));

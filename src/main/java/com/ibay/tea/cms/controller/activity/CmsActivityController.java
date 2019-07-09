@@ -2,7 +2,12 @@ package com.ibay.tea.cms.controller.activity;
 
 import com.ibay.tea.api.response.ResultInfo;
 import com.ibay.tea.cms.service.activity.CmsActivityService;
+import com.ibay.tea.dao.TbActivityCouponsRecordMapper;
+import com.ibay.tea.dao.TbActivityMapper;
+import com.ibay.tea.dao.TbCouponsMapper;
 import com.ibay.tea.entity.TbActivity;
+import com.ibay.tea.entity.TbActivityCouponsRecord;
+import com.ibay.tea.entity.TbCoupons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +24,15 @@ public class CmsActivityController {
 
     @Resource
     private CmsActivityService cmsActivityService;
+
+    @Resource
+    private TbActivityCouponsRecordMapper tbActivityCouponsRecordMapper;
+
+    @Resource
+    private TbCouponsMapper tbCouponsMapper;
+
+    @Resource
+    private TbActivityMapper tbActivityMapper;
 
     @RequestMapping("/list")
     public ResultInfo list(){
@@ -80,6 +94,46 @@ public class CmsActivityController {
         }
 
     }
+
+    @RequestMapping("/couponsList/{activityId}")
+    public ResultInfo updateActivity(@PathVariable("activityId") int activityId){
+
+        if (activityId == 0){
+            return ResultInfo.newEmptyParamsResultInfo();
+        }
+        try {
+            ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            List<TbActivityCouponsRecord> recordList = tbActivityCouponsRecordMapper.findCouponsByActivityId(activityId);
+            resultInfo.setData(recordList);
+            return resultInfo;
+        }catch (Exception e){
+            return ResultInfo.newExceptionResultInfo();
+        }
+
+    }
+
+    @RequestMapping("/addCoupons")
+    public ResultInfo updateActivity(@RequestBody TbActivityCouponsRecord tbActivityCouponsRecord){
+
+        if (tbActivityCouponsRecord == null){
+            return ResultInfo.newEmptyParamsResultInfo();
+        }
+        try {
+            ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+            TbActivity tbActivity = tbActivityMapper.selectByPrimaryKey(tbActivityCouponsRecord.getActivityId());
+            TbCoupons tbCoupons = tbCouponsMapper.selectByPrimaryKey(tbActivityCouponsRecord.getCouponsId());
+            tbActivityCouponsRecord.setActivityName(tbActivity.getActivityName());
+            tbActivityCouponsRecord.setCouponsName(tbCoupons.getCouponsName());
+            tbActivityCouponsRecord.setCouponsPoster(tbCoupons.getCouponsPoster());
+            tbActivityCouponsRecordMapper.insert(tbActivityCouponsRecord);
+            return resultInfo;
+        }catch (Exception e){
+            return ResultInfo.newExceptionResultInfo();
+        }
+
+    }
+
+
 
 
 

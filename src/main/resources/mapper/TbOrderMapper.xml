@@ -33,12 +33,15 @@
     <result column="store_name" jdbcType="VARCHAR" property="storeName" />
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
     <result column="take_code" jdbcType="VARCHAR" property="takeCode" />
+    <result column="user_coupons_id" jdbcType="INTEGER" property="userCouponsId" />
+    <result column="user_coupons_name" jdbcType="VARCHAR" property="userCouponsName" />
+
   </resultMap>
   <sql id="Base_Column_List">
     order_id, payment, payment_type, post_fee, `status`, create_time, update_time, payment_time,
     consign_time, end_time, close_time, shipping_name, shipping_code, user_id, buyer_message, 
     buyer_nick, buyer_comment, oppen_id, self_get, address, phone_num, poster_url,goods_total_count,order_payment,
-    coupons_reduce_amount,make_complete_send_status,close_send_status,store_id,store_name,goods_name,take_code
+    coupons_reduce_amount,make_complete_send_status,close_send_status,store_id,store_name,goods_name,take_code,user_coupons_id,user_coupons_name
   </sql>
   <update id="updateCompleteMessageSendStatus" parameterType="com.ibay.tea.entity.TbOrder">
     UPDATE tb_order SET make_complete_send_status = #{makeCompleteSendStatus} where order_id=#{orderId}
@@ -95,7 +98,7 @@
       buyer_nick, buyer_comment, oppen_id, 
       self_get, address, phone_num, 
       poster_url,goods_total_count,order_payment,
-      coupons_reduce_amount,store_id,store_name,goods_name,take_code)
+      coupons_reduce_amount,store_id,store_name,goods_name,take_code,user_coupons_id,user_coupons_name)
     values (#{orderId,jdbcType=VARCHAR}, #{payment,jdbcType=DECIMAL}, #{paymentType,jdbcType=INTEGER}, 
       #{postFee,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{paymentTime,jdbcType=TIMESTAMP}, #{consignTime,jdbcType=TIMESTAMP}, 
@@ -104,7 +107,7 @@
       #{buyerNick,jdbcType=VARCHAR}, #{buyerComment,jdbcType=BIT}, #{oppenId,jdbcType=VARCHAR}, 
       #{selfGet,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR}, 
       #{posterUrl,jdbcType=VARCHAR},#{goodsTotalCount,jdbcType=INTEGER}, #{orderPayment,jdbcType=DECIMAL},
-      #{couponsReduceAmount,jdbcType=DECIMAL},#{storeId},#{storeName},#{goodsName},#{takeCode})
+      #{couponsReduceAmount,jdbcType=DECIMAL},#{storeId},#{storeName},#{goodsName},#{takeCode},#{userCouponsId},#{userCouponsName})
   </insert>
 
 </mapper>

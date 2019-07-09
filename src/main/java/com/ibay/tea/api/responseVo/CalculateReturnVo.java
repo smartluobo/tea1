@@ -20,6 +20,10 @@ public class CalculateReturnVo {
 
     private TbItem goodsInfo;
 
+    private int userCouponsId;
+
+    private String userCouponsName;
+
     public double getOrderTotalAmount() {
         return orderTotalAmount;
     }
@@ -76,6 +80,22 @@ public class CalculateReturnVo {
         this.goodsInfo = goodsInfo;
     }
 
+    public int getUserCouponsId() {
+        return userCouponsId;
+    }
+
+    public void setUserCouponsId(int userCouponsId) {
+        this.userCouponsId = userCouponsId;
+    }
+
+    public String getUserCouponsName() {
+        return userCouponsName;
+    }
+
+    public void setUserCouponsName(String userCouponsName) {
+        this.userCouponsName = userCouponsName;
+    }
+
     @Override
     public String toString() {
         return "CalculateReturnVo{" +
@@ -86,6 +106,8 @@ public class CalculateReturnVo {
                 ", couponsType=" + couponsType +
                 ", goodsList=" + goodsList +
                 ", goodsInfo=" + goodsInfo +
+                ", userCouponsId=" + userCouponsId +
+                ", userCouponsName='" + userCouponsName + '\'' +
                 '}';
     }
 }
