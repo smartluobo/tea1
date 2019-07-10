@@ -17,4 +17,5 @@ public interface TbUserPayRecordMapper {
 
     void updatePayStatus(Map<String, Object> updateMap);
 
+    void updatePayCloseStatus(Map<String, Object> updateMap);
 }

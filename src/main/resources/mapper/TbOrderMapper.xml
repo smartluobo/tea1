@@ -57,6 +57,9 @@
   <update id="updatePayStatus" parameterType="map">
     UPDATE tb_order SET `status` = #{orderStatus},update_time = #{updateTime} where order_id = #{orderId}
   </update>
+  <update id="updateOrderTimeOutClose" parameterType="string" >
+    UPDATE tb_order SET `status` = 4,update_time = NOW() WHERE order_id = #{orderId} and `status` = 0;
+  </update>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from tb_order where order_id = #{orderId,jdbcType=VARCHAR}
@@ -83,6 +86,9 @@
     </select>
   <select id="findOrderByOppenId" resultMap="BaseResultMap">
     SELECT <include refid="Base_Column_List" /> from tb_order where oppen_id = #{oppenId,jdbcType=VARCHAR} order by create_time desc
+  </select>
+  <select id="findExpireOrder" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> from tb_order where `status` = 0 and <![CDATA[ create_time < NOW()-30*60 ]]>
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

@@ -10,6 +10,8 @@ public class ApiSysProperties {
 
     private String certPath;
 
+    private String environment;
+
 
     public String getCertPath() {
         return certPath;
@@ -22,5 +24,13 @@ public class ApiSysProperties {
 
     public static String getStaticCertPath(){
         return staticCertPath;
+    }
+
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
     }
 }

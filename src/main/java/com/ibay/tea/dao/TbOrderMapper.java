@@ -27,4 +27,8 @@ public interface TbOrderMapper {
     List<TbOrder> findOrderByOppenId(String oppenId);
 
     void updatePayStatus(Map<String, Object> updateMap);
+
+    List<TbOrder> findExpireOrder();
+
+    int updateOrderTimeOutClose(String orderId);
 }

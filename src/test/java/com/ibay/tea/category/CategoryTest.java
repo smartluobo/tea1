@@ -2,6 +2,7 @@ package com.ibay.tea.category;
 
 import com.ibay.tea.BaseTest;
 import com.ibay.tea.cache.StoreCache;
+import com.ibay.tea.cms.scheduled.OrderCloseScheduledTask;
 import com.ibay.tea.common.service.PrintService;
 import com.ibay.tea.common.utils.PrintUtil;
 import com.ibay.tea.dao.TbOrderMapper;
@@ -24,6 +25,9 @@ public class CategoryTest extends BaseTest {
 
     @Resource
     private StoreCache storeCache;
+
+    @Resource
+    private OrderCloseScheduledTask orderCloseScheduledTask;
 //    @Resource
 //    private CategoryMapper categoryMapper;
 //
@@ -36,6 +40,11 @@ public class CategoryTest extends BaseTest {
 //        category.setCreateTime("2018-05-17 18:22:55");
 //        categoryMapper.insert(category);
 //    }
+
+    @Test
+    public void testOrderClose(){
+        orderCloseScheduledTask.orderCloseTaskMethod();
+    }
 
     @Test
     public void testAddPrinter(){
