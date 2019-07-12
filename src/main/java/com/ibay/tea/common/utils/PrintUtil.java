@@ -13,6 +13,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -26,8 +28,12 @@ public class PrintUtil {
     @Resource
     private PrintSysProperties printSysProperties;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PrintUtil.class);
+
     //**********测试时，打开下面注释掉方法的即可,更多接口文档信息,请访问官网开放平台查看**********
     public static void main(String[] args) throws Exception{
+
+
 
 
         //==================添加打印机接口（支持批量）==================
@@ -120,6 +126,8 @@ public class PrintUtil {
 
     //方法1
     public String print(String sn,String content){
+
+        LOGGER.info("order print sn :{},content :{}",sn,content);
         //标签说明：
         //单标签:
         //"<BR>"为换行,"<CUT>"为切刀指令(主动切纸,仅限切刀打印机使用才有效果)
@@ -279,6 +287,7 @@ public class PrintUtil {
                 if (httpentity != null){
                     //服务器返回
                     result = EntityUtils.toString(httpentity);
+                    LOGGER.info("order print return result :{}",result);
                 }
             }
         }

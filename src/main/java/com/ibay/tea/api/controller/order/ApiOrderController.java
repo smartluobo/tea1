@@ -173,6 +173,8 @@ public class ApiOrderController {
     @RequestMapping("/calculateCartOrderPrice")
     public ResultInfo calculateCartOrderPrice(@RequestBody CartOrderParamVo paramVo){
 
+        LOGGER.info("call calculateCartOrderPrice ....");
+
         if (paramVo == null){
         	return ResultInfo.newEmptyParamsResultInfo();
         }

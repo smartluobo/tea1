@@ -2,6 +2,8 @@ package com.ibay.tea.common.service.impl;
 
 import com.ibay.tea.common.constant.ApiConstant;
 import com.ibay.tea.common.service.PrintService;
+import com.ibay.tea.common.utils.DateUtil;
+import com.ibay.tea.common.utils.OrderItemPrintUtil;
 import com.ibay.tea.common.utils.PrintUtil;
 import com.ibay.tea.dao.TbOrderItemMapper;
 import com.ibay.tea.dao.TbPrinterMapper;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -67,14 +70,17 @@ public class PrintServiceImpl implements PrintService {
     private String buildOrderPrintContent(TbOrder tbOrder) {
         List<TbOrderItem> orderItemList = tbOrderItemMapper.findOrderItemByOrderId(tbOrder.getOrderId());
         String printContent = "";
-        printContent += "<CB>--已在线支付--</CB><BR>";
-        printContent += "下单时间: "+tbOrder.getCreateDateStr()+"<BR>";
-        printContent += "--订单详情--<BR>";
+        printContent += "<CB>eecup南山分店</CB><BR>";
+        printContent += "<CB>结账单</CB><BR>";
+        printContent += "时间: "+tbOrder.getCreateDateStr()+"<BR>";
+        printContent += "单号: "+tbOrder.getTakeCode()+"<BR>";
+        printContent += "名称          数量         单价<BR>";
+        printContent += "-----------------------------<BR>";
         for (TbOrderItem orderItem : orderItemList) {
-            printContent += orderItem.getTitle()+"   X"+orderItem.getNum()+"   "+orderItem.getTotalFee()+"<BR>";
+            printContent += orderItem.getTitle()+"   X"+orderItem.getNum()+"       "+orderItem.getTotalFee()+"<BR>";
         }
-        printContent += "订单金额          "+tbOrder.getOrderPayment()+"<BR>";
-        printContent += "订单支付金额      "+tbOrder.getPayment()+"<BR>";
+        printContent += "-----------------------------<BR>";
+        printContent += "合计：                 "+tbOrder.getPayment()+"<BR>";
 
         return printContent;
     }
@@ -90,26 +96,36 @@ public class PrintServiceImpl implements PrintService {
     }
 
     @Override
-    public String printOrderItem(TbOrderItem orderItem,TbStore store) {
+    public String printOrderItem(TbOrder tbOrder,TbOrderItem orderItem,TbStore store) {
 
-        TbPrinter printer = tbPrinterMapper.findById(store.getOrderItemPrinterId());
-        String printContent = buildOrderItemPrintContent(orderItem);
-        printUtil.print(printer.getPrinterSn(),printContent);
+        for (int i = 0;i < orderItem.getNum();i++){
+            String printContent = buildOrderItemPrintContent(tbOrder,orderItem);
+            OrderItemPrintUtil.sendContent(printContent);
+        }
+
         return null;
     }
 
     @Override
-    public String printOrderItem(List<TbOrderItem> orderItemList, TbStore store) {
+    public String printOrderItem(TbOrder tbOrder,List<TbOrderItem> orderItemList, TbStore store) {
+        tbOrder.setCurrentIndex(1);
         for (TbOrderItem orderItem : orderItemList) {
-            printOrderItem(orderItem,store);
+            printOrderItem(tbOrder,orderItem,store);
         }
         return null;
     }
 
-    private String buildOrderItemPrintContent(TbOrderItem orderItem) {
-       String printContent = "";
-       printContent += "商品名称："+orderItem.getTitle()+"<BR>";
-       printContent += "商品规格："+orderItem.getSkuDetailDesc()+"<BR>";
+    private String buildOrderItemPrintContent(TbOrder tbOrder,TbOrderItem orderItem) {
+        //订单商品数量
+        int goodsCount = tbOrder.getGoodsTotalCount();
+        int currentIndex = tbOrder.getCurrentIndex();
+        String printContent = "";
+        printContent += "\r   订单号:"+tbOrder.getTakeCode()+"   数量:"+currentIndex+"/"+goodsCount+"\r\r";
+        printContent += "   <FB><FS>"+orderItem.getTitle()+"</FS></FB>\r";
+        printContent += "   "+orderItem.getSkuDetailDesc()+"\r\r";
+        printContent += "   时间:"+ DateUtil.viewDateFormat(tbOrder.getCreateTime())+"\r";
+
+        tbOrder.setCurrentIndex(++currentIndex);
         return printContent;
     }
 }

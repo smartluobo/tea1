@@ -33,7 +33,7 @@
   </select>
 
   <select id="findAll" resultMap="BaseResultMap">
-      SELECT * from tb_item_cat ORDER BY sort_order DESC
+      SELECT * from tb_item_cat WHERE `status` = 1 ORDER BY sort_order DESC
   </select>
 
   <delete id="deleteCategoryById" parameterType="int">

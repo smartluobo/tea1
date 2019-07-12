@@ -38,11 +38,11 @@ public class CmsOrderServiceImpl implements CmsOrderService {
         TbStore store = storeCache.findStoreById(tbOrder.getStoreId());
         if (itemId == -1){
             List<TbOrderItem> orderItemList = tbOrderItemMapper.findOrderItemByOrderId(orderId);
-            printService.printOrderItem(orderItemList,store);
+            printService.printOrderItem(new TbOrder(),orderItemList,store);
         }else {
             TbOrderItem orderItem = tbOrderItemMapper.selectByPrimaryKey(itemId);
             if (orderItem != null){
-                printService.printOrderItem(orderItem,store);
+                printService.printOrderItem(new TbOrder(),orderItem,store);
             }
         }
     }

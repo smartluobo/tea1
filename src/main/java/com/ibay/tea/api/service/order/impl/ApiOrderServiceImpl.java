@@ -14,6 +14,7 @@ import com.ibay.tea.cache.ActivityCache;
 import com.ibay.tea.cache.GoodsCache;
 import com.ibay.tea.cache.StoreCache;
 import com.ibay.tea.common.constant.ApiConstant;
+import com.ibay.tea.common.service.PrintService;
 import com.ibay.tea.common.utils.DateUtil;
 import com.ibay.tea.common.utils.Md5Util;
 import com.ibay.tea.common.utils.PriceCalculateUtil;
@@ -25,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import sun.rmi.runtime.Log;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -80,6 +82,9 @@ public class ApiOrderServiceImpl implements ApiOrderService {
     @Resource
     private TbApiUserMapper tbApiUserMapper;
 
+    @Resource
+    private PrintService printService;
+
     @Override
     public Map<String, Object> createOrderByCart(CartOrderParamVo cartOrderParamVo) throws Exception{
 
@@ -101,6 +106,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
             return null;
         }
         CalculateReturnVo calculateReturnVo = calculateCartOrderPrice(cartOrderParamVo,true);
+        LOGGER.info("calculate success......");
         if (calculateReturnVo == null){
             return null;
         }
@@ -111,6 +117,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
         List<TbOrderItem> tbOrderItems = new ArrayList<>();
         String orderId = SerialGenerator.getOrderSerial();
         int totalGoodsCount = 0;
+        LOGGER.info("start for goods .....");
         for (TbItem tbItem : goodsList) {
             totalGoodsCount += tbItem.getCartItemCount();
             //创建订单item
@@ -146,14 +153,25 @@ public class ApiOrderServiceImpl implements ApiOrderService {
         }else {
             tbOrderItemMapper.insert(tbOrderItems.get(0));
         }
+        LOGGER.error("create order success.......");
         //如果减少金额等于订单金额 更新优惠券为已经使用 订单状态为已支付
         TbUserPayRecord tbUserPayRecord = buildPayRecordAndUpdateCoupons(oppenId, userCouponsId, orderId, tbOrder);
 
         //保存订单
         tbOrderMapper.insert(tbOrder);
+        LOGGER.info("order insert db success");
+
+        printService.printOrderItem(tbOrder,tbOrderItems,store);
+        LOGGER.info("order item print success");
+
+        LOGGER.info("order print success");
+        printService.printOrder(tbOrder,store,3);
+
+
         //微信支付统一下单
-        Map<String, Object> payMap = apiPayService.createPayOrderToWechat(tbOrder);
-        LOGGER.info("wechat pay create order return result : {}",payMap);
+//        Map<String, Object> payMap = apiPayService.createPayOrderToWechat(tbOrder);
+//        LOGGER.info("wechat pay create order return result : {}",payMap);
+        Map<String, Object> payMap = new HashMap<>();
         tbUserPayRecord.setNonceStr(String.valueOf(payMap.get("nonce_str")));
         tbUserPayRecord.setPrepayId(String.valueOf(payMap.get("prepay_id")));
         String timeStamp = String.valueOf(System.currentTimeMillis() / 1000);
@@ -375,16 +393,28 @@ public class ApiOrderServiceImpl implements ApiOrderService {
                 }
                 LOGGER.info("info :title:{},price:{},cartPrice:{},cartTotalPrice:{},itemCount:{},skuDesc:{}",tbItem.getTitle(),tbItem.getPrice(),tbItem.getCartPrice(),tbItem.getCartTotalPrice(),tbItem.getCartItemCount(),tbItem.getSkuDetailDesc());
             }
+
             TodayActivityBean todayActivityBean = activityCache.getTodayActivityBean(cartOrderParamVo.getStoreId());
             if (todayActivityBean != null && todayActivityBean.getTbActivity() != null){
                 if (ApiConstant.ACTIVITY_TYPE_FULL == todayActivityBean.getTbActivity().getActivityType()){
+                    LOGGER.info("进入全场折扣活动的价格计算");
                     //全场折扣下所有商品不在重新计算优惠
-                    orderTotalPrice += sendPrice;
+
                     CalculateReturnVo calculateReturnVo = new CalculateReturnVo();
                     calculateReturnVo.setCouponsName("全场折扣下，不使用其他优惠");
-                    calculateReturnVo.setOrderReduceAmount(0);
-                    calculateReturnVo.setOrderPayAmount(orderTotalPrice);
-                    calculateReturnVo.setOrderPayAmount(orderTotalPrice);
+
+                    TbActivity tbActivity = todayActivityBean.getTbActivity();
+                    List<TbActivityCouponsRecord> activityCouponsRecordsByActivityId = activityCache.getActivityCouponsRecordsByActivityId(tbActivity.getId());
+                    TbActivityCouponsRecord couponsRecord = activityCouponsRecordsByActivityId.get(0);
+                    TbCoupons tbCouponsById = activityCache.getTbCouponsById(couponsRecord.getCouponsId());
+                    double payment = PriceCalculateUtil.multy(orderTotalPrice, tbCouponsById.getCouponsRatio());
+                    LOGGER.info("full activity payment : {}",payment);
+                    calculateReturnVo.setOrderReduceAmount(orderTotalPrice - payment);
+                    orderTotalPrice += sendPrice;
+                    calculateReturnVo.setOrderTotalAmount(orderTotalPrice);
+                    calculateReturnVo.setOrderPayAmount(payment+sendPrice);
+                    calculateReturnVo.setGoodsList(goodsList);
+                    LOGGER.info("full activity calculateReturnVo :{}",calculateReturnVo);
                     return calculateReturnVo;
 
                 }

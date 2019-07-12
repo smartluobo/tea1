@@ -40,6 +40,7 @@ public class ApiMapServiceImpl implements ApiMapService {
 
         String longitude = params.get("longitude");
         String latitude = params.get("latitude");
+        LOGGER.info("longitude : {},latitude : {}",longitude,latitude);
         double endLng = new BigDecimal(longitude).doubleValue();
         double endLat = new BigDecimal(latitude).doubleValue();
 

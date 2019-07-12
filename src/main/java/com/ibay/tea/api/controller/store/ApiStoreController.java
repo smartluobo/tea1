@@ -49,6 +49,7 @@ public class ApiStoreController {
 
      try {
      	ResultInfo resultInfo = ResultInfo.newSuccessResultInfo();
+         LOGGER.info("oppenId : {}",params.get("oppenId"));
          List<TbStore> storeList = storeCache.getStoreList();
          TbStore store = apiMapService.selectStore(storeList, params);
          resultInfo.setData(store);

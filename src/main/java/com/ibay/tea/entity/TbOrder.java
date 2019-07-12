@@ -85,6 +85,8 @@ public class TbOrder {
 
     private String userCouponsName = "无优惠";
 
+    private int currentIndex;
+
     public String getOrderId() {
         return orderId;
     }
@@ -368,5 +370,13 @@ public class TbOrder {
 
     public void setUserCouponsName(String userCouponsName) {
         this.userCouponsName = userCouponsName;
+    }
+
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
+    public void setCurrentIndex(int currentIndex) {
+        this.currentIndex = currentIndex;
     }
 }

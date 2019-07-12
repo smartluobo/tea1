@@ -7,10 +7,12 @@ import com.ibay.tea.common.service.PrintService;
 import com.ibay.tea.common.utils.PrintUtil;
 import com.ibay.tea.dao.TbOrderMapper;
 import com.ibay.tea.entity.TbOrder;
+import com.ibay.tea.entity.TbOrderItem;
 import com.ibay.tea.entity.TbStore;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 public class CategoryTest extends BaseTest {
 
@@ -18,13 +20,13 @@ public class CategoryTest extends BaseTest {
     private PrintUtil printUtil;
 
     @Resource
-    private PrintService printService;
-
-    @Resource
     private TbOrderMapper tbOrderMapper;
 
     @Resource
     private StoreCache storeCache;
+
+    @Resource
+    private PrintService printService;
 
     @Resource
     private OrderCloseScheduledTask orderCloseScheduledTask;
@@ -40,6 +42,19 @@ public class CategoryTest extends BaseTest {
 //        category.setCreateTime("2018-05-17 18:22:55");
 //        categoryMapper.insert(category);
 //    }
+
+    @Test
+    public void testOrderItem(){
+        TbOrder tbOrder = new TbOrder();
+        tbOrder.setCreateTime(new Date());
+        TbStore store = new TbStore();
+        TbOrderItem orderItem = new TbOrderItem();
+        orderItem.setNum(001);
+        orderItem.setOrderId("1000");
+        orderItem.setTitle("多肉草莓");
+        orderItem.setSkuDetailDesc("大/常温/奶盖");
+        printService.printOrderItem(tbOrder,orderItem,store);
+    }
 
     @Test
     public void testOrderClose(){

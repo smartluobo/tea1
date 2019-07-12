@@ -16,8 +16,8 @@ public interface PrintService {
 
     boolean queryOrderPrintStatus(String orderPrintId);
 
-    String printOrderItem(TbOrderItem orderItem, TbStore store);
+    String printOrderItem(TbOrder tbOrder,TbOrderItem orderItem, TbStore store);
 
-    String printOrderItem(List<TbOrderItem> orderItemList, TbStore store);
+    String printOrderItem(TbOrder tbOrder,List<TbOrderItem> orderItemList, TbStore store);
 
 }
